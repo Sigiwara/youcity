@@ -1,0 +1,21 @@
+<parcells>
+	<parcell>
+		<id>01</id>
+		<street>Bahnhofstrasse 01</street>
+		<zip>8000</zip>
+		<latitude>47.40</latitude>
+		<longitude>8.50</longitude>
+		<attributes>
+			<attribute01>5</attribute01>
+			<attribute02>5</attribute02>
+			<attribute03>5</attribute03>
+			<attribute04>5</attribute04>
+			<attribute05>5</attribute05>
+			<attribute06>5</attribute06>
+			<attribute07>5</attribute07>
+			<attribute08>5</attribute08>
+			<attribute09>5</attribute09>
+			<attribute10>5</attribute10>
+		</attributes>
+	</parcell>
+</parcells>

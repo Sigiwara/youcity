@@ -45,16 +45,16 @@ package {
 		//--------------------------------------
 		//  VARIABLES
 		//--------------------------------------
-		private var map					:Map;
-		private var mapEx				:MapExtent;
+		private var map				:Map;
+		private var mapEx			:MapExtent;
 		private var mapProv			:MicrosoftRoadMapProvider;
 		private var mapWidth		:Number;
 		private var mapHeight		:Number;
 		private var markers			:MarkersClip;
-		private var navButtons	:Sprite;
+		private var navButtons		:Sprite;
 		private var urlLoader		:URLLoader;
 		private var locations		:Array;
-		private var storeCount	:TextField;
+		private var storeCount		:TextField;
 		//--------------------------------------
 		//  CONSTANTS
 		//--------------------------------------
@@ -71,7 +71,7 @@ package {
 			//--------------------------------------
 			this.stage.scaleMode	= StageScaleMode.NO_SCALE;
 			this.stage.quality		= StageQuality.HIGH;
-			this.stage.align			= StageAlign.TOP_LEFT;
+			this.stage.align		= StageAlign.TOP_LEFT;
 			//  DEFINITIONS
 			//--------------------------------------
 			mapWidth							= stage.stageWidth;

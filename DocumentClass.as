@@ -74,9 +74,9 @@ package {
 			this.stage.align		= StageAlign.TOP_LEFT;
 			//  DEFINITIONS
 			//--------------------------------------
-			mapWidth						= stage.stageWidth;
-			mapHeight						= stage.stageHeight;
-			locations						= new Array();
+			mapWidth					= stage.stageWidth;
+			mapHeight					= stage.stageHeight;
+			locations					= new Array();
 			//  CALLS
 			//--------------------------------------
 			setMap();

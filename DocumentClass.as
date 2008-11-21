@@ -172,6 +172,7 @@ package {
 			else tFormat.color				= T_COLOR;
 			if(_size) tFormat.size		= _size;
 			else tFormat.size					= T_SIZE;
+			// lorem
 			_tf.setTextFormat(tFormat);
 		} // END onLoadData()
 		//--------------------------------------

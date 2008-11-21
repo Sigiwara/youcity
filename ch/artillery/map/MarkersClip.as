@@ -28,21 +28,19 @@ package ch.artillery.map{
 		private var xpoints						:Array;
 		private var ypoints						:Array;
 		private var starting					:Point;
-		private var pause							:Boolean;
-		
+		private var tZoom							:uint
 		public var markers						:Array;
 		public var locations					:Array;
 		/**
 		*	@Constructor
 		*/
-		public function MarkersClip(_map:Map, _locations:Array){
+		public function MarkersClip(_map:Map, _locations:Array, _zoom:uint){
 			//  DEFINITIONS
 			//--------------------------------------
 			this.map						= _map;
 			this.locations			= _locations;
 			xpoints							= new Array();
 			ypoints							= new Array();
-			pause								= false;
 			//  ADDINGS
 			//--------------------------------------
 			this.x = map.getWidth() / 2;
@@ -74,7 +72,7 @@ package ch.artillery.map{
 		private function setMarkers():void{
 			markers = new Array();
 			for (var i:int = 0; i < locations.length; i++){
-				var marker:Marker = new Marker();
+				var marker:Marker = new Marker(tZoom);
 				addChild(marker);
 				marker.x = xpoints[i]; marker.y = ypoints[i];
 				markers.push(marker);
@@ -106,22 +104,20 @@ package ch.artillery.map{
 		//  EVENT HANDLERS
 		//--------------------------------------
 		private function onMapStartZooming(event:MapEvent):void{
-			pause = true;
 			for (var i:int = 0; i < markers.length; i++) {
 				Marker(markers[i]).clear();
 			};
 		} // END onMapStartZooming()
 		private function onMapStopZooming(event:MapEvent):void{
-			pause = false;
 			updatePoints();
 			for (var i:int = 0; i < markers.length; i++) {
 				Marker(markers[i]).draw();
+				Marker(markers[i]).scale(event.zoomLevel);
 			};
 		} // END onMapStopZooming()
 		private function onMapZoomedBy(event:MapEvent):void{
 		} // END onMapZoomedBy()
 		private function onMapStartPanning(event:MapEvent):void{
-			pause = true;
 			starting = new Point(x, y);
 		} // END onMapStartPanning()
 		private function onMapPanned(event:MapEvent):void{
@@ -134,7 +130,6 @@ package ch.artillery.map{
 			};
 		} // END onMapPanned()
 		private function onMapStopPanning(event:MapEvent):void{
-			pause = false;
 		} // END onMapStopPanning()
 		private function onExtentChanged(event:MapEvent):void{
 			updatePoints();

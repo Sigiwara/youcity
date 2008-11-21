@@ -10,11 +10,12 @@ package {
 	// IMPORT
 	//--------------------------------------
 	import ch.artillery.map.MarkersClip;
+	import ch.artillery.ui.Dashboard;
 	import com.modestmaps.Map;
 	import com.modestmaps.TweenMap;
 	import com.modestmaps.core.MapExtent;
 	import com.modestmaps.geo.Location;
-	import com.modestmaps.mapproviders.microsoft.*;
+	import com.modestmaps.mapproviders.yahoo.*;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageQuality;
@@ -30,7 +31,7 @@ package {
 	//--------------------------------------
 	// METADATA
 	//--------------------------------------
-	[SWF(width="900", height="600", frameRate="32", backgroundColor="#FFFFFF")]
+	[SWF(width="1200", height="768", frameRate="32", backgroundColor="#EEEEEE")]
 
 	/**
 	 *	DocumentClass of the YouCity project.
@@ -47,14 +48,16 @@ package {
 		//--------------------------------------
 		private var map					:Map;
 		private var mapEx				:MapExtent;
-		private var mapProv			:MicrosoftRoadMapProvider;
+		private var mapProv			:YahooAerialMapProvider;
 		private var mapWidth		:Number;
 		private var mapHeight		:Number;
 		private var markers			:MarkersClip;
+		private var dashboard		:Dashboard;
 		private var navButtons	:Sprite;
 		private var urlLoader		:URLLoader;
 		private var locations		:Array;
-		private var storeCount	:TextField;
+		private var pointCount	:TextField;
+		private var waiter			:TextField;
 		//--------------------------------------
 		//  CONSTANTS
 		//--------------------------------------
@@ -62,7 +65,7 @@ package {
 		private const T_COLOR		:uint		= 0xFFFFFF;
 		private const T_SIZE		:uint		= 16;
 		private const B_SIZE		:uint		= 20;
-		private const PADDING		:uint		= 10;
+		public const PADDING		:uint		= 10;
 		/**
 		*	@Constructor
 		*/
@@ -79,17 +82,29 @@ package {
 			locations							= new Array();
 			//  CALLS
 			//--------------------------------------
+			setWaiter();
 			setMap();
 			colorizeMap();
 			setCount();
 			setButtons();
+			setDashboard();
 			loadData();
 		} // END DocumentClass()
 		//--------------------------------------
 		//  PRIVATE METHODS
 		//--------------------------------------
+		private function setWaiter():void{
+			waiter				= new TextField();
+			waiter.text		= 'loading data';
+			formatText(waiter, 0xDDDDDD, 60)
+			waiter.width	= waiter.textWidth + 10;
+			waiter.height	= waiter.textHeight + 10;
+			waiter.x			= this.stage.stageWidth / 2 - waiter.textWidth / 2;
+			waiter.y			= this.stage.stageHeight / 2 - waiter.textHeight / 2;;
+			addChild(waiter);
+		} // END setWaiter()
 		private function setMap():void{
-			mapProv	= new MicrosoftRoadMapProvider();
+			mapProv	= new YahooAerialMapProvider();
 			mapEx		= new MapExtent(47.40, 47.35, 8.60, 8.45);
 			map			= new TweenMap(mapWidth, mapHeight, true, mapProv);
 			map.setExtent(mapEx);
@@ -108,17 +123,23 @@ package {
 			map.grid.filters = [colorMat];
 		} // END colorizeMap()
 		private function setCount():void{
-			storeCount				= new TextField();
-			storeCount.text		= 'loading data';
-			storeCount.x			= this.stage.stageWidth - storeCount.width - PADDING;
-			storeCount.y			= this.stage.stageHeight - T_SIZE - PADDING;
-			addChild(storeCount);
+			pointCount				= new TextField();
+			pointCount.text		= 'loading data';
+			pointCount.x			= this.stage.stageWidth - pointCount.width - PADDING;
+			pointCount.y			= PADDING;
+			addChild(pointCount);
 		} // END setCount()
+		private function setDashboard():void{
+			dashboard = new Dashboard(this);
+			dashboard.y = stage.stageHeight - dashboard.height;
+			this.addChild(dashboard);
+		} // END setDashboard()
 		private function setMarkers():void{
-			markers = new MarkersClip(map, locations);
+			var tZoom:uint = map.getZoom();
+			markers = new MarkersClip(map, locations, tZoom);
 			map.addChild(markers);
-			storeCount.text = String(markers.markers.length);
-			formatText(storeCount);
+			pointCount.text = String(markers.markers.length);
+			formatText(pointCount);
 		} // END setMarkers()
 		private function setButtons():void{
 			var buttons:Array = new Array();
@@ -132,8 +153,8 @@ package {
 				Sprite(buttons[i]).x = nextX;
 				nextX += Sprite(buttons[i]).width + 2;
 			};
-			navButtons.x = PADDING;
-			navButtons.y = map.height - navButtons.height - PADDING;
+			navButtons.x = this.stage.stageWidth - pointCount.width - PADDING;;
+			navButtons.y = pointCount.y + pointCount.textHeight + PADDING;
 		} // END setButtons()
 		private function makeButton(clip:Sprite, name:String, labelText:String, action:Function):Sprite{
 			var button:Sprite = new Sprite();
@@ -172,7 +193,6 @@ package {
 			else tFormat.color				= T_COLOR;
 			if(_size) tFormat.size		= _size;
 			else tFormat.size					= T_SIZE;
-			// lorem
 			_tf.setTextFormat(tFormat);
 		} // END onLoadData()
 		//--------------------------------------
@@ -180,7 +200,7 @@ package {
 		//--------------------------------------
 		private function onLoadData(e:Event):void{
 			var xml:XML = new XML(e.target.data);
-			for each(var w:* in xml.walmart) {
+			for each(var w:* in xml.parcell) {
 				locations.push(new Location(w.latitude, w.longitude));
 			};
 			setMarkers();

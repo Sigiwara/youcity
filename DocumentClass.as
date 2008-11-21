@@ -23,6 +23,7 @@ package {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.filters.ColorMatrixFilter;
+	import flash.filters.ConvolutionFilter;
 	import flash.geom.ColorTransform;
 	import flash.net.*;
 	import flash.text.TextField;
@@ -58,6 +59,7 @@ package {
 		private var locations		:Array;
 		private var pointCount	:TextField;
 		private var waiter			:TextField;
+		private var color				:Boolean;
 		//--------------------------------------
 		//  CONSTANTS
 		//--------------------------------------
@@ -80,6 +82,7 @@ package {
 			mapWidth							= stage.stageWidth;
 			mapHeight							= stage.stageHeight;
 			locations							= new Array();
+			color									= true;
 			//  CALLS
 			//--------------------------------------
 			setWaiter();
@@ -112,16 +115,6 @@ package {
 			map.y = 0;
 			addChild(map);
 		} // END setMap()
-		private function colorizeMap():void{
-			var mat:Array = [
-			0.2,0.5,0.1,0,50,
-			0.2,0.5,0.1,0,50,
-			0.2,0.5,0.1,0,50,
-			0,0,0,1,0
-			];
-			var colorMat:ColorMatrixFilter = new ColorMatrixFilter(mat);
-			map.grid.filters = [colorMat];
-		} // END colorizeMap()
 		private function setCount():void{
 			pointCount				= new TextField();
 			pointCount.text		= 'loading data';
@@ -147,20 +140,21 @@ package {
 			addChild(navButtons);
 			buttons.push(makeButton(navButtons, 'plus', '+', map.zoomIn));
 			buttons.push(makeButton(navButtons, 'minus', '–', map.zoomOut));
+			buttons.push(makeButton(navButtons, 'switch', 'o', colorizeMap));
 			var nextX:Number = 0;
 			for(var i:Number = 0; i < buttons.length; i++) {
 				var currButton:Sprite = buttons[i];
 				Sprite(buttons[i]).x = nextX;
 				nextX += Sprite(buttons[i]).width + 2;
 			};
-			navButtons.x = this.stage.stageWidth - pointCount.width - PADDING;;
+			navButtons.x = this.stage.stageWidth - navButtons.width - PADDING;;
 			navButtons.y = pointCount.y + pointCount.textHeight + PADDING;
 		} // END setButtons()
 		private function makeButton(clip:Sprite, name:String, labelText:String, action:Function):Sprite{
 			var button:Sprite = new Sprite();
 			button.name = name;
 			button.graphics.moveTo(0, 0);
-			button.graphics.beginFill(0x51BFF7, 1);
+			button.graphics.beginFill(0x888888, 1);
 			button.graphics.drawRoundRect(0, 0, B_SIZE, B_SIZE, 5, 5);
 			button.graphics.endFill();
 			button.addEventListener(MouseEvent.CLICK, action);
@@ -210,5 +204,17 @@ package {
 		//--------------------------------------
 		//  PUBLIC METHODS
 		//--------------------------------------
+		public function colorizeMap(_e:Event = null):void{
+			color = !color;
+			var light = new ColorMatrixFilter ();
+			light.matrix = new Array (.25, .25, .25, 0, 75, .25, .25, .25, 0, 75, .25, .25, .25, 0, 75, 0, 0, 0, 1, 0);
+			var dark = new ColorMatrixFilter ();
+			dark.matrix = new Array (-.25, -.25, -.25, 0, 200, -.25, -.25, -.25, 0, 200, -.25, -.25, -.25, 0, 200, 0, 0, 0, 1, 0);
+			if(color){
+				map.grid.filters = [dark];
+			}else{
+				map.grid.filters = [light];
+			};
+		} // END colorizeMap()
 	} // END DocumentClass
 } // END package

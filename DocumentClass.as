@@ -45,8 +45,8 @@ package {
 		//--------------------------------------
 		//  VARIABLES
 		//--------------------------------------
-		private var map				:Map;
-		private var mapEx			:MapExtent;
+		private var map					:Map;
+		private var mapEx				:MapExtent;
 		private var mapProv			:MicrosoftRoadMapProvider;
 		private var mapWidth		:Number;
 		private var mapHeight		:Number;
@@ -55,6 +55,7 @@ package {
 		private var urlLoader		:URLLoader;
 		private var locations		:Array;
 		private var storeCount		:TextField;
+
 		//--------------------------------------
 		//  CONSTANTS
 		//--------------------------------------
@@ -71,12 +72,12 @@ package {
 			//--------------------------------------
 			this.stage.scaleMode	= StageScaleMode.NO_SCALE;
 			this.stage.quality		= StageQuality.HIGH;
-			this.stage.align		= StageAlign.TOP_LEFT;
+			this.stage.align			= StageAlign.TOP_LEFT;
 			//  DEFINITIONS
 			//--------------------------------------
-			mapWidth					= stage.stageWidth;
-			mapHeight					= stage.stageHeight;
-			locations					= new Array();
+			mapWidth							= stage.stageWidth;
+			mapHeight							= stage.stageHeight;
+			locations							= new Array();
 			//  CALLS
 			//--------------------------------------
 			setMap();
@@ -113,10 +114,9 @@ package {
 			storeCount.x			= this.stage.stageWidth - storeCount.width - PADDING;
 			storeCount.y			= this.stage.stageHeight - T_SIZE - PADDING;
 			addChild(storeCount);
-			formatText(storeCount);
 		} // END setCount()
 		private function setMarkers():void{
-			markers = new MarkersClip(map, locations, openingDates);
+			markers = new MarkersClip(map, locations);
 			map.addChild(markers);
 			storeCount.text = String(markers.markers.length);
 			formatText(storeCount);
@@ -173,6 +173,7 @@ package {
 			else tFormat.color				= T_COLOR;
 			if(_size) tFormat.size		= _size;
 			else tFormat.size					= T_SIZE;
+			// lorem
 			_tf.setTextFormat(tFormat);
 		} // END onLoadData()
 		//--------------------------------------
@@ -180,12 +181,15 @@ package {
 		//--------------------------------------
 		private function onLoadData(e:Event):void{
 			var xml:XML = new XML(e.target.data);
-			for each(var p:* in xml.parcell) {
-				locations.push(new Location(p.latitude, p.longitude));
+			for each(var w:* in xml.walmart) {
+				locations.push(new Location(w.latitude, w.longitude));
 			};
 			setMarkers();
 		} // END onLoadData()
 		private function onResize(e:Event):void{
 		} // END onResize();
+		//--------------------------------------
+		//  PUBLIC METHODS
+		//--------------------------------------
 	} // END DocumentClass
 } // END package

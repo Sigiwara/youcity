@@ -25,7 +25,6 @@ package ch.artillery.map{
 		// VARIABLES
 		//--------------------------------------
 		private var map								:Map;
-		private var openingDates			:Array;
 		private var xpoints						:Array;
 		private var ypoints						:Array;
 		private var starting					:Point;
@@ -36,12 +35,11 @@ package ch.artillery.map{
 		/**
 		*	@Constructor
 		*/
-		public function MarkersClip(_map:Map, _locations:Array, _oDates:Array){
+		public function MarkersClip(_map:Map, _locations:Array){
 			//  DEFINITIONS
 			//--------------------------------------
 			this.map						= _map;
 			this.locations			= _locations;
-			this.openingDates		= _oDates;
 			xpoints							= new Array();
 			ypoints							= new Array();
 			pause								= false;

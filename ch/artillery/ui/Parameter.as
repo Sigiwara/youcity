@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
-//  Dashboard
+//  Parameter
 //
-//  Created by Benjamin Wiederkehr on 081121.
+//  Created by Benjamin Wiederkehr on 081126.
 //  Copyright (c) 2008 Benjamin Wiederkehr / Artillery.ch. All rights reserved.
 //
 //////////////////////////////////////////////////////////////////////////
@@ -12,54 +12,53 @@ package ch.artillery.ui{
 	import flash.display.Sprite;
 	import ch.artillery.ui.slider.*;
 	/**
-	 *	Dashboard Class
+	 *	Parameter Class
 	 *
 	 */
-	public class Dashboard extends Sprite{
+	public class Parameter extends Sprite{
 		//--------------------------------------
 		// VARIABLES
 		//--------------------------------------
-		private var dc							:DocumentClass;
-		private var parameters			:Array;
+		private var dashboard				:Dashboard;
+		private var _width					:Number;
+		private var _height					:Number;
+		private var slider					:Slider;
 		//--------------------------------------
 		// CONSTANTS
 		//--------------------------------------
 		private const BG_COLOR			:uint		= 0x000000;
-		private const BG_OPACITY		:Number	= .75;
-		public const BG_WIDTH				:uint		= 200;
-		public const PARAMS					:uint		= 10;
+		private const BG_OPACITY		:Number	= .10;
 		/**
 		*	@Constructor
 		*/
-		public function Dashboard(_dc:DocumentClass){
+		public function Parameter(_dashboard:Dashboard){
 			//  DEFINITIONS
 			//--------------------------------------
-			dc					= _dc;
-			parameters	= new Array();
+			dashboard			= _dashboard;
+			_width				= dashboard.width;
+			_height				= Math.floor(dashboard.height / dashboard.PARAMS) ;
 			//  LISTENERS
 			//--------------------------------------
 			//  CALLS
 			//--------------------------------------
 			draw();
-			setParameters();
+			setSlider();
 		} // END Dashboard()
 		//--------------------------------------
 		// PUBLIC METHODS
 		//--------------------------------------
 		private function draw():void{
 			graphics.beginFill(BG_COLOR, BG_OPACITY);
-			graphics.drawRect(0, 0, BG_WIDTH, dc.stage.stageHeight);
+			graphics.drawRect(0, 0, _width, _height);
 			graphics.endFill();
 		} // END draw()
-		private function setParameters():void{
-			for (var i:int = 0; i<PARAMS; i++){
-				var tParameter = new Parameter(this);
-				addChild(tParameter);
-				parameters.push(tParameter);
-				tParameter.y = dc.PADDING + i*(tParameter.height + 5);
-				tParameter.name = 'Parameter_'+i;
-			};
-		} // END setParameters()
+		private function setSlider():void{
+			var tSlider = new Slider(dashboard.BG_WIDTH-20);
+			addChild(tSlider);
+			tSlider.x = 10;
+			tSlider.y = this.height / 2;
+			tSlider.addEventListener(SliderEvent.GRIP_UP, sChanged);
+		} // END setSliders()
 		private function sChanged(_e:SliderEvent):void{
 			trace(_e.target.name + ': ' + _e.amount);
 		} // END sCHanged()

@@ -22,7 +22,7 @@ package ch.artillery.map{
 		//--------------------------------------
 		// CONSTANTS
 		//--------------------------------------
-		private const M_COLOR		:uint		= 0x51BFF7;
+		private const M_COLOR		:uint		= 0x00CCFF;
 		private const M_SIZE		:uint		= 12;
 		/**
 		*	@Constructor

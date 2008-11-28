@@ -9,9 +9,13 @@ package ch.artillery.ui{
 	//--------------------------------------
 	// IMPORT
 	//--------------------------------------
-	import flash.display.Sprite;
+	import flash.events.MouseEvent;
 	import flash.display.Graphics;
+	import flash.display.Sprite;
+	import flash.display.GradientType;
 	import ch.artillery.ui.slider.*;
+	import flash.geom.Matrix;
+	import flash.geom.ColorTransform;
 	
 	/**
 	 *	Parameter Class
@@ -25,11 +29,15 @@ package ch.artillery.ui{
 		private var _width					:Number;
 		private var _height					:Number;
 		private var slider					:Slider;
+		private var bg							:Sprite;
+		private var ruler						:Sprite;
 		//--------------------------------------
 		// CONSTANTS
 		//--------------------------------------
-		private const BG_COLOR			:uint		= 0x000000;
-		private const BG_OPACITY		:Number	= .10;
+		private const BG_COLOR						:uint		= 0x000000;
+		private const BG_OPACITY_START		:Number	= 1;
+		private const BG_OPACITY_END			:Number	= .50;
+		
 		/**
 		*	@Constructor
 		*/
@@ -37,10 +45,18 @@ package ch.artillery.ui{
 			//  DEFINITIONS
 			//--------------------------------------
 			dashboard			= _dashboard;
+			bg						= new Sprite();
+			ruler					= new Sprite();
 			_width				= dashboard.width;
 			_height				= Math.floor(dashboard.height / dashboard.paramCount);
+			//	ADDINGS
+			//--------------------------------------
+			this.addChild(bg);
+			this.addChild(ruler);
 			//  LISTENERS
 			//--------------------------------------
+			addEventListener(MouseEvent.MOUSE_OVER, parameterOver);
+			addEventListener(MouseEvent.MOUSE_OUT, parameterOut);
 			//  CALLS
 			//--------------------------------------
 			draw();
@@ -50,10 +66,21 @@ package ch.artillery.ui{
 		// PUBLIC METHODS
 		//--------------------------------------
 		private function draw():void{
-			var g:Graphics = this.graphics
-			g.beginFill(BG_COLOR, BG_OPACITY);
+			// Definitions
+			var g:Graphics = bg.graphics;
+			var r:Graphics = ruler.graphics;
+			//	Matrix
+			var matrix = new Matrix();
+			matrix.createGradientBox(_width, _height, 0, 0, 0);
+			//	Background
+			g.clear();
+			g.beginGradientFill(GradientType.LINEAR, [BG_COLOR,BG_COLOR], [BG_OPACITY_START,BG_OPACITY_END], [0,255], matrix);
 			g.drawRect(0, 0, _width, _height);
 			g.endFill();
+			//	Ruler
+			r.lineStyle(1, 0xFFFFFF, 0.50);
+			r.moveTo(1, _height-1);
+			r.lineTo(_width-1, _height-1);
 		} // END draw()
 		private function setSlider():void{
 			var tSlider = new Slider(dashboard.BG_WIDTH-20);
@@ -65,5 +92,14 @@ package ch.artillery.ui{
 		private function sChanged(_e:SliderEvent):void{
 			trace(_e.target.name + ': ' + _e.amount);
 		} // END sCHanged()
+		//--------------------------------------
+		//  EVENT HANDLERS
+		//--------------------------------------
+		private function parameterOver(_e:MouseEvent):void{
+			bg.transform.colorTransform = new ColorTransform(0,0,0,1,0,0,0,255);
+		} // END parameterOver()
+		private function parameterOut(_e:MouseEvent):void{
+			bg.transform.colorTransform = new ColorTransform(0,0,0,1,0,0,0,0);
+		} // END parameterOut()
 	} // END Dashboard Class
 }

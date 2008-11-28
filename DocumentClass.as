@@ -69,7 +69,7 @@ package {
 		private const T_COLOR		:uint		= 0xFFFFFF;
 		private const T_SIZE		:uint		= 16;
 		private const B_SIZE		:uint		= 20;
-		public const PADDING		:uint		= 10;
+		public const PADDING		:uint		= 0;
 		/**
 		*	@Constructor
 		*/

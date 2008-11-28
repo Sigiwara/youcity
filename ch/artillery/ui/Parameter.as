@@ -10,7 +10,9 @@ package ch.artillery.ui{
 	// IMPORT
 	//--------------------------------------
 	import flash.display.Sprite;
+	import flash.display.Graphics;
 	import ch.artillery.ui.slider.*;
+	
 	/**
 	 *	Parameter Class
 	 *
@@ -36,7 +38,7 @@ package ch.artillery.ui{
 			//--------------------------------------
 			dashboard			= _dashboard;
 			_width				= dashboard.width;
-			_height				= Math.floor(dashboard.height / dashboard.PARAMS) ;
+			_height				= Math.floor(dashboard.height / dashboard.paramCount);
 			//  LISTENERS
 			//--------------------------------------
 			//  CALLS
@@ -48,9 +50,10 @@ package ch.artillery.ui{
 		// PUBLIC METHODS
 		//--------------------------------------
 		private function draw():void{
-			graphics.beginFill(BG_COLOR, BG_OPACITY);
-			graphics.drawRect(0, 0, _width, _height);
-			graphics.endFill();
+			var g:Graphics = this.graphics
+			g.beginFill(BG_COLOR, BG_OPACITY);
+			g.drawRect(0, 0, _width, _height);
+			g.endFill();
 		} // END draw()
 		private function setSlider():void{
 			var tSlider = new Slider(dashboard.BG_WIDTH-20);

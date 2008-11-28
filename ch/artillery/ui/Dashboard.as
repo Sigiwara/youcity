@@ -10,6 +10,7 @@ package ch.artillery.ui{
 	// IMPORT
 	//--------------------------------------
 	import flash.display.Sprite;
+	import flash.display.Graphics;
 	import ch.artillery.ui.slider.*;
 	/**
 	 *	Dashboard Class
@@ -20,14 +21,16 @@ package ch.artillery.ui{
 		// VARIABLES
 		//--------------------------------------
 		private var dc							:DocumentClass;
-		private var parameters			:Array;
+		private var bg							:Sprite;
+		private var params					:Array;
+		private var drawer					:Drawer;
+		public var paramCount				:uint;
 		//--------------------------------------
 		// CONSTANTS
 		//--------------------------------------
 		private const BG_COLOR			:uint		= 0x000000;
 		private const BG_OPACITY		:Number	= .75;
 		public const BG_WIDTH				:uint		= 200;
-		public const PARAMS					:uint		= 10;
 		/**
 		*	@Constructor
 		*/
@@ -35,33 +38,51 @@ package ch.artillery.ui{
 			//  DEFINITIONS
 			//--------------------------------------
 			dc					= _dc;
-			parameters	= new Array();
+			bg					= new Sprite();
+			params			= new Array();
+			//  ADDINGS
+			//--------------------------------------
+			this.addChild(bg);
 			//  LISTENERS
 			//--------------------------------------
 			//  CALLS
 			//--------------------------------------
 			draw();
 			setParameters();
+			setDrawer();
 		} // END Dashboard()
 		//--------------------------------------
-		// PUBLIC METHODS
+		// PRIVATE METHODS
 		//--------------------------------------
 		private function draw():void{
-			graphics.beginFill(BG_COLOR, BG_OPACITY);
-			graphics.drawRect(0, 0, BG_WIDTH, dc.stage.stageHeight);
-			graphics.endFill();
+			var g:Graphics = bg.graphics;
+			g.beginFill(BG_COLOR, BG_OPACITY);
+			g.drawRect(0, 0, BG_WIDTH, dc.stage.stageHeight);
+			g.endFill();
 		} // END draw()
 		private function setParameters():void{
-			for (var i:int = 0; i<PARAMS; i++){
+			paramCount = dc.params.length;
+			for (var i:int = 0; i<paramCount; i++){
 				var tParameter = new Parameter(this);
 				addChild(tParameter);
-				parameters.push(tParameter);
+				params.push(tParameter);
 				tParameter.y = dc.PADDING + i*(tParameter.height + 5);
 				tParameter.name = 'Parameter_'+i;
 			};
 		} // END setParameters()
-		private function sChanged(_e:SliderEvent):void{
-			trace(_e.target.name + ': ' + _e.amount);
-		} // END sCHanged()
+		private function setDrawer():void{
+			drawer			= new Drawer(this);
+			dc.addChild(drawer);
+			drawer.x = dc.stage.stageWidth / 2 - drawer.width / 2;
+			drawer.y = dc.stage.stageHeight / 2 - drawer.height / 2;
+		} // END setDrawer()
+		//--------------------------------------
+		// PUBLIC METHODS
+		//--------------------------------------
+		public function displayDrawer(_target:Parameter, _t:String, _b:String):void{
+			drawer.setDrawer(_t, _b);
+			drawer.x = BG_WIDTH;
+			drawer.y = _target.y - ((_target.height - drawer.height) / 2);
+		} // END displayDrawer()
 	} // END Dashboard Class
 }

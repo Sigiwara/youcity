@@ -60,6 +60,8 @@ package {
 		private var pointCount	:TextField;
 		private var waiter			:TextField;
 		private var color				:Boolean;
+		
+		public var params				:Array;
 		//--------------------------------------
 		//  CONSTANTS
 		//--------------------------------------
@@ -82,6 +84,7 @@ package {
 			mapWidth							= stage.stageWidth;
 			mapHeight							= stage.stageHeight;
 			locations							= new Array();
+			params								= new Array();
 			color									= true;
 			//  CALLS
 			//--------------------------------------
@@ -90,8 +93,8 @@ package {
 			colorizeMap();
 			setCount();
 			setButtons();
-			setDashboard();
-			loadData();
+			loadData('xml/params.xml', onLoadParams);
+			loadData('xml/parcells.xml', onLoadParcells);
 		} // END DocumentClass()
 		//--------------------------------------
 		//  PRIVATE METHODS
@@ -173,10 +176,10 @@ package {
 			clip.addChild(button);
 			return button;
 		} // END makeButton()
-		private function loadData():void{
-			var urlRequest:URLRequest = new URLRequest('data/parcells.xml');
+		private function loadData(_xmlPath:String, _callback:Function):void{
+			var urlRequest:URLRequest = new URLRequest(_xmlPath);
 			urlLoader = new URLLoader();
-			urlLoader.addEventListener(Event.COMPLETE, onLoadData);
+			urlLoader.addEventListener(Event.COMPLETE, _callback);
 			urlLoader.load(urlRequest);
 		} // END loadData()
 		private function formatText(_tf:TextField, _color = false, _size = false):void {
@@ -187,17 +190,24 @@ package {
 			if(_size) tFormat.size		= _size;
 			else tFormat.size					= T_SIZE;
 			_tf.setTextFormat(tFormat);
-		} // END onLoadData()
+		} // END formatText()
 		//--------------------------------------
 		//  EVENT HANDLERS
 		//--------------------------------------
-		private function onLoadData(e:Event):void{
+		private function onLoadParcells(e:Event):void{
 			var xml:XML = new XML(e.target.data);
 			for each(var w:* in xml.parcell) {
 				locations.push(new Location(w.latitude, w.longitude));
 			};
 			setMarkers();
-		} // END onLoadData()
+		} // END onLoadParcells()
+		private function onLoadParams(e:Event):void{
+			var xml:XML = new XML(e.target.data);
+			for each(var p:* in xml.param) {
+				params.push(p);
+			};
+			setDashboard();
+		} // END onLoadParams()
 		private function onResize(e:Event):void{
 		} // END onResize();
 		//--------------------------------------

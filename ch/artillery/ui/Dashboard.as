@@ -24,8 +24,8 @@ package ch.artillery.ui{
 		//--------------------------------------
 		// CONSTANTS
 		//--------------------------------------
-		private const BG_COLOR			:uint		= 0x000000;
-		private const BG_OPACITY		:Number	= .75;
+		private const BG_COLOR			:uint		= 0x688599;
+		private const BG_OPACITY		:Number	= .70;
 		public const BG_WIDTH				:uint		= 200;
 		public const PARAMS					:uint		= 10;
 		/**
@@ -56,7 +56,7 @@ package ch.artillery.ui{
 				var tParameter = new Parameter(this);
 				addChild(tParameter);
 				parameters.push(tParameter);
-				tParameter.y = dc.PADDING + i*(tParameter.height + 5);
+				tParameter.y = dc.PADDING + i*(tParameter.height);
 				tParameter.name = 'Parameter_'+i;
 			};
 		} // END setParameters()

@@ -26,6 +26,7 @@ package ch.artillery.ui{
 		// VARIABLES
 		//--------------------------------------
 		private var dashboard				:Dashboard;
+		private var data						:XML;
 		private var _width					:Number;
 		private var _height					:Number;
 		private var slider					:Slider;
@@ -41,10 +42,11 @@ package ch.artillery.ui{
 		/**
 		*	@Constructor
 		*/
-		public function Parameter(_dashboard:Dashboard){
+		public function Parameter(_dashboard:Dashboard, _data){
 			//  DEFINITIONS
 			//--------------------------------------
 			dashboard			= _dashboard;
+			data					= _data;
 			bg						= new Sprite();
 			ruler					= new Sprite();
 			_width				= dashboard.width;
@@ -97,9 +99,11 @@ package ch.artillery.ui{
 		//--------------------------------------
 		private function parameterOver(_e:MouseEvent):void{
 			bg.transform.colorTransform = new ColorTransform(0,0,0,1,0,0,0,255);
+			dashboard.displayDrawer(this, data.title, data.description);
 		} // END parameterOver()
 		private function parameterOut(_e:MouseEvent):void{
 			bg.transform.colorTransform = new ColorTransform(0,0,0,1,0,0,0,0);
+			dashboard.hideDrawer();
 		} // END parameterOut()
 	} // END Dashboard Class
 }

@@ -41,8 +41,8 @@ package ch.artillery.ui{
 		private const B_SIZE		:uint		= 16;
 		private const PADDING		:uint		= 10;
 		private const LINE			:uint		= 10;
-		private const BG_COLOR	:uint		= 0xFFFFFF;
-		private const BG_OPACITY:Number		= .75;
+		private const BG_COLOR	:uint		= 0x688599;
+		private const BG_OPACITY:Number		= .70;
 		/**
 		 *	@Constructor
 		 */
@@ -69,16 +69,18 @@ package ch.artillery.ui{
 		//  PRIVATE METHODS
 		//--------------------------------------
 		private function setTextFields():void{
-			title.width			= dashboard.BG_WIDTH - PADDING*2;
 			title.multiline	= true;
-			body.width			= dashboard.BG_WIDTH - PADDING*2;
+			title.wordWrap	= true;
+			title.width			= dashboard.BG_WIDTH - PADDING*2;
 			body.multiline	= true;
+			body.wordWrap		= true;
+			body.width			= dashboard.BG_WIDTH - PADDING*2;
 		} // END setTextFields()
 		private function setText(_title:String = null, _body:String = null):void{
-			title.text = (_title) ? _title : "Title";
+			title.htmlText	= (_title) ? _title : "Title";
+			body.htmlText		= (_body) ? _body : "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 			formatText(title, COLOR, T_SIZE);
-			body.text = (_body) ? _body : "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-			formatText(body, COLOR, B_SIZE);
+			formatText(body, COLOR, B_SIZE, true);
 		} // END setText()
 		private function layoutAssets():void{
 			title.x			= PADDING;
@@ -86,11 +88,12 @@ package ch.artillery.ui{
 			body.x			= title.x;
 			body.y			= title.y + title.textHeight + LINE;
 		} // END layoutAssets()
-		private function formatText(_tf:TextField, _color = false, _size = false):void {
+		private function formatText(_tf:TextField, _color = null, _size = null, _italic:Boolean = false):void {
 			var tFormat:TextFormat = new TextFormat();
-			tFormat.font = FONT;
-			tFormat.color = (_color) ? _color : COLOR;
-			tFormat.color = (_size) ? _size : B_SIZE;
+			tFormat.font		= FONT;
+			tFormat.color		= (_color) ? _color : COLOR;
+			tFormat.size		= (_size) ? _size : B_SIZE;
+			tFormat.italic	= (true) ? _italic : false;
 			_tf.setTextFormat(tFormat);
 		} // END formatText()
 		private function setBackground():void{

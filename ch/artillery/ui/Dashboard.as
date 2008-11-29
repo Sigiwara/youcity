@@ -12,6 +12,8 @@ package ch.artillery.ui{
 	import flash.display.Sprite;
 	import flash.display.Graphics;
 	import ch.artillery.ui.slider.*;
+	import gs.TweenLite;
+	import fl.motion.easing.*;
 	/**
 	 *	Dashboard Class
 	 *
@@ -62,27 +64,34 @@ package ch.artillery.ui{
 		} // END draw()
 		private function setParameters():void{
 			paramCount = dc.params.length;
-			for (var i:int = 0; i<paramCount; i++){
-				var tParameter = new Parameter(this);
+			var i:uint = 0;
+			for each (var param:XML in dc.params){
+				var tParameter = new Parameter(this, param);
 				addChild(tParameter);
 				params.push(tParameter);
 				tParameter.y = dc.PADDING + i*(tParameter.height);
 				tParameter.name = 'Parameter_'+i;
-			};
+				i++;
+			}
 		} // END setParameters()
 		private function setDrawer():void{
 			drawer			= new Drawer(this);
 			dc.addChild(drawer);
-			drawer.x = dc.stage.stageWidth / 2 - drawer.width / 2;
-			drawer.y = dc.stage.stageHeight / 2 - drawer.height / 2;
+			drawer.x = BG_WIDTH;
+			drawer.y = - drawer.height - 10;
 		} // END setDrawer()
 		//--------------------------------------
 		// PUBLIC METHODS
 		//--------------------------------------
+		public function hideDrawer():void{
+			TweenLite.to(drawer, 1, {y: - drawer.height - 10, ease:Cubic.easeOut});
+		} // END hideDrawer()
 		public function displayDrawer(_target:Parameter, _t:String, _b:String):void{
 			drawer.setDrawer(_t, _b);
-			drawer.x = BG_WIDTH;
-			drawer.y = _target.y - ((_target.height - drawer.height) / 2);
+			var dY:Number = _target.y - (drawer.height - _target.height) / 2;
+			if(dY <= 0){ dY = 0 };
+			if(dY >= (stage.stageHeight - drawer.height)){ dY = stage.stageHeight - drawer.height };
+			TweenLite.to(drawer, 1, {y:dY, ease:Cubic.easeOut});
 		} // END displayDrawer()
 	} // END Dashboard Class
 }

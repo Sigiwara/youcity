@@ -23,6 +23,7 @@ package ch.artillery.ui{
 		// VARIABLES
 		//--------------------------------------
 		private var dc							:DocumentClass;
+		private var gui							:GUI;
 		private var bg							:Sprite;
 		private var params					:Array;
 		private var drawer					:Drawer;
@@ -36,10 +37,11 @@ package ch.artillery.ui{
 		/**
 		*	@Constructor
 		*/
-		public function Dashboard(_dc:DocumentClass){
+		public function Dashboard(_dc:DocumentClass, _gui:GUI){
 			//  DEFINITIONS
 			//--------------------------------------
 			dc					= _dc;
+			gui					= _gui;
 			bg					= new Sprite();
 			params			= new Array();
 			//  ADDINGS
@@ -69,7 +71,7 @@ package ch.artillery.ui{
 				var tParameter = new Parameter(this, param);
 				addChild(tParameter);
 				params.push(tParameter);
-				tParameter.y = dc.PADDING + i*(tParameter.height);
+				tParameter.y = i*(tParameter.height);
 				tParameter.name = 'Parameter_'+i;
 				i++;
 			}

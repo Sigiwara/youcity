@@ -28,13 +28,12 @@ package ch.artillery.map{
 		private var xpoints						:Array;
 		private var ypoints						:Array;
 		private var starting					:Point;
-		private var tZoom							:uint
 		public var markers						:Array;
 		public var locations					:Array;
 		/**
 		*	@Constructor
 		*/
-		public function MarkersClip(_map:Map, _locations:Array, _zoom:uint){
+		public function MarkersClip(_map:Map, _locations:Array){
 			//  DEFINITIONS
 			//--------------------------------------
 			this.map						= _map;
@@ -72,7 +71,7 @@ package ch.artillery.map{
 		private function setMarkers():void{
 			markers = new Array();
 			for (var i:int = 0; i < locations.length; i++){
-				var marker:Marker = new Marker(tZoom);
+				var marker:Marker = new Marker();
 				addChild(marker);
 				marker.x = xpoints[i]; marker.y = ypoints[i];
 				markers.push(marker);
@@ -112,7 +111,6 @@ package ch.artillery.map{
 			updatePoints();
 			for (var i:int = 0; i < markers.length; i++) {
 				Marker(markers[i]).draw();
-				Marker(markers[i]).scale(event.zoomLevel);
 			};
 		} // END onMapStopZooming()
 		private function onMapZoomedBy(event:MapEvent):void{

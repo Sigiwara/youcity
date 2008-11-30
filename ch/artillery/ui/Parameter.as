@@ -14,6 +14,7 @@ package ch.artillery.ui{
 	import flash.display.Sprite;
 	import flash.display.GradientType;
 	import ch.artillery.ui.slider.*;
+	import ch.artillery.map.Layer;
 	import flash.geom.Matrix;
 	import flash.geom.ColorTransform;
 	
@@ -27,6 +28,7 @@ package ch.artillery.ui{
 		//--------------------------------------
 		private var dashboard				:Dashboard;
 		private var data						:XML;
+		private var layer						:Layer;
 		private var _width					:Number;
 		private var _height					:Number;
 		private var slider					:Slider;
@@ -49,11 +51,12 @@ package ch.artillery.ui{
 		/**
 		*	@Constructor
 		*/
-		public function Parameter(_dashboard:Dashboard, _data){
+		public function Parameter(_dashboard:Dashboard, _data:XML, _layer:Layer){
 			//  DEFINITIONS
 			//--------------------------------------
 			dashboard			= _dashboard;
 			data					= _data;
+			layer					= _layer;
 			bg						= new Sprite();
 			ruler					= new Sprite();
 			pointer				= new Sprite();

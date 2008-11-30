@@ -10,7 +10,7 @@ package {
 	// IMPORT
 	//--------------------------------------
 	import ch.artillery.map.MarkersClip;
-	import ch.artillery.ui.GUI;
+	import ch.artillery.ui.Dashboard;
 	import com.modestmaps.Map;
 	import com.modestmaps.TweenMap;
 	import com.modestmaps.core.MapExtent;
@@ -21,6 +21,7 @@ package {
 	import flash.display.StageQuality;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.filters.ColorMatrixFilter;
 	import flash.filters.ConvolutionFilter;
 	import flash.geom.ColorTransform;
@@ -46,18 +47,20 @@ package {
 		//--------------------------------------
 		//  VARIABLES
 		//--------------------------------------
-		public var map					:Map;
+		private var map					:Map;
 		private var mapEx				:MapExtent;
 		//private var mapProv			:YahooRoadMapProvider;
 		private var mapProv			:YahooAerialMapProvider;
 		private var mapWidth		:Number;
 		private var mapHeight		:Number;
 		private var markers			:MarkersClip;
+		private var dashboard		:Dashboard;
+		private var navButtons	:Sprite;
 		private var urlLoader		:URLLoader;
 		private var locations		:Array;
-		private var color				:Boolean;
+		private var pointCount	:TextField;
 		private var waiter			:TextField;
-		private var gui					:GUI;
+		private var color				:Boolean;
 		
 		public var params				:Array;
 		//--------------------------------------
@@ -66,6 +69,8 @@ package {
 		private const T_FONT		:String	= 'Arial';
 		private const T_COLOR		:uint		= 0xFFFFFF;
 		private const T_SIZE		:uint		= 16;
+		private const B_SIZE		:uint		= 20;
+		public const PADDING		:uint		= 0;
 		/**
 		*	@Constructor
 		*/
@@ -87,8 +92,10 @@ package {
 			setWaiter();
 			setMap();
 			colorizeMap();
+			setCount();
+			setButtons();
 			loadData('xml/params.xml', onLoadParams);
-			//loadData('xml/parcells.xml', onLoadParcells);
+			loadData('xml/parcells.xml', onLoadParcells);
 		} // END DocumentClass()
 		//--------------------------------------
 		//  PRIVATE METHODS
@@ -113,18 +120,64 @@ package {
 			map.y = 0;
 			addChild(map);
 		} // END setMap()
+		private function setCount():void{
+			pointCount				= new TextField();
+			pointCount.text		= 'loading data';
+			pointCount.x			= this.stage.stageWidth - pointCount.width - PADDING;
+			pointCount.y			= PADDING;
+			addChild(pointCount);
+		} // END setCount()
+		private function setDashboard():void{
+			dashboard = new Dashboard(this);
+			this.addChild(dashboard);
+		} // END setDashboard()
 		private function setMarkers():void{
-			markers = new MarkersClip(map, locations);
+			var tZoom:uint = map.getZoom();
+			markers = new MarkersClip(map, locations, tZoom);
 			map.addChild(markers);
+			pointCount.text = String(markers.markers.length);
+			formatText(pointCount);
 		} // END setMarkers()
-		private function setLayers():void{
-			for each (var param:XML in params){
-			}
-		} // END setLayers()
-		private function setGUI():void{
-			gui = new GUI(this);
-			this.addChild(gui);
-		} // END setGUI()
+		private function setButtons():void{
+			var buttons:Array = new Array();
+			navButtons = new Sprite();
+			addChild(navButtons);
+			buttons.push(makeButton(navButtons, 'plus', '+', map.zoomIn));
+			buttons.push(makeButton(navButtons, 'minus', '–', map.zoomOut));
+			buttons.push(makeButton(navButtons, 'switch', 'o', colorizeMap));
+			var nextX:Number = 0;
+			for(var i:Number = 0; i < buttons.length; i++) {
+				var currButton:Sprite = buttons[i];
+				Sprite(buttons[i]).x = nextX;
+				nextX += Sprite(buttons[i]).width + 2;
+			};
+			navButtons.x = this.stage.stageWidth - navButtons.width - PADDING;;
+			navButtons.y = pointCount.y + pointCount.textHeight + PADDING;
+		} // END setButtons()
+		private function makeButton(clip:Sprite, name:String, labelText:String, action:Function):Sprite{
+			var button:Sprite = new Sprite();
+			button.name = name;
+			button.graphics.moveTo(0, 0);
+			button.graphics.beginFill(0x888888, 1);
+			button.graphics.drawRoundRect(0, 0, B_SIZE, B_SIZE, 5, 5);
+			button.graphics.endFill();
+			button.addEventListener(MouseEvent.CLICK, action);
+			button.useHandCursor = true;
+			button.mouseChildren = false;
+			button.buttonMode = true;
+			var label:TextField = new TextField();
+			label.name				= 'label';
+			label.selectable	= false;
+			label.textColor		= 0xFFFFFF;
+			label.text				= labelText;
+			label.width				= label.textWidth + 4;
+			label.height			= label.textHeight + 3;
+			label.x						= button.width/2 - label.width/2;
+			label.y						= button.height/2 - label.height/2;
+			button.addChild(label);
+			clip.addChild(button);
+			return button;
+		} // END makeButton()
 		private function loadData(_xmlPath:String, _callback:Function):void{
 			var urlRequest:URLRequest = new URLRequest(_xmlPath);
 			urlLoader = new URLLoader();
@@ -134,8 +187,10 @@ package {
 		private function formatText(_tf:TextField, _color = false, _size = false):void {
 			var tFormat:TextFormat = new TextFormat();
 			tFormat.font = T_FONT;
-			tFormat.color		= (_color) ? _color : T_COLOR;
-			tFormat.size		= (_size) ? _size : T_SIZE;
+			if(_color) tFormat.color	= _color;
+			else tFormat.color				= T_COLOR;
+			if(_size) tFormat.size		= _size;
+			else tFormat.size					= T_SIZE;
 			_tf.setTextFormat(tFormat);
 		} // END formatText()
 		//--------------------------------------
@@ -153,8 +208,7 @@ package {
 			for each(var p:* in xml.param) {
 				params.push(p);
 			};
-			setLayers();
-			setGUI();
+			setDashboard();
 		} // END onLoadParams()
 		private function onResize(e:Event):void{
 		} // END onResize();

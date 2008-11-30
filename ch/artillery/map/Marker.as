@@ -18,6 +18,7 @@ package ch.artillery.map{
 		//--------------------------------------
 		// VARIABLES
 		//--------------------------------------
+		public var scaleFactor	:uint;
 		//--------------------------------------
 		// CONSTANTS
 		//--------------------------------------
@@ -26,7 +27,8 @@ package ch.artillery.map{
 		/**
 		*	@Constructor
 		*/
-		public function Marker(){
+		public function Marker(_scaleFactor:uint){
+			scaleFactor = _scaleFactor;
 			//trace(scaleFactor);
 		} // END Marker()
 		//--------------------------------------
@@ -39,5 +41,8 @@ package ch.artillery.map{
 		public function clear():void{
 			this.graphics.clear();
 		} // END clear()
+		public function scale(scaleFactor:uint):void{
+			//trace(_scaleFactor);
+		} // END scale()
 	} // END Marker()
 }

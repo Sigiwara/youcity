@@ -1,6 +1,5 @@
 <params>
 	<param>
-		<class>Gruenflaeche</class>
 		<title>Parameter 1</title>
 		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
 		<labels>
@@ -9,7 +8,6 @@
 		</labels>
 	</param>
 	<param>
-		<class>Gruenflaeche</class>
 		<title>Parameter 2</title>
 		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
 		<labels>
@@ -18,7 +16,6 @@
 		</labels>
 	</param>
 	<param>
-		<class>Gruenflaeche</class>
 		<title>Parameter 3</title>
 		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
 		<labels>
@@ -27,7 +24,6 @@
 		</labels>
 	</param>
 	<param>
-		<class>Gruenflaeche</class>
 		<title>Parameter 4</title>
 		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
 		<labels>
@@ -36,7 +32,6 @@
 		</labels>
 	</param>
 	<param>
-		<class>Gruenflaeche</class>
 		<title>Parameter 5</title>
 		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
 		<labels>
@@ -45,7 +40,6 @@
 		</labels>
 	</param>
 	<param>
-		<class>Gruenflaeche</class>
 		<title>Parameter 6</title>
 		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
 		<labels>
@@ -54,7 +48,6 @@
 		</labels>
 	</param>
 	<param>
-		<class>Gruenflaeche</class>
 		<title>Parameter 7</title>
 		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
 		<labels>
@@ -63,7 +56,6 @@
 		</labels>
 	</param>
 	<param>
-		<class>Gruenflaeche</class>
 		<title>Parameter 8</title>
 		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
 		<labels>
@@ -72,7 +64,6 @@
 		</labels>
 	</param>
 	<param>
-		<class>Gruenflaeche</class>
 		<title>Parameter 9</title>
 		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
 		<labels>
@@ -81,7 +72,6 @@
 		</labels>
 	</param>
 	<param>
-		<class>Gruenflaeche</class>
 		<title>Parameter 10</title>
 		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
 		<labels>

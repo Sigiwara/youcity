@@ -49,7 +49,7 @@ package {
 		//--------------------------------------
 		private var map					:Map;
 		private var mapEx				:MapExtent;
-		//private var mapProv			:YahooRoadMapProvider;
+		//private var mapProv		:YahooRoadMapProvider;
 		private var mapProv			:YahooAerialMapProvider;
 		private var mapWidth		:Number;
 		private var mapHeight		:Number;

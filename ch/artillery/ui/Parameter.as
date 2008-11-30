@@ -38,11 +38,11 @@ package ch.artillery.ui{
 		//--------------------------------------
 		private const BG_COLOR						:uint		= 0x000000;
 		private const BG_OPACITY_START		:Number	= 1;
-		private const BG_OPACITY_END			:Number	= .50;
+		private const BG_OPACITY_END			:Number	= .40;
 		// Color of the ruler
 		private static const RULER_COLOR			= 0xFFFFFF;
 		// Opacity of the ruler
-		private static const RULER_OPACITY		= .20;
+		private static const RULER_OPACITY		= .30;
 		// Thickness of the ruler
 		private static const RULER_THICKNESS	= 1;
 		
@@ -56,7 +56,8 @@ package ch.artillery.ui{
 			data					= _data;
 			bg						= new Sprite();
 			ruler					= new Sprite();
-			_width				= dashboard.width;
+			pointer				= new Sprite();
+			_width				= dashboard.BG_WIDTH;
 			_height				= Math.floor(dashboard.height / dashboard.paramCount);
 			//	ADDINGS
 			//--------------------------------------
@@ -68,31 +69,39 @@ package ch.artillery.ui{
 			addEventListener(MouseEvent.MOUSE_OUT, parameterOut);
 			//  CALLS
 			//--------------------------------------
-			draw();
+			setParameter();
 			setSlider();
 		} // END Dashboard()
 		//--------------------------------------
-		// PUBLIC METHODS
+		// PRIVATE METHODS
 		//--------------------------------------
-		private function draw():void{
-			// Definitions
+		private function setBackground():void{
 			var g:Graphics = bg.graphics;
-			var r:Graphics = ruler.graphics;
-			//	Matrix
 			var matrix = new Matrix();
-			matrix.createGradientBox(_width*1.2, _height, 0, 0, 0);
-			//	Background
+			matrix.createGradientBox(_width*1.4, _height, 0, 0, 0);
 			g.clear();
 			g.beginGradientFill(GradientType.LINEAR, [BG_COLOR,BG_COLOR], [BG_OPACITY_START,BG_OPACITY_END], [0,255], matrix);
 			g.drawRect(0, 0, _width, _height);
 			g.endFill();
-			//	Ruler
-			r.lineStyle(RULER_THICKNESS, RULER_COLOR, RULER_OPACITY);
-			r.moveTo(1, _height);
-			r.lineTo(_width-1, _height);
-		} // END draw()
+		} // END setBackground()
+		private function setRuler():void{
+			var g:Graphics = ruler.graphics;
+			g.clear();
+			g.lineStyle(RULER_THICKNESS, RULER_COLOR, RULER_OPACITY);
+			g.moveTo(0, _height);
+			g.lineTo(_width, _height);
+		} // END setRuler()
+			private function setPointer():void{
+				var g:Graphics = pointer.graphics;
+				g.clear();
+				g.beginFill(0x000000, 1);
+				g.moveTo(_width, _height/2-10);
+				g.lineTo(_width+12, _height/2);
+				g.lineTo(_width, _height/2+10);
+				g.endFill();
+			} // END setPointer()
 		private function setSlider():void{
-			var tSlider = new Slider(dashboard.BG_WIDTH-20);
+			var tSlider = new Slider(_width-20);
 			addChild(tSlider);
 			tSlider.x = 10;
 			tSlider.y = this.height / 2;
@@ -102,15 +111,25 @@ package ch.artillery.ui{
 			trace(_e.target.name + ': ' + _e.amount);
 		} // END sCHanged()
 		//--------------------------------------
+		// PUBLIC METHODS
+		//--------------------------------------
+		public function setParameter():void{
+			setBackground();
+			setRuler();
+			setPointer();
+		} // END setParameter()
+		//--------------------------------------
 		//  EVENT HANDLERS
 		//--------------------------------------
 		private function parameterOver(_e:MouseEvent):void{
 			bg.transform.colorTransform = new ColorTransform(0,0,0,1,0,0,0,255);
 			dashboard.displayDrawer(this, data.title, data.description);
+			this.addChild(pointer);
 		} // END parameterOver()
 		private function parameterOut(_e:MouseEvent):void{
 			bg.transform.colorTransform = new ColorTransform(0,0,0,1,0,0,0,0);
 			dashboard.hideDrawer();
+			this.removeChild(pointer);
 		} // END parameterOut()
 	} // END Dashboard Class
 }

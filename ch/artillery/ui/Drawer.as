@@ -13,6 +13,7 @@ package ch.artillery.ui{
 	import flash.display.Graphics;
 	import flash.events.*;
 	import flash.text.*;
+	import flash.filters.DropShadowFilter;
 	
 	/**
 	 *	Drawer for the dashboard parameters.
@@ -30,19 +31,21 @@ package ch.artillery.ui{
 		//--------------------------------------
 		private var dashboard		:Dashboard;
 		private var bg					:Sprite;
+		private var shadow			:Sprite;
 		private var title				:TextField;
 		private var body				:TextField;
 		//--------------------------------------
 		//  CONSTANTS
 		//--------------------------------------
-		private const FONT			:String	= 'Georgia';
-		private const COLOR			:uint		= 0x000000;
-		private const T_SIZE		:uint		= 24;
-		private const B_SIZE		:uint		= 16;
-		private const PADDING		:uint		= 10;
-		private const LINE			:uint		= 10;
-		private const BG_COLOR	:uint		= 0x688599;
-		private const BG_OPACITY:Number		= .70;
+		private const FONT					:String	= 'Georgia';
+		private const COLOR					:uint		= 0x000000;
+		private const T_SIZE				:uint		= 24;
+		private const B_SIZE				:uint		= 16;
+		private const PADDING				:uint		= 10;
+		private const PADDING_LEFT	:uint		= 20;
+		private const LINE					:uint		= 10;
+		private const BG_COLOR			:uint		= 0x688599;
+		private const BG_OPACITY		:Number		= .70;
 		/**
 		 *	@Constructor
 		 */
@@ -51,10 +54,12 @@ package ch.artillery.ui{
 			//--------------------------------------
 			dashboard	= _db;
 			bg				= new Sprite();
+			shadow		= new Sprite();
 			title			= new TextField();
 			body			= new TextField();
 			//  ADDINGS
 			//--------------------------------------
+			this.addChild(shadow);
 			this.addChild(bg);
 			this.addChild(title);
 			this.addChild(body);
@@ -71,10 +76,10 @@ package ch.artillery.ui{
 		private function setTextFields():void{
 			title.multiline	= true;
 			title.wordWrap	= true;
-			title.width			= dashboard.BG_WIDTH - PADDING*2;
+			title.width			= dashboard.BG_WIDTH - PADDING - PADDING_LEFT;
 			body.multiline	= true;
 			body.wordWrap		= true;
-			body.width			= dashboard.BG_WIDTH - PADDING*2;
+			body.width			= dashboard.BG_WIDTH - PADDING - PADDING_LEFT;
 		} // END setTextFields()
 		private function setText(_title:String = null, _body:String = null):void{
 			title.htmlText	= (_title) ? _title : "Title";
@@ -83,8 +88,8 @@ package ch.artillery.ui{
 			formatText(body, COLOR, B_SIZE, true);
 		} // END setText()
 		private function layoutAssets():void{
-			title.x			= PADDING;
-			title.y			= PADDING;
+			title.x			= PADDING_LEFT;
+			title.y			= PADDING_LEFT;
 			body.x			= title.x;
 			body.y			= title.y + title.textHeight + LINE;
 		} // END layoutAssets()
@@ -103,6 +108,15 @@ package ch.artillery.ui{
 			g.drawRect(0, 0, Math.round(dashboard.BG_WIDTH), Math.round(body.y + body.height + PADDING));
 			g.endFill();
 		} // END setBackground()
+		private function setShadow():void{
+			var g:Graphics = shadow.graphics;
+			var shadowFilter:DropShadowFilter = new DropShadowFilter(0, 0, 0, .5, 8, 8, 1, 3, false, true, false);
+			shadow.filters = [shadowFilter];
+			g.clear();
+			g.beginFill(0, 1);
+			g.drawRect(0, 0, Math.round(dashboard.BG_WIDTH), Math.round(body.y + body.height + PADDING));
+			g.endFill();
+		} // END setShadow()
 		//--------------------------------------
 		//  PUBLIC METHODS
 		//--------------------------------------
@@ -110,6 +124,7 @@ package ch.artillery.ui{
 			setText(_t, _b);
 			layoutAssets();
 			setBackground();
+			setShadow();
 		} // END setDrawer()
 	} // END Drawer Class
 } // END package ch.artillery.ui

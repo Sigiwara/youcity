@@ -63,7 +63,6 @@ package {
 		private var color				:Boolean;
 		
 		public var params				:Array;
-		public var layers				:Array;
 		//--------------------------------------
 		//  CONSTANTS
 		//--------------------------------------
@@ -87,7 +86,6 @@ package {
 			mapHeight							= stage.stageHeight;
 			locations							= new Array();
 			params								= new Array();
-			//layers								= new Array(Gruenflaeche,23,34);
 			color									= true;
 			//  CALLS
 			//--------------------------------------

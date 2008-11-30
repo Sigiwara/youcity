@@ -80,7 +80,7 @@ package ch.artillery.ui{
 			paramCount = dc.params.length;
 			var i:uint = 0;
 			for each (var param:XML in dc.params){
-				var tParameter = new Parameter(this, param, dc.layers.layers[i]);
+				var tParameter = new Parameter(this, param);
 				addChild(tParameter);
 				params.push(tParameter);
 				tParameter.y = dc.PADDING + i*(tParameter.height);

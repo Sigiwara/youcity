@@ -49,7 +49,8 @@ package {
 		//--------------------------------------
 		private var map					:Map;
 		private var mapEx				:MapExtent;
-		private var mapProv			:YahooRoadMapProvider;
+		//private var mapProv			:YahooRoadMapProvider;
+		private var mapProv			:YahooAerialMapProvider;
 		private var mapWidth		:Number;
 		private var mapHeight		:Number;
 		private var markers			:MarkersClip;
@@ -110,7 +111,8 @@ package {
 			addChild(waiter);
 		} // END setWaiter()
 		private function setMap():void{
-			mapProv	= new YahooRoadMapProvider();
+			//mapProv	= new YahooRoadMapProvider();
+			mapProv = new YahooAerialMapProvider();
 			mapEx		= new MapExtent(47.40, 47.35, 8.60, 8.45);
 			map			= new TweenMap(mapWidth, mapHeight, true, mapProv);
 			map.setExtent(mapEx);

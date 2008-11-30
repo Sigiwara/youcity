@@ -31,12 +31,19 @@ package ch.artillery.ui{
 		private var slider					:Slider;
 		private var bg							:Sprite;
 		private var ruler						:Sprite;
+		private var pointer					:Sprite;
 		//--------------------------------------
 		// CONSTANTS
 		//--------------------------------------
 		private const BG_COLOR						:uint		= 0x000000;
 		private const BG_OPACITY_START		:Number	= 1;
 		private const BG_OPACITY_END			:Number	= .50;
+		// Color of the ruler
+		private static const RULER_COLOR			= 0xFFFFFF;
+		// Opacity of the ruler
+		private static const RULER_OPACITY		= .20;
+		// Thickness of the ruler
+		private static const RULER_THICKNESS	= 1;
 		
 		/**
 		*	@Constructor
@@ -71,16 +78,16 @@ package ch.artillery.ui{
 			var r:Graphics = ruler.graphics;
 			//	Matrix
 			var matrix = new Matrix();
-			matrix.createGradientBox(_width, _height, 0, 0, 0);
+			matrix.createGradientBox(_width*1.2, _height, 0, 0, 0);
 			//	Background
 			g.clear();
 			g.beginGradientFill(GradientType.LINEAR, [BG_COLOR,BG_COLOR], [BG_OPACITY_START,BG_OPACITY_END], [0,255], matrix);
 			g.drawRect(0, 0, _width, _height);
 			g.endFill();
 			//	Ruler
-			r.lineStyle(1, 0xFFFFFF, 0.50);
-			r.moveTo(1, _height-1);
-			r.lineTo(_width-1, _height-1);
+			r.lineStyle(RULER_THICKNESS, RULER_COLOR, RULER_OPACITY);
+			r.moveTo(1, _height);
+			r.lineTo(_width-1, _height);
 		} // END draw()
 		private function setSlider():void{
 			var tSlider = new Slider(dashboard.BG_WIDTH-20);

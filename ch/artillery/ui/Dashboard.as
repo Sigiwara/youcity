@@ -74,7 +74,7 @@ package ch.artillery.ui{
 				tParameter.y = i*(tParameter.height);
 				tParameter.name = 'Parameter_'+i;
 				i++;
-			}
+			};
 		} // END setParameters()
 		private function setDrawer():void{
 			drawer			= new Drawer(this);

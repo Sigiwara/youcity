@@ -40,6 +40,7 @@ package ch.artillery.ui{
 		private const BG_COLOR						:uint		= 0x000000;
 		private const BG_OPACITY_START		:Number	= 1;
 		private const BG_OPACITY_END			:Number	= .50;
+		private const DEFAULT_POS					:Number	= .50;
 		
 		/**
 		*	@Constructor
@@ -93,8 +94,10 @@ package ch.artillery.ui{
 			tSlider.x = 10;
 			tSlider.y = this.height / 2;
 			tSlider.addEventListener(SliderEvent.GRIP_UP, sChanged);
+			tSlider.setPosition(DEFAULT_POS);
 		} // END setSliders()
 		private function sChanged(_e:SliderEvent):void{
+			layer.alpha = _e.amount;
 			trace(_e.target.name + ': ' + _e.amount);
 		} // END sCHanged()
 		//--------------------------------------

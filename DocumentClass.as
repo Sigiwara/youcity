@@ -9,7 +9,7 @@ package {
 	//--------------------------------------
 	// IMPORT
 	//--------------------------------------
-	import ch.artillery.map.MarkersClip;
+	import ch.artillery.map.Layers;
 	import ch.artillery.ui.GUI;
 	import com.modestmaps.Map;
 	import com.modestmaps.TweenMap;
@@ -31,7 +31,7 @@ package {
 	//--------------------------------------
 	// METADATA
 	//--------------------------------------
-	[SWF(width="1200", height="768", frameRate="32", backgroundColor="#EEEEEE")]
+	[SWF(width="1200", height="900", frameRate="32", backgroundColor="#EEEEEE")]
 
 	/**
 	 *	DocumentClass of the YouCity project.
@@ -51,21 +51,21 @@ package {
 		private var mapProv			:YahooRoadMapProvider;
 		private var mapWidth		:Number;
 		private var mapHeight		:Number;
-		private var markers			:MarkersClip;
 		private var urlLoader		:URLLoader;
-		private var locations		:Array;
 		private var color				:Boolean;
 		private var waiter			:TextField;
 		private var gui					:GUI;
 		
+		public var layers				:Layers;
 		public var params				:Array;
-		public var layers				:Array;
 		//--------------------------------------
 		//  CONSTANTS
 		//--------------------------------------
-		private const T_FONT		:String	= 'Arial';
-		private const T_COLOR		:uint		= 0xFFFFFF;
-		private const T_SIZE		:uint		= 16;
+		private const T_FONT			:String		= 'Arial';
+		private const T_COLOR			:uint			= 0xFFFFFF;
+		private const T_SIZE			:uint			= 16;
+		private const TOPLEFT			:Location = new Location(47.40, 8.50)
+		private const BOTTOMRIGHT	:Location = new Location(47.35, 8.55)
 		/**
 		*	@Constructor
 		*/
@@ -79,9 +79,7 @@ package {
 			//--------------------------------------
 			mapWidth							= stage.stageWidth;
 			mapHeight							= stage.stageHeight;
-			locations							= new Array();
 			params								= new Array();
-			//layers								= new Array(Gruenflaeche,23,34);
 			color									= true;
 			//  CALLS
 			//--------------------------------------
@@ -89,7 +87,6 @@ package {
 			setMap();
 			colorizeMap();
 			loadData('xml/params.xml', onLoadParams);
-			//loadData('xml/parcells.xml', onLoadParcells);
 		} // END DocumentClass()
 		//--------------------------------------
 		//  PRIVATE METHODS
@@ -113,13 +110,9 @@ package {
 			map.y = 0;
 			addChild(map);
 		} // END setMap()
-		private function setMarkers():void{
-			markers = new MarkersClip(map, locations);
-			map.addChild(markers);
-		} // END setMarkers()
 		private function setLayers():void{
-			for each (var param:XML in params){
-			}
+			layers = new Layers(map, new Array(TOPLEFT, BOTTOMRIGHT), params);
+			map.addChild(layers);
 		} // END setLayers()
 		private function setGUI():void{
 			gui = new GUI(this);
@@ -141,13 +134,6 @@ package {
 		//--------------------------------------
 		//  EVENT HANDLERS
 		//--------------------------------------
-		private function onLoadParcells(e:Event):void{
-			var xml:XML = new XML(e.target.data);
-			for each(var w:* in xml.parcell) {
-				locations.push(new Location(w.latitude, w.longitude));
-			};
-			setMarkers();
-		} // END onLoadParcells()
 		private function onLoadParams(e:Event):void{
 			var xml:XML = new XML(e.target.data);
 			for each(var p:* in xml.param) {
@@ -157,6 +143,7 @@ package {
 			setGUI();
 		} // END onLoadParams()
 		private function onResize(e:Event):void{
+			// layout der assets / gui
 		} // END onResize();
 		//--------------------------------------
 		//  PUBLIC METHODS

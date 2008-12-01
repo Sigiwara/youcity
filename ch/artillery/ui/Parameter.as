@@ -53,7 +53,7 @@ package ch.artillery.ui{
 		private static const COLOR						 	:uint			= 0xFFFFFF;
 		private static const T_SIZE						 	:uint			= 12;
 		private static const B_SIZE						 	:uint			= 12;
-		private static const LETTER_SPACING		 	:Number		= 1;
+		private static const LETTER_SPACING		 	:Number		= 0.5;
 		private static const RULER_COLOR				:uint			= 0xFFFFFF;
 		private static const RULER_OPACITY			:Number		= .10;
 		private static const RULER_THICKNESS		:Number		= 1;
@@ -97,6 +97,7 @@ package ch.artillery.ui{
 			title.wordWrap	= true;
 			title.autoSize = TextFieldAutoSize.LEFT;
 			title.antiAliasType = AntiAliasType.ADVANCED;
+			title.width = _width - PADDING*2;
 		} // END setTextFields()
 		private function setText(_title:String = null):void{
 			_title = _title.toUpperCase();

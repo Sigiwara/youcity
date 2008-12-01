@@ -83,7 +83,7 @@ package ch.artillery.ui{
 				var tParameter = new Parameter(this, param, dc.layers.layers[i]);
 				addChild(tParameter);
 				params.push(tParameter);
-				tParameter.y = dc.PADDING + i*(tParameter.height);
+				tParameter.y = i*(tParameter.height);
 				tParameter.name = 'Parameter_'+i;
 				i++;
 			};

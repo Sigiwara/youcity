@@ -62,7 +62,7 @@ package ch.artillery.ui {
 		//  PRIVATE METHODS
 		//--------------------------------------
 		private function setDashboard():void{
-			dashboard = new Dashboard(dc, this);
+			dashboard = new Dashboard(dc);
 			this.addChild(dashboard);
 		} // END setDashboard()
 		private function setButtons():void{

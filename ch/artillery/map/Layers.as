@@ -117,7 +117,6 @@ package ch.artillery.map{
 		private function onMapStopZooming(event:MapEvent):void{
 			displayLayers();
 			updatePoints();
-
 		} // END onMapStopZooming()
 		private function onMapZoomedBy(event:MapEvent):void{
 		} // END onMapZoomedBy()
@@ -131,7 +130,6 @@ package ch.artillery.map{
 			}else{
 				this.x = event.panDelta.x;
 				this.y = event.panDelta.y;
-
 			};
 		} // END onMapPanned()
 		private function onMapStopPanning(event:MapEvent):void{

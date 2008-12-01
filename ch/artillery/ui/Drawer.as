@@ -92,6 +92,7 @@ package ch.artillery.ui{
 			title.y			= PADDING;
 			body.x			= title.x;
 			body.y			= title.y + title.textHeight + LINE;
+			body.height	= body.textHeight - PADDING;
 		} // END layoutAssets()
 		private function formatText(_tf:TextField, _color = null, _size = null, _italic:Boolean = false):void {
 			var tFormat:TextFormat = new TextFormat();

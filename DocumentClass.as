@@ -21,7 +21,6 @@ package {
 	import flash.display.StageQuality;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
-	import flash.events.MouseEvent;
 	import flash.filters.ColorMatrixFilter;
 	import flash.filters.ConvolutionFilter;
 	import flash.geom.ColorTransform;
@@ -47,19 +46,19 @@ package {
 		//--------------------------------------
 		//  VARIABLES
 		//--------------------------------------
-		private var map					:Map;
+		public var map					:Map;
 		private var mapEx				:MapExtent;
-		//private var mapProv		:YahooRoadMapProvider;
 		private var mapProv			:YahooAerialMapProvider;
+		//private var mapProv		:YahooRoadMapProvider;
 		private var mapWidth		:Number;
 		private var mapHeight		:Number;
 		private var urlLoader		:URLLoader;
 		private var color				:Boolean;
 		private var waiter			:TextField;
+		private var gui					:GUI;
 		
 		public var layers				:Layers;
 		public var params				:Array;
-		public var layers				:Array;
 		//--------------------------------------
 		//  CONSTANTS
 		//--------------------------------------
@@ -82,10 +81,10 @@ package {
 			mapWidth							= stage.stageWidth;
 			mapHeight							= stage.stageHeight;
 			params								= new Array();
-			//layers								= new Array(Gruenflaeche,23,34);
 			color									= true;
 			//  CALLS
 			//--------------------------------------
+			setWaiter();
 			setMap();
 			colorizeMap();
 			loadData('xml/params.xml', onLoadParams);
@@ -105,7 +104,7 @@ package {
 		} // END setWaiter()
 		private function setMap():void{
 			//mapProv	= new YahooRoadMapProvider();
-			mapProv = new YahooAerialMapProvider();
+			mapProv	= new YahooAerialMapProvider();
 			mapEx		= new MapExtent(47.40, 47.35, 8.60, 8.45);
 			map			= new TweenMap(mapWidth, mapHeight, true, mapProv);
 			map.setExtent(mapEx);
@@ -130,10 +129,8 @@ package {
 		private function formatText(_tf:TextField, _color = false, _size = false):void {
 			var tFormat:TextFormat = new TextFormat();
 			tFormat.font = T_FONT;
-			if(_color) tFormat.color	= _color;
-			else tFormat.color				= T_COLOR;
-			if(_size) tFormat.size		= _size;
-			else tFormat.size					= T_SIZE;
+			tFormat.color		= (_color) ? _color : T_COLOR;
+			tFormat.size		= (_size) ? _size : T_SIZE;
 			_tf.setTextFormat(tFormat);
 		} // END formatText()
 		//--------------------------------------
@@ -144,6 +141,7 @@ package {
 			for each(var p:* in xml.param) {
 				params.push(p);
 			};
+			setLayers();
 			setGUI();
 		} // END onLoadParams()
 		private function onResize(e:Event):void{

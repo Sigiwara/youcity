@@ -59,6 +59,7 @@ package {
 		
 		public var layers				:Layers;
 		public var params				:Array;
+		public var layers				:Array;
 		//--------------------------------------
 		//  CONSTANTS
 		//--------------------------------------
@@ -81,6 +82,7 @@ package {
 			mapWidth							= stage.stageWidth;
 			mapHeight							= stage.stageHeight;
 			params								= new Array();
+			//layers								= new Array(Gruenflaeche,23,34);
 			color									= true;
 			//  CALLS
 			//--------------------------------------

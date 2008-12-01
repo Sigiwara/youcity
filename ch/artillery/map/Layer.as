@@ -5,13 +5,12 @@
 //  Copyright (c) 2008 Benjamin Wiederkehr / Artillery.ch. All rights reserved.
 //
 //////////////////////////////////////////////////////////////////////////
-package ch.artillery.map {	
+package ch.artillery.map {
 	//--------------------------------------
 	// IMPORT
 	//--------------------------------------
 	import flash.display.*;
 	import flash.events.*;
-	
 	/**
 	 *	Layer that gets layed over a ModestMap.
 	 *
@@ -26,24 +25,15 @@ package ch.artillery.map {
 		//--------------------------------------
 		//  VARIABLES
 		//--------------------------------------
-		//--------------------------------------
-		//  CONSTANTS
-		//--------------------------------------
 		/**
 		 *	@Constructor
 		 */
 		public function Layer():void{
-			//  DEFINITIONS
-			//--------------------------------------
-			//  ADDINGS
-			//--------------------------------------
-			//  LISTENERS
-			//--------------------------------------
 			//  CALLS
 			//--------------------------------------
 			super();
+			draw();
 		}
-		
 		//--------------------------------------
 		//  PRIVATE METHODS
 		//--------------------------------------
@@ -53,5 +43,14 @@ package ch.artillery.map {
 		//--------------------------------------
 		//  PUBLIC METHODS
 		//--------------------------------------
+		public function draw():void{
+			graphics.clear();
+			graphics.beginFill(0x00CCFF, 0.1);
+			graphics.drawRect(0,0,200,200);
+			graphics.endFill();
+		} // END draw()
+		public function clear():void{
+			graphics.clear();
+		} // END clear()
 	} // END Layer Class
 } // END package

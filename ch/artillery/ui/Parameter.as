@@ -43,6 +43,7 @@ package ch.artillery.ui{
 		private static const BG_COLOR						:uint			= 0x000000;
 		private static const BG_OPACITY_START	 	:Number		= 1;
 		private static const BG_OPACITY_END		 	:Number		= .60;
+		private static const DEFAULT_POS				:Number		= .50;
 		private static const PADDING					 	:uint			= 20;
 		private static const TITLE_OFFSET_X		 	:uint			= 2;
 		private static const TITLE_OFFSET_Y		 	:uint			= 5;
@@ -154,8 +155,10 @@ package ch.artillery.ui{
 			tSlider.x = PADDING;
 			tSlider.y = this.height/2;
 			tSlider.addEventListener(SliderEvent.GRIP_UP, sChanged);
+			tSlider.setPosition(DEFAULT_POS);
 		} // END setSliders()
 		private function sChanged(_e:SliderEvent):void{
+			layer.alpha = _e.amount;
 			trace(_e.target.name + ': ' + _e.amount);
 		} // END sCHanged()
 		//--------------------------------------

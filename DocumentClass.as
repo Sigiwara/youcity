@@ -56,7 +56,6 @@ package {
 		private var urlLoader		:URLLoader;
 		private var color				:Boolean;
 		private var waiter			:TextField;
-		private var color				:Boolean;
 		
 		public var layers				:Layers;
 		public var params				:Array;
@@ -85,11 +84,8 @@ package {
 			color									= true;
 			//  CALLS
 			//--------------------------------------
-			setWaiter();
 			setMap();
 			colorizeMap();
-			setCount();
-			setButtons();
 			loadData('xml/params.xml', onLoadParams);
 		} // END DocumentClass()
 		//--------------------------------------
@@ -146,7 +142,7 @@ package {
 			for each(var p:* in xml.param) {
 				params.push(p);
 			};
-			setDashboard();
+			setGUI();
 		} // END onLoadParams()
 		private function onResize(e:Event):void{
 			// layout der assets / gui

@@ -32,7 +32,7 @@ package ch.artillery.ui{
 		//--------------------------------------
 		// CONSTANTS
 		//--------------------------------------
-		private const BG_COLOR			:uint		= 0x688599;
+		private const BG_COLOR			:uint		= 0x046296;
 		private const BG_OPACITY		:Number	= .60;
 		public const BG_WIDTH				:uint		= 200;
 		/**
@@ -69,7 +69,7 @@ package ch.artillery.ui{
 		} // END setBackground()
 		private function setShadow():void{
 			var g:Graphics = shadow.graphics;
-			var shadowFilter:DropShadowFilter = new DropShadowFilter(5, 0, 0, .5, 8, 0, 1, 3, false, true, false);
+			var shadowFilter:DropShadowFilter = new DropShadowFilter(5, 0, 0, .6, 6, 0, 1, 3, false, true, false);
 			shadow.filters = [shadowFilter];
 			g.clear();
 			g.beginFill(0, 1);

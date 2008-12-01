@@ -89,7 +89,7 @@ package ch.artillery.ui{
 		} // END setText()
 		private function layoutAssets():void{
 			title.x			= PADDING_LEFT;
-			title.y			= PADDING_LEFT;
+			title.y			= PADDING;
 			body.x			= title.x;
 			body.y			= title.y + title.textHeight + LINE;
 		} // END layoutAssets()

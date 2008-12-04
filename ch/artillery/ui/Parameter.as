@@ -232,9 +232,6 @@ package ch.artillery.ui{
 			tSlider.addEventListener(SliderEvent.GRIP_UP, sChanged);
 			tSlider.setPosition(DEFAULT_POS);
 		} // END setSliders()
-		
-		
-		
 		private function setGrip():void{
 			drawGrip(grip_top);
 			grip_top.x = _width/2;
@@ -248,7 +245,7 @@ package ch.artillery.ui{
 			grip_bottom.alpha = GRIP_OUT;
 			grip_bottom.mouseChildren	= false;
 			grip_bottom.name	= "grip_bottom";
-		}
+		} // END setGrip()
 		private function drawGrip(_grip:Sprite):void{
 			var g:Graphics = _grip.graphics;
 			g.clear();
@@ -263,9 +260,6 @@ package ch.artillery.ui{
 			g.moveTo(-GRIP_WIDTH/2, 4);
 			g.lineTo(GRIP_WIDTH/2, 4);
 		} // END drawGrip()
-		
-		
-		
 		private function sChanged(_e:SliderEvent):void{
 			layer.alpha = _e.amount;
 			trace(_e.target.name + ': ' + _e.amount);

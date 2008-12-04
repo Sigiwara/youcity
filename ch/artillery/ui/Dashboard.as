@@ -80,7 +80,7 @@ package ch.artillery.ui{
 			paramCount = dc.params.length;
 			var i:uint = 0;
 			for each (var param:XML in dc.params){
-				var tParameter = new Parameter(this, param, dc.layers.layers[i]);
+				var tParameter = new Parameter(dc, this, param, dc.layers.layers[i]);
 				addChild(tParameter);
 				params.push(tParameter);
 				tParameter.y = i*(tParameter.height);
@@ -104,8 +104,8 @@ package ch.artillery.ui{
 		public function hideDrawer():void{
 			TweenLite.to(drawer, 1, {y: - drawer.height - 10, ease:Cubic.easeOut});
 		} // END hideDrawer()
-		public function displayDrawer(_target:Parameter, _t:String, _b:String):void{
-			drawer.setDrawer(_t, _b);
+		public function displayDrawer(_target:Parameter, _q:String, _b:String):void{
+			drawer.setDrawer(_q, _b);
 			var dY:Number = _target.y - (drawer.height - _target.height) / 2;
 			if(dY <= 0){ dY = 0 };
 			if(dY >= (stage.stageHeight - drawer.height)){ dY = stage.stageHeight - drawer.height };

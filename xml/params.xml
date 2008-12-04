@@ -1,92 +1,102 @@
 <params>
 	<param>
 		<class>Gruenflaeche</class>
-		<title>Parameter 1</title>
+		<title>Grünfläche</title>
+		<question>Ist ihnen dieser Parameter wichtig?</question>
 		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
 		<labels>
-			<label>nah</label>
-			<label>fern</label>
+			<label>-</label>
+			<label>+</label>
 		</labels>
 	</param>
 	<param>
-		<class>Gruenflaeche</class>
-		<title>Parameter 2</title>
+		<class>Gewaesser</class>
+		<title>Gewässer</title>
+		<question>Ist ihnen dieser Parameter wichtig?</question>
 		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
 		<labels>
-			<label>nah</label>
-			<label>fern</label>
+			<label>-</label>
+			<label>+</label>
 		</labels>
 	</param>
 	<param>
-		<class>Gruenflaeche</class>
-		<title>Parameter 3</title>
+		<class>Bildung</class>
+		<title>Bildung</title>
+		<question>Ist ihnen dieser Parameter wichtig?</question>
 		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
 		<labels>
-			<label>nah</label>
-			<label>fern</label>
+			<label>-</label>
+			<label>+</label>
 		</labels>
 	</param>
 	<param>
-		<class>Gruenflaeche</class>
-		<title>Parameter 4</title>
+		<class>Gesundheit</class>
+		<title>Gesundheit</title>
+		<question>Ist ihnen dieser Parameter wichtig?</question>
 		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
 		<labels>
-			<label>nah</label>
-			<label>fern</label>
+			<label>-</label>
+			<label>+</label>
 		</labels>
 	</param>
 	<param>
-		<class>Gruenflaeche</class>
-		<title>Parameter 5</title>
+		<class>Kultur</class>
+		<title>Kultur</title>
+		<question>Ist ihnen dieser Parameter wichtig?</question>
 		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
 		<labels>
-			<label>nah</label>
-			<label>fern</label>
+			<label>-</label>
+			<label>+</label>
 		</labels>
 	</param>
 	<param>
-		<class>Gruenflaeche</class>
-		<title>Parameter 6</title>
+		<class>Oev</class>
+		<title>ÖV</title>
+		<question>Ist ihnen dieser Parameter wichtig?</question>
 		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
 		<labels>
-			<label>nah</label>
-			<label>fern</label>
+			<label>-</label>
+			<label>+</label>
 		</labels>
 	</param>
 	<param>
-		<class>Gruenflaeche</class>
-		<title>Parameter 7</title>
+		<class>Vitalitaet</class>
+		<title>Vitalität</title>
+		<question>Ist ihnen dieser Parameter wichtig?</question>
 		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
 		<labels>
-			<label>nah</label>
-			<label>fern</label>
+			<label>-</label>
+			<label>+</label>
 		</labels>
 	</param>
 	<param>
-		<class>Gruenflaeche</class>
-		<title>Parameter 8</title>
+		<class>Laerm</class>
+		<title>Lärm</title>
+		<question>Ist ihnen dieser Parameter wichtig?</question>
 		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
 		<labels>
-			<label>nah</label>
-			<label>fern</label>
+			<label>-</label>
+			<label>+</label>
 		</labels>
 	</param>
 	<param>
-		<class>Gruenflaeche</class>
-		<title>Parameter 9</title>
+		<class>Parkplaetze</class>
+		<title>Parkplätze</title>
+		<question>Ist ihnen dieser Parameter wichtig?</question>
 		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
 		<labels>
-			<label>nah</label>
-			<label>fern</label>
+			<label>-</label>
+			<label>+</label>
 		</labels>
 	</param>
 	<param>
-		<class>Gruenflaeche</class>
-		<title>Parameter 10</title>
+		<class>Miete</class>
+		<title>Miete</title>
+		<question>Ist ihnen dieser Parameter wichtig?</question>
 		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
 		<labels>
-			<label>nah</label>
-			<label>fern</label>
+			<label>-</label>
+			<label>+</label>
 		</labels>
 	</param>
 </params>

@@ -11,6 +11,7 @@ package {
 	//--------------------------------------
 	import ch.artillery.map.Layers;
 	import ch.artillery.ui.GUI;
+	import utils.MacMouseWheel;
 	import com.modestmaps.Map;
 	import com.modestmaps.TweenMap;
 	import com.modestmaps.core.MapExtent;
@@ -21,6 +22,9 @@ package {
 	import flash.display.StageQuality;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.events.KeyboardEvent;
+	import flash.ui.Keyboard;
 	import flash.filters.ColorMatrixFilter;
 	import flash.filters.ConvolutionFilter;
 	import flash.geom.ColorTransform;
@@ -31,7 +35,7 @@ package {
 	//--------------------------------------
 	// METADATA
 	//--------------------------------------
-	[SWF(width="1200", height="900", frameRate="32", backgroundColor="#EEEEEE")]
+	[SWF(width="1440", height="900", frameRate="32", backgroundColor="#EEEEEE")]
 
 	/**
 	 *	DocumentClass of the YouCity project.
@@ -46,19 +50,21 @@ package {
 		//--------------------------------------
 		//  VARIABLES
 		//--------------------------------------
-		public var map					:Map;
-		private var mapEx				:MapExtent;
-		private var mapProv			:YahooAerialMapProvider;
-		//private var mapProv		:YahooRoadMapProvider;
-		private var mapWidth		:Number;
-		private var mapHeight		:Number;
-		private var urlLoader		:URLLoader;
-		private var color				:Boolean;
-		private var waiter			:TextField;
-		private var gui					:GUI;
+		public var map							:Map;
+		private var mapEx						:MapExtent;
+		private var mapProv					:YahooAerialMapProvider;
+		//private var mapProv				:YahooRoadMapProvider;
+		private var mapWidth				:Number;
+		private var mapHeight				:Number;
+		private var urlLoader				:URLLoader;
+		private var color						:Boolean;
+		private var waiter					:TextField;
+		private var originalCenter	:Location;
+		private var originalZoom		:Number;
 		
-		public var layers				:Layers;
-		public var params				:Array;
+		public var gui							:GUI;
+		public var layers						:Layers;
+		public var params						:Array;
 		//--------------------------------------
 		//  CONSTANTS
 		//--------------------------------------
@@ -73,15 +79,19 @@ package {
 		public function DocumentClass(){
 			//  SETTINGS
 			//--------------------------------------
-			this.stage.scaleMode	= StageScaleMode.NO_SCALE;
-			this.stage.quality		= StageQuality.HIGH;
-			this.stage.align			= StageAlign.TOP_LEFT;
+			this.stage.scaleMode 						= StageScaleMode.NO_SCALE;
+			this.stage.quality	 						= StageQuality.HIGH;
+			this.stage.align		 						= StageAlign.TOP_LEFT;
 			//  DEFINITIONS
 			//--------------------------------------
 			mapWidth							= stage.stageWidth;
 			mapHeight							= stage.stageHeight;
 			params								= new Array();
 			color									= true;
+			//  LISTENERS
+			//--------------------------------------
+			this.stage.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
+			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeysDown);
 			//  CALLS
 			//--------------------------------------
 			setWaiter();
@@ -111,6 +121,9 @@ package {
 			map.x = 0;
 			map.y = 0;
 			addChild(map);
+			map.doubleClickEnabled	= true;
+			originalCenter = map.getCenter();
+			originalZoom = map.getZoom();
 		} // END setMap()
 		private function setLayers():void{
 			layers = new Layers(map, new Array(TOPLEFT, BOTTOMRIGHT), params);
@@ -147,15 +160,46 @@ package {
 		private function onResize(e:Event):void{
 			// layout der assets / gui
 		} // END onResize();
+		public function onMouseWheel(e:MouseEvent):void{
+			if(e.delta > 0){
+				map.zoomIn();
+			}
+			if(e.delta < 0){
+				map.zoomOut();
+			}
+		} // END onMouseWheel()
+		public function onKeysDown(e:KeyboardEvent):void{
+			if(e.keyCode == 32){
+				map.panTo(originalCenter);
+			}
+			if(e.keyCode == 37){
+				map.panLeft();
+			}
+			if(e.keyCode == 38){
+				map.panUp();
+			}
+			if(e.keyCode == 39){
+				map.panRight();
+			}
+			if(e.keyCode == 40){
+				map.panDown();
+			}
+		} // END onKeyDown()
 		//--------------------------------------
 		//  PUBLIC METHODS
 		//--------------------------------------
 		public function colorizeMap(_e:Event = null):void{
 			color = !color;
-			var light = new ColorMatrixFilter ();
-			light.matrix = new Array (.25, .25, .25, 0, 75, .25, .25, .25, 0, 75, .25, .25, .25, 0, 75, 0, 0, 0, 1, 0);
-			var dark = new ColorMatrixFilter ();
-			dark.matrix = new Array (-.25, -.25, -.25, 0, 200, -.25, -.25, -.25, 0, 200, -.25, -.25, -.25, 0, 200, 0, 0, 0, 1, 0);
+			var light = new ColorMatrixFilter();
+			light.matrix = new Array(.2, .2, .2, 0, 50, 
+															 .2, .2, .2, 0, 50, 
+															 .2, .2, .2, 0, 50, 
+															 0, 0, 0, 1, 0);
+			var dark = new ColorMatrixFilter();
+			dark.matrix = new Array(-.25, -.25, -.25, 0, 200, 
+															 -.25, -.25, -.25, 0, 200, 
+															 -.25, -.25, -.25, 0, 200, 
+																0, 0, 0, 1, 0);
 			if(color){
 				map.grid.filters = [dark];
 			}else{

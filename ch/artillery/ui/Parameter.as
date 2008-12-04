@@ -41,6 +41,7 @@ package ch.artillery.ui{
 		private const BG_OPACITY_START		:Number	= 1;
 		private const BG_OPACITY_END			:Number	= .50;
 		private const DEFAULT_POS					:Number	= .50;
+		private const SLIDER_SECTIONS			:Number	= 10;
 		
 		/**
 		*	@Constructor
@@ -89,8 +90,8 @@ package ch.artillery.ui{
 			r.lineTo(_width-1, _height-1);
 		} // END draw()
 		private function setSlider():void{
-			var tSlider = new Slider(dashboard.BG_WIDTH-20);
-			addChild(tSlider);
+			var tSlider = new Slider(dashboard.BG_WIDTH-20, SLIDER_SECTIONS);
+			this.addChild(tSlider);
 			tSlider.x = 10;
 			tSlider.y = this.height / 2;
 			tSlider.addEventListener(SliderEvent.GRIP_UP, sChanged);

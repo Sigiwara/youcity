@@ -11,7 +11,6 @@ package ch.artillery.ui{
 	//--------------------------------------
 	import flash.display.Sprite;
 	import flash.display.Graphics;
-	import flash.events.*;
 	import flash.text.*;
 	
 	/**

@@ -48,16 +48,11 @@ package ch.artillery.ui {
 			//  DEFINITIONS
 			//--------------------------------------
 			dc = _dc;
-			//  ADDINGS
-			//--------------------------------------
-			//  LISTENERS
-			//--------------------------------------
 			//  CALLS
 			//--------------------------------------
 			setButtons();
 			setDashboard();
 		}
-		
 		//--------------------------------------
 		//  PRIVATE METHODS
 		//--------------------------------------
@@ -67,7 +62,7 @@ package ch.artillery.ui {
 		} // END setDashboard()
 		private function setButtons():void{
 			navButtons = new Sprite();
-			addChild(navButtons);
+			this.addChild(navButtons);
 			navButtons.addChild(makeButton('plus', '+', dc.map.zoomIn))
 			navButtons.addChild(makeButton('minus', '-', dc.map.zoomOut))
 			navButtons.addChild(makeButton('switch', 'o', dc.colorizeMap))
@@ -110,11 +105,5 @@ package ch.artillery.ui {
 			tFormat.size		= (_size) ? _size : T_SIZE;
 			_tf.setTextFormat(tFormat);
 		} // END formatText()
-		//--------------------------------------
-		//  EVENT HANDLERS
-		//--------------------------------------
-		//--------------------------------------
-		//  PUBLIC METHODS
-		//--------------------------------------
 	} // END GUI Class
 } // END package

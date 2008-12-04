@@ -69,7 +69,7 @@ package ch.artillery.ui{
 			var i:uint = 0;
 			for each (var param:XML in dc.params){
 				var tParameter = new Parameter(this, param, dc.layers.layers[i]);
-				addChild(tParameter);
+				this.addChild(tParameter);
 				params.push(tParameter);
 				tParameter.y = i*(tParameter.height);
 				tParameter.name = 'Parameter_'+i;
@@ -77,8 +77,8 @@ package ch.artillery.ui{
 			};
 		} // END setParameters()
 		private function setDrawer():void{
-			drawer			= new Drawer(this);
-			dc.addChild(drawer);
+			drawer = new Drawer(this);
+			gui.addChild(drawer);
 			drawer.x = BG_WIDTH;
 			drawer.y = - drawer.height - 10;
 		} // END setDrawer()

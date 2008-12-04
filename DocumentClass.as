@@ -21,6 +21,7 @@ package {
 	import flash.display.StageQuality;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.filters.ColorMatrixFilter;
 	import flash.filters.ConvolutionFilter;
 	import flash.geom.ColorTransform;
@@ -48,13 +49,14 @@ package {
 		//--------------------------------------
 		public var map					:Map;
 		private var mapEx				:MapExtent;
-		private var mapProv			:YahooRoadMapProvider;
+		//private var mapProv		:YahooRoadMapProvider;
+		private var gui					:GUI;
+		private var mapProv			:YahooAerialMapProvider;
 		private var mapWidth		:Number;
 		private var mapHeight		:Number;
 		private var urlLoader		:URLLoader;
 		private var color				:Boolean;
 		private var waiter			:TextField;
-		private var gui					:GUI;
 		
 		public var layers				:Layers;
 		public var params				:Array;
@@ -83,7 +85,6 @@ package {
 			color									= true;
 			//  CALLS
 			//--------------------------------------
-			setWaiter();
 			setMap();
 			colorizeMap();
 			loadData('xml/params.xml', onLoadParams);
@@ -102,7 +103,8 @@ package {
 			addChild(waiter);
 		} // END setWaiter()
 		private function setMap():void{
-			mapProv	= new YahooRoadMapProvider();
+			//mapProv	= new YahooRoadMapProvider();
+			mapProv = new YahooAerialMapProvider();
 			mapEx		= new MapExtent(47.40, 47.35, 8.60, 8.45);
 			map			= new TweenMap(mapWidth, mapHeight, true, mapProv);
 			map.setExtent(mapEx);
@@ -127,8 +129,10 @@ package {
 		private function formatText(_tf:TextField, _color = false, _size = false):void {
 			var tFormat:TextFormat = new TextFormat();
 			tFormat.font = T_FONT;
-			tFormat.color		= (_color) ? _color : T_COLOR;
-			tFormat.size		= (_size) ? _size : T_SIZE;
+			if(_color) tFormat.color	= _color;
+			else tFormat.color				= T_COLOR;
+			if(_size) tFormat.size		= _size;
+			else tFormat.size					= T_SIZE;
 			_tf.setTextFormat(tFormat);
 		} // END formatText()
 		//--------------------------------------
@@ -151,7 +155,8 @@ package {
 		public function colorizeMap(_e:Event = null):void{
 			color = !color;
 			var light = new ColorMatrixFilter ();
-			light.matrix = new Array (.25, .25, .25, 0, 75, .25, .25, .25, 0, 75, .25, .25, .25, 0, 75, 0, 0, 0, 1, 0);
+			//light.matrix = new Array (.25, .25, .25, 0, 75, .25, .25, .25, 0, 75, .25, .25, .25, 0, 75, 0, 0, 0, 1, 0);
+			light.matrix = new Array (.5, .5, .5, 0, 40, .5, .5, .5, 0, 40, .5, .5, .5, 0, 40, 0, 0, 0, 1, 0);
 			var dark = new ColorMatrixFilter ();
 			dark.matrix = new Array (-.25, -.25, -.25, 0, 200, -.25, -.25, -.25, 0, 200, -.25, -.25, -.25, 0, 200, 0, 0, 0, 1, 0);
 			if(color){

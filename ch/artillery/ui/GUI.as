@@ -29,7 +29,7 @@ package ch.artillery.ui {
 		//--------------------------------------
 		//  VARIABLES
 		//--------------------------------------
-		private var dc					:DocumentClass;
+		public var dc						:DocumentClass;
 		private var dashboard		:Dashboard;
 		private var navButtons	:Sprite;
 		//--------------------------------------

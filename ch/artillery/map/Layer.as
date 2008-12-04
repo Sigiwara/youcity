@@ -45,7 +45,7 @@ package ch.artillery.map {
 		//--------------------------------------
 		public function draw():void{
 			graphics.clear();
-			graphics.beginFill(0x00CCFF, 0.1);
+			graphics.beginFill(0x00CCFF, .1);
 			graphics.drawRect(0,0,200,200);
 			graphics.endFill();
 		} // END draw()

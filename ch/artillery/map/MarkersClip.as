@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
-//  Layers
+//  MarkersClip
 //
-//  Created by Benjamin Wiederkehr on 081130.
+//  Created by Benjamin Wiederkehr on 081115.
 //  Copyright (c) 2008 Benjamin Wiederkehr / Artillery.ch. All rights reserved.
 //
 //////////////////////////////////////////////////////////////////////////
@@ -12,44 +12,41 @@ package ch.artillery.map{
 	import com.modestmaps.Map;
 	import com.modestmaps.events.MapEvent;
 	import flash.display.Sprite;
-	import flash.events.MouseEvent;
 	import flash.events.Event;
 	import flash.geom.Point;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	/**
-	 *	Layers Class
+	 *	MarkersClip Class
 	 *
 	 */
-	public class Layers extends Sprite{
+	public class MarkersClip extends Sprite{
 		//--------------------------------------
 		// VARIABLES
 		//--------------------------------------
 		private var map								:Map;
+		private var xpoints						:Array;
+		private var ypoints						:Array;
 		private var starting					:Point;
-		private var coordinates				:Array;
-		private var params						:Array;
-		private var points						:Array;
-		public var layers							:Array;
+		private var tZoom							:uint
+		public var markers						:Array;
+		public var locations					:Array;
 		/**
 		*	@Constructor
 		*/
-		public function Layers(_map:Map, _coordinates:Array, _params:Array){
+		public function MarkersClip(_map:Map, _locations:Array, _zoom:uint){
 			//  DEFINITIONS
 			//--------------------------------------
 			this.map						= _map;
-			this.coordinates		= _coordinates;
-			this.params					= _params;
-			this.points					= new Array();
-			this.layers					= new Array();
+			this.locations			= _locations;
+			xpoints							= new Array();
+			ypoints							= new Array();
 			//  ADDINGS
 			//--------------------------------------
 			this.x = map.getWidth() / 2;
 			this.y = map.getHeight() / 2;
 			//  LISTENERS
 			//--------------------------------------
-			this.addEventListener(MouseEvent.MOUSE_DOWN, map.grid.mousePressed, true);
-			this.addEventListener(MouseEvent.MOUSE_UP, map.grid.mouseReleased);
 			this.map.addEventListener(MapEvent.START_ZOOMING, onMapStartZooming);
 			this.map.addEventListener(MapEvent.STOP_ZOOMING, onMapStopZooming);
 			this.map.addEventListener(MapEvent.ZOOMED_BY, onMapZoomedBy);
@@ -58,45 +55,39 @@ package ch.artillery.map{
 			this.map.addEventListener(MapEvent.PANNED, onMapPanned);
 			//  CALLS
 			//--------------------------------------
-			setCoordinates();
-			setLayers();
+			setPoints();
+			setMarkers();
+			displayMarkers();
 		}
-		private function setCoordinates():void{
-			var p:Point;
-			for (var i:int = 0; i < coordinates.length; i++) {
-				p = map.locationPoint(coordinates[i], this);
-				points[i] = p;
+		private function setPoints():void {
+			if(locations){
+				var p:Point;
+				for (var i:int = 0; i < locations.length; i++) {
+					p = map.locationPoint(locations[i], this);
+					xpoints[i] = p.x;
+					ypoints[i] = p.y;
+				};
 			};
-		} // END setCoordinates()
-		private function setLayers():void{
-			for (var i:int = 0; i <= params.length; i++){
-				var layer:Layer = new Layer();
-				this.addChild(layer);
-				layer.x = points[0].x;
-				layer.y = points[0].y;
-				layer.width = points[1].x - points[0].x;
-				layer.height = points[1].y - points[0].y;
-				layer.name = 'layer' + i.toString();
-				layers.push(layer);
+		} // END setPoints()
+		private function setMarkers():void{
+			markers = new Array();
+			for (var i:int = 0; i < locations.length; i++){
+				var marker:Marker = new Marker(tZoom);
+				addChild(marker);
+				marker.x = xpoints[i]; marker.y = ypoints[i];
+				markers.push(marker);
 			};
-		} // END setLayers()
-		private function displayLayers():void{
-			for (var i:int = 0; i < layers.length; i++) {
-				layers[i].draw();
+		} // END setMarkers()
+		private function displayMarkers():void{
+			for (var i:int = 0; i < markers.length; i++) {
+				Marker(markers[i]).draw();
 			};
-		} // END displayLayers()
-		private function hideLayers():void{
-			for (var i:int = 0; i < layers.length; i++) {
-				layers[i].clear();
-			};
-		} // END hideLayers()
+		} // END displayMarkers()
 		private function updatePoints():void{
-			setCoordinates();
-			for (var j:int = 0; j < layers.length; j++) {
-				layers[j].x				= points[0].x;
-				layers[j].y				= points[0].y;
-				layers[j].width		= points[1].x - points[0].x;
-				layers[j].height	= points[1].y - points[0].y;
+			setPoints();
+			for (var i:int = 0; i < markers.length; i++) {
+				Marker(markers[i]).x = xpoints[i];
+				Marker(markers[i]).y = ypoints[i];
 			};
 		} // END updatePoints()
 		private function destroy():void {
@@ -113,24 +104,29 @@ package ch.artillery.map{
 		//  EVENT HANDLERS
 		//--------------------------------------
 		private function onMapStartZooming(event:MapEvent):void{
-			hideLayers();
+			for (var i:int = 0; i < markers.length; i++) {
+				Marker(markers[i]).clear();
+			};
 		} // END onMapStartZooming()
 		private function onMapStopZooming(event:MapEvent):void{
-			displayLayers();
 			updatePoints();
+			for (var i:int = 0; i < markers.length; i++) {
+				Marker(markers[i]).draw();
+				Marker(markers[i]).scale(event.zoomLevel);
+			};
 		} // END onMapStopZooming()
 		private function onMapZoomedBy(event:MapEvent):void{
 		} // END onMapZoomedBy()
 		private function onMapStartPanning(event:MapEvent):void{
-			starting = new Point(this.x, this.y);
+			starting = new Point(x, y);
 		} // END onMapStartPanning()
 		private function onMapPanned(event:MapEvent):void{
 			if (starting) {
-				this.x = starting.x + event.panDelta.x;
-				this.y = starting.y + event.panDelta.y;
+				x = starting.x + event.panDelta.x;
+				y = starting.y + event.panDelta.y;
 			}else{
-				this.x = event.panDelta.x;
-				this.y = event.panDelta.y;
+				x = event.panDelta.x;
+				y = event.panDelta.y;
 			};
 		} // END onMapPanned()
 		private function onMapStopPanning(event:MapEvent):void{
@@ -139,9 +135,9 @@ package ch.artillery.map{
 			updatePoints();
 		} // END onExtentChanged()
 		private function onMapResized(event:MapEvent):void{
-			this.x = event.newSize[0]/2;
-			this.y = event.newSize[1]/2;
+			x = event.newSize[0]/2;
+			y = event.newSize[1]/2;
 			updatePoints();
 		} // END onMapResized()
-	} // END Layers
-} // END package ch.artillery.map
+	} // END MarkersClip
+} // END package com.flowingdata.gps

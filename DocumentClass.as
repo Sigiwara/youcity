@@ -156,7 +156,7 @@ package {
 			color = !color;
 			var light = new ColorMatrixFilter ();
 			//light.matrix = new Array (.25, .25, .25, 0, 75, .25, .25, .25, 0, 75, .25, .25, .25, 0, 75, 0, 0, 0, 1, 0);
-			light.matrix = new Array (.5, .5, .5, 0, 40, .5, .5, .5, 0, 40, .5, .5, .5, 0, 40, 0, 0, 0, 1, 0);
+			light.matrix = new Array (.5, .5, .5, 0, 5, .5, .5, .5, 0, 5, .5, .5, .5, 0, 5, 0, 0, 0, 1, 0);
 			var dark = new ColorMatrixFilter ();
 			dark.matrix = new Array (-.25, -.25, -.25, 0, 200, -.25, -.25, -.25, 0, 200, -.25, -.25, -.25, 0, 200, 0, 0, 0, 1, 0);
 			if(color){

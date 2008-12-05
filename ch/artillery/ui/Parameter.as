@@ -67,7 +67,6 @@ package ch.artillery.ui{
 			//--------------------------------------
 			dashboard			= _dashboard;
 			layer					= _layer;
-			trace(layer.name);
 			data					= _data;
 			bg						= new Sprite();
 			ruler					= new Sprite();
@@ -164,7 +163,6 @@ package ch.artillery.ui{
 		} // END setSliders()
 		private function sChanged(_e:SliderEvent):void{
 			layer.alpha = _e.amount / 10;
-			trace(_e.target.name + ': ' + _e.amount);
 		} // END sCHanged()
 		//--------------------------------------
 		// PUBLIC METHODS

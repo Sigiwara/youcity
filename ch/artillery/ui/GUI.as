@@ -13,8 +13,6 @@ package ch.artillery.ui {
 	import flash.events.MouseEvent;
 	import flash.text.*;
 	import ch.artillery.ui.Dashboard;
-	import ch.artillery.ui.Parameter;
-	import ch.artillery.ui.Drawer;
 	/**
 	 *	Controller of the graphical user interface.
 	 *

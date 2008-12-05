@@ -5,7 +5,7 @@
 //  Copyright (c) 2008 Benjamin Wiederkehr / Artillery.ch. All rights reserved.
 //
 //////////////////////////////////////////////////////////////////////////
-package ch.artillery.ui{
+package ch.artillery.ui.parameter{
 	//--------------------------------------
 	// IMPORT
 	//--------------------------------------
@@ -13,6 +13,7 @@ package ch.artillery.ui{
 	import flash.display.Graphics;
 	import flash.display.Sprite;
 	import flash.display.GradientType;
+	import ch.artillery.ui.Dashboard;
 	import ch.artillery.ui.slider.*;
 	import ch.artillery.map.Layer;
 	import flash.text.*;
@@ -39,6 +40,7 @@ package ch.artillery.ui{
 		private var pointer					:Sprite;
 		private var shadow					:Sprite;
 		private var title						:TextField;
+		public var index						:uint;
 		//--------------------------------------
 		// CONSTANTS
 		//--------------------------------------
@@ -46,8 +48,7 @@ package ch.artillery.ui{
 		private static const BG_OPACITY_START	 	:Number		= 1;
 		private static const BG_OPACITY_END		 	:Number		= .60;
 		private static const DEFAULT_POS				:Number		= .50;
-		private static const PADDING					 	:uint			= 20;
-		private static const TITLE_OFFSET_X		 	:uint			= 2;
+		private static const PADDING					 	:uint			= 10;
 		private static const TITLE_OFFSET_Y		 	:uint			= 5;
 		private static const FONT							 	:String		= 'Helvetica';
 		private static const COLOR						 	:uint			= 0xFFFFFF;
@@ -89,6 +90,7 @@ package ch.artillery.ui{
 			setTextFields();
 			setParameter();
 			setSlider();
+			layoutAssets();
 		} // END Dashboard()
 		//--------------------------------------
 		// PRIVATE METHODS
@@ -104,10 +106,6 @@ package ch.artillery.ui{
 			title.htmlText	= (_title) ? _title : "Title";
 			formatText(title, COLOR, T_SIZE);
 		} // END setText()
-		private function layoutAssets():void{
-			title.x			= PADDING - TITLE_OFFSET_X;
-			title.y			= this._height/2 - title.textHeight - TITLE_OFFSET_Y;
-		} // END layoutAssets()
 		private function formatText(_tf:TextField, _color = null, _size = null, _italic:Boolean = false):void {
 			var tFormat:TextFormat = new TextFormat();
 			tFormat.font					= FONT;
@@ -154,27 +152,35 @@ package ch.artillery.ui{
 			g.endFill();
 		} // END setShadow()
 		private function setSlider():void{
-			var tSlider = new Slider(dashboard.BG_WIDTH-20, SLIDER_SECTIONS);
-			this.addChild(tSlider);
-			tSlider.x = 10;
-			tSlider.y = this.height / 2;
-			tSlider.addEventListener(SliderEvent.GRIP_UP, sChanged);
-			tSlider.setPosition(DEFAULT_POS);
+			slider = new Slider(dashboard.BG_WIDTH-(PADDING*2), SLIDER_SECTIONS);
+			this.addChild(slider);
+			slider.addEventListener(SliderEvent.GRIP_UP, sChanged);
+			slider.setPosition(DEFAULT_POS);
 		} // END setSliders()
+		private function setParameter():void{
+			setText(data.title);
+			setBackground();
+			setRuler();
+			setPointer();
+			setShadow();
+		} // END setParameter()
+		private function layoutAssets():void{
+			title.x			= PADDING;
+			title.y			= this._height/2 - title.textHeight - TITLE_OFFSET_Y;
+			slider.x		= PADDING;
+			slider.y		= this.height / 2;
+		} // END layoutAssets()
 		private function sChanged(_e:SliderEvent):void{
 			layer.alpha = _e.amount / 10;
 		} // END sCHanged()
 		//--------------------------------------
 		// PUBLIC METHODS
 		//--------------------------------------
-		public function setParameter():void{
-			setText(data.title);
-			layoutAssets();
+		public function adjustParameter():void{
+			_width = _width;
 			setBackground();
-			setRuler();
-			setPointer();
-			setShadow();
-		} // END setParameter()
+			layoutAssets();
+		} // END adjustParameter()
 		//--------------------------------------
 		//  EVENT HANDLERS
 		//--------------------------------------
@@ -187,8 +193,12 @@ package ch.artillery.ui{
 		private function parameterOut(_e:MouseEvent):void{
 			bg.transform.colorTransform = new ColorTransform(0,0,0,1,0,0,0,0);
 			dashboard.hideDrawer();
-			this.removeChild(pointer);
-			this.removeChild(shadow);
+			if(pointer != null){
+				this.removeChild(pointer);
+			};
+			if(shadow != null){
+				this.removeChild(shadow);
+			};
 		} // END parameterOut()
 	} // END Dashboard Class
 }

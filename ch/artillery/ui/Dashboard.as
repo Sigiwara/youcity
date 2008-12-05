@@ -11,6 +11,7 @@ package ch.artillery.ui{
 	//--------------------------------------
 	import flash.display.Sprite;
 	import flash.display.Graphics;
+	import ch.artillery.ui.parameter.*;
 	import ch.artillery.ui.slider.*;
 	import ch.artillery.ui.GUI;
 	import gs.TweenLite;
@@ -86,8 +87,9 @@ package ch.artillery.ui{
 				var tParameter = new Parameter(this, param, dc.layers.layers[i]);
 				this.addChild(tParameter);
 				params.push(tParameter);
-				tParameter.y = i*(tParameter.height);
-				tParameter.name = 'Parameter_'+i;
+				tParameter.y			= i*(tParameter.height);
+				tParameter.name		= 'Parameter_'+i;
+				tParameter.index	= i;
 				i++;
 			};
 		} // END setParameters()
@@ -104,6 +106,19 @@ package ch.artillery.ui{
 			setBackground();
 			setShadow();
 		} // END setDashboard()
+		private function adjustParameters(_index:uint, _amount:uint):void{
+			for each (var param:Parameter in params){
+				if(param.index != _index){
+					param.adjustParameter();
+				}
+				if(param.index > 0){
+					var neightbor:Parameter = params[param.index-1];
+					param.y = neightbor.y + neightbor.height;
+				}else{
+					param.y = 0;
+				};
+			}
+		} // END adjustParameters()
 		public function hideDrawer():void{
 			TweenLite.to(drawer, 1, {y: - drawer.height - 10, ease:Cubic.easeOut});
 		} // END hideDrawer()

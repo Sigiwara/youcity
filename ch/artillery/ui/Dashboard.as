@@ -124,7 +124,6 @@ package ch.artillery.ui{
 			for each (var param:Parameter in params){
 				param.adjustParameter(_amount);
 				param.y = tHeight;
-				param.scaled += 9 * (_amount * -1);
 				tHeight += param._height;
 			};
 		} // END adjustParameters()

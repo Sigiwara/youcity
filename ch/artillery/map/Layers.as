@@ -44,10 +44,10 @@ package ch.artillery.map{
 			this.layers					= new Array();
 			//  ADDINGS
 			//--------------------------------------
-			this.x = map.getWidth() / 2;
-			this.y = map.getHeight() / 2;
+			this.x 									= map.getWidth() / 2;
+			this.y 									= map.getHeight() / 2;
 			//  LISTENERS
-			//--------------------------------------
+			//--------------------------------------			
 			this.addEventListener(MouseEvent.MOUSE_DOWN, map.grid.mousePressed, true);
 			this.addEventListener(MouseEvent.MOUSE_UP, map.grid.mouseReleased);
 			this.map.addEventListener(MapEvent.START_ZOOMING, onMapStartZooming);
@@ -77,6 +77,8 @@ package ch.artillery.map{
 				layer.width = points[1].x - points[0].x;
 				layer.height = points[1].y - points[0].y;
 				layer.name = 'layer' + i.toString();
+				//layer.addEventListener(MouseEvent.DOUBLE_CLICK, map.onDoubleClick)
+				layer.doubleClickEnabled = true;
 				layers.push(layer);
 			};
 		} // END setLayers()

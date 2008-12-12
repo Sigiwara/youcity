@@ -11,6 +11,7 @@ package ch.artillery.map {
 	//--------------------------------------
 	import flash.display.*;
 	import flash.events.*;
+	import ch.artillery.ui.slider.SliderEvent;
 	/**
 	 *	Layer that gets layed over a ModestMap.
 	 *
@@ -37,6 +38,9 @@ package ch.artillery.map {
 		//--------------------------------------
 		//  PRIVATE METHODS
 		//--------------------------------------
+		public function sChanged(_e:SliderEvent):void{
+			this.alpha = _e.amount / 10;
+		} // END sChanged()
 		//--------------------------------------
 		//  EVENT HANDLERS
 		//--------------------------------------

@@ -29,8 +29,8 @@ package ch.artillery.ui{
 		private var gui							:GUI;
 		private var bg							:Sprite;
 		private var shadow					:Sprite;
-		private var params					:Array;
 		private var drawer					:Drawer;
+		public var params						:Array;
 		public var paramCount				:uint;
 		//--------------------------------------
 		// CONSTANTS
@@ -64,6 +64,10 @@ package ch.artillery.ui{
 		//--------------------------------------
 		// PRIVATE METHODS
 		//--------------------------------------
+		private function setDashboard():void{
+			setBackground();
+			setShadow();
+		} // END setDashboard()
 		private function setBackground():void{
 			var g:Graphics = bg.graphics;
 			g.clear();
@@ -84,7 +88,7 @@ package ch.artillery.ui{
 			var i:uint = 0;
 			paramCount = dc.params.length;
 			for each (var param:XML in dc.params){
-				var tParameter = new Parameter(this, param, dc.layers.layers[i]);
+				var tParameter = new Parameter(dc, this, param, dc.layers.layers[i]);
 				this.addChild(tParameter);
 				params.push(tParameter);
 				tParameter.y			= i*(tParameter.height);
@@ -102,32 +106,26 @@ package ch.artillery.ui{
 		//--------------------------------------
 		// PUBLIC METHODS
 		//--------------------------------------
-		public function setDashboard():void{
-			setBackground();
-			setShadow();
-		} // END setDashboard()
-		private function adjustParameters(_index:uint, _amount:uint):void{
-			for each (var param:Parameter in params){
-				if(param.index != _index){
-					param.adjustParameter();
-				}
-				if(param.index > 0){
-					var neightbor:Parameter = params[param.index-1];
-					param.y = neightbor.y + neightbor.height;
-				}else{
-					param.y = 0;
-				};
-			}
-		} // END adjustParameters()
 		public function hideDrawer():void{
 			TweenLite.to(drawer, 1, {y: - drawer.height - 10, ease:Cubic.easeOut});
 		} // END hideDrawer()
-		public function displayDrawer(_target:Parameter, _t:String, _b:String):void{
-			drawer.setDrawer(_t, _b);
+		public function displayDrawer(_target:Parameter, _q:String, _b:String):void{
+			drawer.setDrawer(_q, _b);
 			var dY:Number = _target.y - (drawer.height - _target.height) / 2;
 			if(dY <= 0){ dY = 0 };
 			if(dY >= (stage.stageHeight - drawer.height)){ dY = stage.stageHeight - drawer.height };
 			TweenLite.to(drawer, 1, {y:dY, ease:Cubic.easeOut});
 		} // END displayDrawer()
+		public function swapParameters(_p:Parameter):void{
+			this.setChildIndex(_p, this.numChildren-1);
+		} // END switchParameters()
+		public function adjustParameters(_index:uint, _amount:Number):void{
+			var tHeight:Number = 0;
+			for each (var param:Parameter in params){
+				param.adjustParameter(_amount);
+				param.y = tHeight;
+				tHeight += param._height;
+			};
+		} // END adjustParameters()
 	} // END Dashboard Class
 }

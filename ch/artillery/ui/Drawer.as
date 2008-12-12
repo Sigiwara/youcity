@@ -38,7 +38,7 @@ package ch.artillery.ui{
 		//--------------------------------------
 		private const FONT					:String	= 'Georgia';
 		private const COLOR					:uint		= 0x000000;
-		private const T_SIZE				:uint		= 24;
+		private const Q_SIZE				:uint		= 24;
 		private const B_SIZE				:uint		= 16;
 		private const PADDING				:uint		= 10;
 		private const PADDING_LEFT	:uint		= 20;
@@ -73,17 +73,19 @@ package ch.artillery.ui{
 		//  PRIVATE METHODS
 		//--------------------------------------
 		private function setTextFields():void{
-			title.multiline	= true;
-			title.wordWrap	= true;
-			title.width			= dashboard.BG_WIDTH - PADDING - PADDING_LEFT;
-			body.multiline	= true;
-			body.wordWrap		= true;
-			body.width			= dashboard.BG_WIDTH - PADDING - PADDING_LEFT;
+			title.multiline			= true;
+			title.wordWrap 		 	= true;
+			title.width		 		 	= dashboard.BG_WIDTH - PADDING - PADDING_LEFT;
+			body.multiline 		 	= true;
+			body.wordWrap	 		 	= true;
+			body.autoSize 			= TextFieldAutoSize.LEFT;
+			body.antiAliasType 	= AntiAliasType.ADVANCED;
+			body.width					= dashboard.BG_WIDTH - PADDING - PADDING_LEFT;
 		} // END setTextFields()
-		private function setText(_title:String = null, _body:String = null):void{
-			title.htmlText	= (_title) ? _title : "Title";
-			body.htmlText		= (_body) ? _body : "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-			formatText(title, COLOR, T_SIZE);
+		private function setText(_question:String = null, _body:String = null):void{
+			title.htmlText	= (_question) ? _question : "Question";
+			body.htmlText		= (_body) ? _body : "Body";
+			formatText(title, COLOR, Q_SIZE);
 			formatText(body, COLOR, B_SIZE, true);
 		} // END setText()
 		private function layoutAssets():void{
@@ -91,6 +93,7 @@ package ch.artillery.ui{
 			title.y			= PADDING;
 			body.x			= title.x;
 			body.y			= title.y + title.textHeight + LINE;
+			body.height	= body.textHeight;
 		} // END layoutAssets()
 		private function formatText(_tf:TextField, _color = null, _size = null, _italic:Boolean = false):void {
 			var tFormat:TextFormat = new TextFormat();
@@ -109,7 +112,7 @@ package ch.artillery.ui{
 		} // END setBackground()
 		private function setShadow():void{
 			var g:Graphics = shadow.graphics;
-			var shadowFilter:DropShadowFilter = new DropShadowFilter(0, 0, 0, .5, 8, 8, 1, 3, false, true, false);
+			var shadowFilter:DropShadowFilter = new DropShadowFilter(0, 0, 0, .5, 8, 8, 1, 1, false, true, false);
 			shadow.filters = [shadowFilter];
 			g.clear();
 			g.beginFill(0, 1);
@@ -119,8 +122,8 @@ package ch.artillery.ui{
 		//--------------------------------------
 		//  PUBLIC METHODS
 		//--------------------------------------
-		public function setDrawer(_t:String = null, _b:String = null):void{
-			setText(_t, _b);
+		public function setDrawer(_q:String = null, _b:String = null):void{
+			setText(_q, _b);
 			layoutAssets();
 			setBackground();
 			setShadow();

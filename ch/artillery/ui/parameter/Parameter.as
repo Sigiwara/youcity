@@ -10,6 +10,8 @@ package ch.artillery.ui.parameter{
 	// IMPORT
 	//--------------------------------------
 	import flash.events.MouseEvent;
+	import flash.events.EventDispatcher;
+	import flash.events.Event;
 	import flash.display.Graphics;
 	import flash.display.Sprite;
 	import flash.display.GradientType;
@@ -17,10 +19,14 @@ package ch.artillery.ui.parameter{
 	import ch.artillery.ui.slider.*;
 	import ch.artillery.map.Layer;
 	import flash.text.*;
+	import ch.artillery.map.Layer;
 	import flash.geom.Matrix;
 	import flash.geom.ColorTransform;
 	import flash.filters.DropShadowFilter;
-	
+	//--------------------------------------
+	// METADATA
+	//--------------------------------------
+	[Embed(source='/fonts/DINOT-Regular.otf', fontName="DINOT-Regular", mimeType="application/x-font-truetype")];
 	/**
 	 *	Parameter Class
 	 *
@@ -29,51 +35,82 @@ package ch.artillery.ui.parameter{
 		//--------------------------------------
 		// VARIABLES
 		//--------------------------------------
+		private var dc							:DocumentClass;
 		private var dashboard				:Dashboard;
 		private var data						:XML;
 		private var layer						:Layer;
 		private var _width					:Number;
-		private var _height					:Number;
+		public var _height					:Number;
+		private var preY						:Number;
+		private var preHeight				:Number;
 		private var slider					:Slider;
 		private var bg							:Sprite;
 		private var ruler						:Sprite;
 		private var pointer					:Sprite;
 		private var shadow					:Sprite;
 		private var title						:TextField;
+		private var grip_bottom			:Sprite;
+		private var grip_top				:Sprite;
+		private var label_left			:TextField;
+		private var label_right			:TextField;
+		private var dispatcher			:EventDispatcher;
 		public var index						:uint;
 		//--------------------------------------
 		// CONSTANTS
 		//--------------------------------------
+		// Background
 		private static const BG_COLOR						:uint			= 0x000000;
 		private static const BG_OPACITY_START	 	:Number		= 1;
 		private static const BG_OPACITY_END		 	:Number		= .60;
+		// Text
 		private static const DEFAULT_POS				:Number		= .50;
-		private static const PADDING					 	:uint			= 10;
+		private static const PADDING					 	:uint			= 25;
+		private static const MARGIN							:uint			= 2;
+		private static const TITLE_OFFSET_X		 	:uint			= 3;
 		private static const TITLE_OFFSET_Y		 	:uint			= 5;
-		private static const FONT							 	:String		= 'Helvetica';
+		private static const FONT							 	:String		= 'DINOT-Regular';
+		private static const LABEL_FONT					:String		= 'DINOT-Regular';
 		private static const COLOR						 	:uint			= 0xFFFFFF;
-		private static const T_SIZE						 	:uint			= 12;
+		private static const T_SIZE						 	:uint			= 11;
 		private static const B_SIZE						 	:uint			= 12;
 		private static const LETTER_SPACING		 	:Number		= 1;
+		private static const TEXT_ALIGN					:String		= 'center';
+		// Ruler
 		private static const RULER_COLOR				:uint			= 0xFFFFFF;
 		private static const RULER_OPACITY			:Number		= .10;
 		private static const RULER_THICKNESS		:Number		= 1;
 		public const SLIDER_SECTIONS						:Number		= 10;
+		// Grip
+		private static const GRIP_WIDTH					:Number		= 10;
+		private static const GRIP_COLOR					:uint			= 0xFFFFFFF;
+		private static const GRIP_OVER					:Number		= .4;
+		private static const GRIP_OUT						:Number		= .2;
+		private static const GRIP_PADDING				:Number		= 4;
+		// Size
+		private static const SCALE_MAX					:uint			= 450;
+		private static const SCALE_MIN					:uint			= 40;
 		
 		/**
 		*	@Constructor
 		*/
-		public function Parameter(_dashboard:Dashboard, _data, _layer:Layer){
+		public function Parameter(_dc:DocumentClass, _dashboard:Dashboard, _data:XML, _layer:Layer){
 			//  DEFINITIONS
 			//--------------------------------------
+			dc						= _dc;
 			dashboard			= _dashboard;
 			layer					= _layer;
 			data					= _data;
+			layer					= _layer;			
 			bg						= new Sprite();
 			ruler					= new Sprite();
 			pointer				= new Sprite();
 			shadow				= new Sprite();
+			grip_top			= new Sprite();
+			grip_bottom		= new Sprite();
 			title					= new TextField();
+			label_left		= new TextField();
+			label_right		= new TextField();
+			dispatcher		= new EventDispatcher();
 			_width				= dashboard.BG_WIDTH;
 			_height				= Math.floor(dashboard.height / dashboard.paramCount);
 			//	ADDINGS
@@ -83,35 +120,70 @@ package ch.artillery.ui.parameter{
 			this.addChild(title);
 			//  LISTENERS
 			//--------------------------------------
-			addEventListener(MouseEvent.MOUSE_OVER, parameterOver);
-			addEventListener(MouseEvent.MOUSE_OUT, parameterOut);
+			addEventListeners()
 			//  CALLS
 			//--------------------------------------
 			setTextFields();
+			setText(data.title, data.labels.label[0], data.labels.label[1]);
 			setParameter();
 			setSlider();
+			setGrip();
 			layoutAssets();
 		} // END Dashboard()
 		//--------------------------------------
 		// PRIVATE METHODS
 		//--------------------------------------
 		private function setTextFields():void{
-			title.multiline	= true;
-			title.wordWrap	= true;
-			title.autoSize = TextFieldAutoSize.LEFT;
+			// Titel
+			title.multiline	= false;
+			title.wordWrap	= false;
+			title.autoSize = TextFieldAutoSize.CENTER;
 			title.antiAliasType = AntiAliasType.ADVANCED;
+			title.selectable = false;
+			title.mouseEnabled = false;
+			// Label links
+			label_left.multiline = false;
+			label_left.wordWrap = true;
+			label_left.autoSize = TextFieldAutoSize.LEFT;
+			label_left.antiAliasType = AntiAliasType.ADVANCED;
+			label_left.selectable = false;
+			label_left.mouseEnabled = false;
+			label_left.alpha = .4;
+			// Label rechts
+			label_right.multiline = false;
+			label_right.wordWrap = true;
+			label_right.autoSize = TextFieldAutoSize.RIGHT;
+			label_right.antiAliasType = AntiAliasType.ADVANCED;
+			label_right.selectable = false;
+			label_right.mouseEnabled = false;
+			label_right.alpha = .4;
 		} // END setTextFields()
-		private function setText(_title:String = null):void{
+		private function setText(_title:String = null, _label_left:String = null, _label_right:String = null):void{
+			// Titel
 			_title = _title.toUpperCase();
 			title.htmlText	= (_title) ? _title : "Title";
-			formatText(title, COLOR, T_SIZE);
+			title.width = title.textWidth + 3;
+			formatText(FONT, title, COLOR, T_SIZE);
+			// Label links
+			_label_left = _label_left.toUpperCase();
+			label_left.htmlText	= (_label_left) ? _label_left : "Label";
+			label_left.width = label_left.textWidth + 10;
+			formatText(LABEL_FONT, label_left, COLOR, T_SIZE);
+			label_left.embedFonts = true;
+			// Label rechts
+			_label_right = _label_right.toUpperCase();
+			label_right.htmlText	= (_label_right) ? _label_right : "Label";
+			label_right.width = label_right.textWidth + 10;
+			formatText(LABEL_FONT, label_right, COLOR, T_SIZE);
+			label_right.embedFonts = true;
 		} // END setText()
-		private function formatText(_tf:TextField, _color = null, _size = null, _italic:Boolean = false):void {
+		private function formatText(_font:String, _tf:TextField, _color = null, _size = null, _italic:Boolean = false):void{
 			var tFormat:TextFormat = new TextFormat();
-			tFormat.font					= FONT;
+			tFormat.font					= (_font) ? _font : FONT;
 			tFormat.color					= (_color) ? _color : COLOR;
 			tFormat.size					= (_size) ? _size : B_SIZE;
 			tFormat.italic				= (true) ? _italic : false;
+			tFormat.align					= TEXT_ALIGN;
 			tFormat.letterSpacing = LETTER_SPACING;
 			_tf.setTextFormat(tFormat);
 		} // END formatText()
@@ -154,41 +226,116 @@ package ch.artillery.ui.parameter{
 		private function setSlider():void{
 			slider = new Slider(dashboard.BG_WIDTH-(PADDING*2), SLIDER_SECTIONS);
 			this.addChild(slider);
-			slider.addEventListener(SliderEvent.GRIP_UP, sChanged);
+			slider.addEventListener(SliderEvent.GRIP_UP, layer.sChanged);
 			slider.setPosition(DEFAULT_POS);
-		} // END setSliders()
-		private function setParameter():void{
-			setText(data.title);
+		} // END setSlider()
+		private function setGrip():void{
+			drawGrip(grip_top);
+			grip_top.alpha = GRIP_OUT;
+			grip_top.mouseChildren	= false;
+			grip_top.name	= "grip_top";
+			drawGrip(grip_bottom);
+			grip_bottom.alpha = GRIP_OUT;
+			grip_bottom.mouseChildren	= false;
+			grip_bottom.name	= "grip_bottom";
+		} // END setGrip()
+		private function drawGrip(_grip:Sprite):void{
+			var g:Graphics = _grip.graphics;
+			g.clear();
+			g.beginFill(0, 0);
+			g.drawRect(-GRIP_WIDTH/2 - GRIP_PADDING, 0 - GRIP_PADDING, GRIP_WIDTH + GRIP_PADDING*2, 6 + GRIP_PADDING*2);
+			g.endFill();
+			g.lineStyle(1, GRIP_COLOR, 1);
+			g.moveTo(-GRIP_WIDTH/2, 0);
+			g.lineTo(GRIP_WIDTH/2, 0);
+			g.moveTo(-GRIP_WIDTH/2, 2);
+			g.lineTo(GRIP_WIDTH/2, 2);
+			g.moveTo(-GRIP_WIDTH/2, 4);
+			g.lineTo(GRIP_WIDTH/2, 4);
+		} // END drawGrip()
+		private function layoutAssets():void{
+			title.x				= _width/2 - title.textWidth/2 - TITLE_OFFSET_X;
+			title.y				= _height/2 - title.textHeight - TITLE_OFFSET_Y;
+			slider.x			= PADDING;
+			slider.y			= _height / 2;
+			label_left.x	= PADDING - MARGIN - label_left.textWidth - 7;
+			label_left.y	= _height/2 - TITLE_OFFSET_Y - 5;
+			label_right.x	= _width - PADDING + MARGIN - 2;
+			label_right.y	= _height/2 - TITLE_OFFSET_Y - 5;
+			grip_top.x		= _width/2;
+			grip_top.y		= 4;
+			grip_bottom.x	= _width/2;
+			grip_bottom.y	= _height - 10;
+		} // END layoutAssets()
+		private function adaptParameter(_e:MouseEvent):void{
+			switch(_e.target.name){
+				case 'grip_top':
+				if(_height < SCALE_MAX - 10){
+					_height += 10;
+					setParameter();
+					layoutAssets();
+					dashboard.adjustParameters(index, -1);
+				}
+				break;
+				case 'grip_bottom':
+				if(_height > SCALE_MIN + 10){
+					_height -= 10;
+					setParameter();
+					layoutAssets();
+					dashboard.adjustParameters(index, 1);
+				}
+				break;
+			};
+		} // END parameterAdapt()
+		//--------------------------------------
+		// PUBLIC METHODS
+		//--------------------------------------
+		public function setParameter():void{
 			setBackground();
 			setRuler();
 			setPointer();
 			setShadow();
 		} // END setParameter()
-		private function layoutAssets():void{
-			title.x			= PADDING;
-			title.y			= this._height/2 - title.textHeight - TITLE_OFFSET_Y;
-			slider.x		= PADDING;
-			slider.y		= this.height / 2;
-		} // END layoutAssets()
-		private function sChanged(_e:SliderEvent):void{
-			layer.alpha = _e.amount / 10;
-		} // END sCHanged()
-		//--------------------------------------
-		// PUBLIC METHODS
-		//--------------------------------------
-		public function adjustParameter():void{
-			_width = _width;
+		public function adjustParameter(_amount:Number):void{
+			_height += _amount;
 			setBackground();
+			setRuler();
 			layoutAssets();
 		} // END adjustParameter()
 		//--------------------------------------
 		//  EVENT HANDLERS
 		//--------------------------------------
+		public function addEventListeners():void{
+			this.addEventListener(MouseEvent.MOUSE_OVER, parameterOver);
+			this.addEventListener(MouseEvent.MOUSE_OUT, parameterOut);
+			dispatcher.addEventListener("parameterOver", parameterOver);
+			grip_top.addEventListener(MouseEvent.MOUSE_OVER, gripOver);
+			grip_top.addEventListener(MouseEvent.MOUSE_OUT, gripOut);
+			grip_top.addEventListener(MouseEvent.MOUSE_DOWN, gripDown);
+			grip_bottom.addEventListener(MouseEvent.MOUSE_OVER, gripOver);
+			grip_bottom.addEventListener(MouseEvent.MOUSE_OUT, gripOut);
+			grip_bottom.addEventListener(MouseEvent.MOUSE_DOWN, gripDown);
+		} // END addEventListeners()
+		public function removeEventListeners():void{
+			this.removeEventListener(MouseEvent.MOUSE_OVER, parameterOver);
+			this.removeEventListener(MouseEvent.MOUSE_OUT, parameterOut);
+			dispatcher.removeEventListener("parameterOver", parameterOver);
+			grip_top.removeEventListener(MouseEvent.MOUSE_OVER, gripOver);
+			grip_top.removeEventListener(MouseEvent.MOUSE_OUT, gripOut);
+			grip_top.removeEventListener(MouseEvent.MOUSE_DOWN, gripDown);
+			grip_bottom.removeEventListener(MouseEvent.MOUSE_OVER, gripOver);
+			grip_bottom.removeEventListener(MouseEvent.MOUSE_OUT, gripOut);
+			grip_bottom.removeEventListener(MouseEvent.MOUSE_DOWN, gripDown);
+		} // END removeEventListeners()
 		private function parameterOver(_e:MouseEvent):void{
 			bg.transform.colorTransform = new ColorTransform(0,0,0,1,0,0,0,255);
-			dashboard.displayDrawer(this, data.title, data.description);
+			dashboard.displayDrawer(this, data.question, data.description);
 			this.addChild(pointer);
 			this.addChild(shadow);
+			this.addChild(label_left);
+			this.addChild(label_right);
+			this.addChild(grip_top);
+			this.addChild(grip_bottom);
 		} // END parameterOver()
 		private function parameterOut(_e:MouseEvent):void{
 			bg.transform.colorTransform = new ColorTransform(0,0,0,1,0,0,0,0);
@@ -199,6 +346,29 @@ package ch.artillery.ui.parameter{
 			if(shadow != null){
 				this.removeChild(shadow);
 			};
+			this.removeChild(label_left);
+			this.removeChild(label_right);
+			this.removeChild(grip_top);
+			this.removeChild(grip_bottom);
 		} // END parameterOut()
+		private function gripOver(_e:MouseEvent):void{
+			dispatcher.dispatchEvent(new MouseEvent("parameterOver"));
+			dc.gui.addCustomCursor();
+			dashboard.swapParameters(this);
+			_e.target.alpha = GRIP_OVER;
+		} // END gripOver()
+		private function gripOut(_e:MouseEvent):void{
+			dc.gui.removeCustomCursor();
+			_e.target.alpha = GRIP_OUT;
+		} // END gripOut()
+		private function gripDown(_e:MouseEvent):void{
+			preY				= this.y;
+			preHeight		= this.height;
+			_e.target.addEventListener(MouseEvent.MOUSE_UP, gripUp);
+		} // END gripUp()
+		private function gripUp(_e:MouseEvent):void{
+			_e.target.removeEventListener(MouseEvent.MOUSE_UP, gripUp);
+			adaptParameter(_e);
+		} // END gripUp()
 	} // END Dashboard Class
 }

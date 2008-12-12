@@ -1,99 +1,101 @@
 <params>
 	<param>
-		<class>Gruenflaeche</class>
-		<title>Grünfläche</title>
-		<question>Ist ihnen dieser Parameter wichtig?</question>
-		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
+		<class>gruenraeume</class>
+		<title>Grünräume</title>
+		<question></question>
+		<description>Das Kriterium Grünräume berücksichtigt Parks, Wälder und straßenbegleitende Vegetation. Mit dem Regler können Sie die Entfernung zu den Grünräumen verändern.
+		</description>
 		<labels>
 			<label>-</label>
 			<label>+</label>
 		</labels>
 	</param>
 	<param>
-		<class>Gewaesser</class>
+		<class>gewaesser</class>
 		<title>Gewässer</title>
-		<question>Ist ihnen dieser Parameter wichtig?</question>
-		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
+		<question></question>
+		<description>Das Kriterium berücksichtigt alle Fluss- und Seeräume. Mit dem Regler können Sie die Entfernung zu Fluss und See beeinflussen.</description>
 		<labels>
 			<label>-</label>
 			<label>+</label>
 		</labels>
 	</param>
 	<param>
-		<class>Bildung</class>
+		<class>bildung</class>
 		<title>Bildung</title>
-		<question>Ist ihnen dieser Parameter wichtig?</question>
-		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
+		<question></question>
+		<description>Das Kriterium Bildung berücksichtigt alle Schulen und Weiterbildungsstätten. Mit dem Regler steuern Sie die Entfernung zu den Einrichtungen.  
+		</description>
 		<labels>
 			<label>-</label>
 			<label>+</label>
 		</labels>
 	</param>
 	<param>
-		<class>Gesundheit</class>
+		<class>gesundheit</class>
 		<title>Gesundheit</title>
-		<question>Ist ihnen dieser Parameter wichtig?</question>
-		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
+		<question></question>
+		<description>Das Kriterium Gesundheit umfasst Spitäler, Ärzte, Apotheken, Pflegeeinrichtungen und Suchtanstalten gleichermaßen. Mit dem Regler steuern Sie sowohl die Entfernung, als auch die Dichte der Gesundheitseinrichtungen.</description>
 		<labels>
 			<label>-</label>
 			<label>+</label>
 		</labels>
 	</param>
 	<param>
-		<class>Kultur</class>
+		<class>kultur</class>
 		<title>Kultur</title>
-		<question>Ist ihnen dieser Parameter wichtig?</question>
-		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
+		<question></question>
+		<description>Das Kriterium Kultur berücksichtigt die Summe aller kulturellen Einrichtungen – Museen, Theater und die Oper, genauso wie Bibliotheken und Kinos. Mit dem Regler steuern Sie die Entfernung zu den Kultureinrichtungen.</description>
 		<labels>
 			<label>-</label>
 			<label>+</label>
 		</labels>
 	</param>
 	<param>
-		<class>Oev</class>
-		<title>ÖV</title>
-		<question>Ist ihnen dieser Parameter wichtig?</question>
-		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
-		<labels>
-			<label>-</label>
-			<label>+</label>
-		</labels>
-	</param>
-	<param>
-		<class>Vitalitaet</class>
+		<class>vitalitaet</class>
 		<title>Vitalität</title>
-		<question>Ist ihnen dieser Parameter wichtig?</question>
-		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
+		<question></question>
+		<description>Das Kriterium Vitalität berücksichtigt vor allem Einrichtungen, die das Quartier lebendiger machen. Darunter zählen tagaktive Einkaufsmöglichkeiten, Sporteinrichtungen, religiöse Zentren und Restaurants gleichermassen, wie Bars und Nachtclubs. Mit dem Regler können Sie die Entfernung zu diesen belebten Orten steuern.</description>
 		<labels>
 			<label>-</label>
 			<label>+</label>
 		</labels>
 	</param>
 	<param>
-		<class>Verkehrsbelastung</class>
+		<class>oev</class>
+		<title>ÖV</title>
+		<question></question>
+		<description>Das Kriterium Öffentlicher Verkehr berücksichtigt die Erschließung durch Bus und Tram. Mit dem Regler steuern Sie die Entfernung und Dichte der Haltestellen.</description>
+		<labels>
+			<label>-</label>
+			<label>+</label>
+		</labels>
+	</param>
+	<param>
+		<class>verkehrsbelatung</class>
 		<title>Verkehrsbelastung</title>
-		<question>Ist ihnen dieser Parameter wichtig?</question>
-		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
+		<question></question>
+		<description>Das Kriterium Verkehrsbelastung setzt sich aus der Belastung durch Straßenlärm und Schadstoffen zusammen. Mit dem Regler können Sie sich zwischen den zwei Extrema – einer besonders geringen Schadstoffbelastung einerseits und einer sehr guten Verkehrsanbindung andererseits – bewegen.</description>
 		<labels>
 			<label>-</label>
 			<label>+</label>
 		</labels>
 	</param>
 	<param>
-		<class>Kinderfreundlichkeit</class>
+		<class>kinderfreundlichkeit</class>
 		<title>Kinderfreundlichkeit</title>
-		<question>Ist ihnen dieser Parameter wichtig?</question>
-		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
+		<question></question>
+		<description>Das Kriterium Kinderfreundlichkeit zeichnet sich durch Kindergärten, Kindertagesstätten und Spielplätze aus. Mit dem Regler können Sie die Entfernung zu diesen Orten beeinflussen.</description>
 		<labels>
 			<label>-</label>
 			<label>+</label>
 		</labels>
 	</param>
 	<param>
-		<class>Mietpreise</class>
-		<title>Mietpreise</title>
-		<question>Ist ihnen dieser Parameter wichtig?</question>
-		<description>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure d.</description>
+		<class>mieten</class>
+		<title>Mieten</title>
+		<question></question>
+		<description>Der Kriterium Mietpreis berücksichtigt die Mietpreise alle Wohnungsgrößen gemittelt auf die einzelnen Stadtquartiere. Mit dem Regler geben Sie also an, ob Sie tendenziell eher mehr oder weniger bereit sind für eine Wohnung zu bezahlen.</description>
 		<labels>
 			<label>-</label>
 			<label>+</label>

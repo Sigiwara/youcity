@@ -55,6 +55,7 @@ package ch.artillery.ui.parameter{
 		private var label_right			:TextField;
 		private var dispatcher			:EventDispatcher;
 		public var index						:uint;
+		public var scaled						:uint;
 		//--------------------------------------
 		// CONSTANTS
 		//--------------------------------------
@@ -86,10 +87,8 @@ package ch.artillery.ui.parameter{
 		private static const GRIP_OVER					:Number		= .4;
 		private static const GRIP_OUT						:Number		= .2;
 		private static const GRIP_PADDING				:Number		= 4;
-		// Size
-		private static const SCALE_MAX					:uint			= 450;
-		private static const SCALE_MIN					:uint			= 40;
-		
+		private static const SCALE_MAX					:Number		= 450;
+		private static const SCALE_MIN					:Number		= 40;
 		/**
 		*	@Constructor
 		*/
@@ -113,6 +112,7 @@ package ch.artillery.ui.parameter{
 			dispatcher		= new EventDispatcher();
 			_width				= dashboard.BG_WIDTH;
 			_height				= Math.floor(dashboard.height / dashboard.paramCount);
+			scaled				= 0;
 			//	ADDINGS
 			//--------------------------------------
 			this.addChild(bg);
@@ -133,6 +133,12 @@ package ch.artillery.ui.parameter{
 		//--------------------------------------
 		// PRIVATE METHODS
 		//--------------------------------------
+		private function setParameter():void{
+			setBackground();
+			setRuler();
+			setPointer();
+			setShadow();
+		} // END setParameter()
 		private function setTextFields():void{
 			// Titel
 			title.multiline	= false;
@@ -270,7 +276,8 @@ package ch.artillery.ui.parameter{
 		private function adaptParameter(_e:MouseEvent):void{
 			switch(_e.target.name){
 				case 'grip_top':
-				if(_height < SCALE_MAX - 10){
+				// TODO: nur die grösseren verkleinern
+				if(scaled < SCALE_MAX - 90 - 10){
 					_height += 10;
 					setParameter();
 					layoutAssets();
@@ -287,20 +294,17 @@ package ch.artillery.ui.parameter{
 				break;
 			};
 		} // END parameterAdapt()
+		private function calcLayerAlpha():Number{
+			return 100 / SCALE_MAX * _height;
+		} // END calcLayerAlpha()
 		//--------------------------------------
 		// PUBLIC METHODS
 		//--------------------------------------
-		public function setParameter():void{
-			setBackground();
-			setRuler();
-			setPointer();
-			setShadow();
-		} // END setParameter()
 		public function adjustParameter(_amount:Number):void{
 			_height += _amount;
-			setBackground();
-			setRuler();
+			setParameter();
 			layoutAssets();
+			layer.pChanged(calcLayerAlpha());
 		} // END adjustParameter()
 		//--------------------------------------
 		//  EVENT HANDLERS

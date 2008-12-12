@@ -30,6 +30,7 @@ package ch.artillery.map{
 		private var coordinates				:Array;
 		private var params						:Array;
 		private var points						:Array;
+		private var classes						:Array;
 		public var layers							:Array;
 		/**
 		*	@Constructor
@@ -44,10 +45,10 @@ package ch.artillery.map{
 			this.layers					= new Array();
 			//  ADDINGS
 			//--------------------------------------
-			this.x = map.getWidth() / 2;
-			this.y = map.getHeight() / 2;
+			this.x 									= map.getWidth() / 2;
+			this.y 									= map.getHeight() / 2;
 			//  LISTENERS
-			//--------------------------------------
+			//--------------------------------------			
 			this.addEventListener(MouseEvent.MOUSE_DOWN, map.grid.mousePressed, true);
 			this.addEventListener(MouseEvent.MOUSE_UP, map.grid.mouseReleased);
 			this.map.addEventListener(MapEvent.START_ZOOMING, onMapStartZooming);
@@ -69,20 +70,24 @@ package ch.artillery.map{
 			};
 		} // END setCoordinates()
 		private function setLayers():void{
-			for (var i:int = 0; i <= params.length; i++){
-				var layer:Layer = new Layer();
+			for (var i:int = 0; i < params.length; i++){
+				var layer:Layer = new Layer(params[i].klasse);
 				this.addChild(layer);
-				layer.x = points[0].x;
-				layer.y = points[0].y;
-				layer.width = points[1].x - points[0].x;
-				layer.height = points[1].y - points[0].y;
-				layer.name = 'layer' + i.toString();
+				layer.x				= points[0].x;
+				layer.y				= points[0].y;
+				layer.width		= points[1].x - points[0].x;
+				layer.height	= points[1].y - points[0].y;
+				layer.alpha		= 100/(i+1);
+				layer.alpha		= .1
+				//layer.addEventListener(MouseEvent.DOUBLE_CLICK, map.onDoubleClick)
+				//layer.doubleClickEnabled = true;
 				layers.push(layer);
 			};
+			displayLayers();
 		} // END setLayers()
 		private function displayLayers():void{
 			for (var i:int = 0; i < layers.length; i++) {
-				layers[i].draw();
+				layers[i].show();
 			};
 		} // END displayLayers()
 		private function hideLayers():void{

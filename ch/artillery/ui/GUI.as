@@ -10,9 +10,16 @@ package ch.artillery.ui {
 	// IMPORT
 	//--------------------------------------
 	import flash.display.Sprite;
+	import flash.display.Graphics;
 	import flash.events.MouseEvent;
 	import flash.text.*;
 	import ch.artillery.ui.Dashboard;
+	import flash.ui.Mouse;
+	import flash.geom.Point;
+	import flash.filters.DropShadowFilter;
+	
+	[Embed(source='/fonts/DINOT-Regular.otf', fontName="DINOT-Regular", mimeType="application/x-font-truetype")];
+	
 	/**
 	 *	Controller of the graphical user interface.
 	 *
@@ -27,13 +34,14 @@ package ch.artillery.ui {
 		//--------------------------------------
 		//  VARIABLES
 		//--------------------------------------
-		public var dc						:DocumentClass;
+		private var dc					:DocumentClass;
 		private var dashboard		:Dashboard;
 		private var navButtons	:Sprite;
+		private var cursor			:Sprite;
 		//--------------------------------------
 		//  CONSTANTS
 		//--------------------------------------
-		private const FONT			:String	= 'Arial';
+		private const FONT			:String	= 'DINOT-Regular';
 		private const T_COLOR		:uint		= 0xFFFFFF;
 		private const T_SIZE		:uint		= 16;
 		private const PADDING		:uint		= 20;
@@ -45,11 +53,18 @@ package ch.artillery.ui {
 		public function GUI(_dc:DocumentClass):void{
 			//  DEFINITIONS
 			//--------------------------------------
-			dc = _dc;
+			dc 			= _dc;
+			cursor	= new Sprite();
+			//  ADDINGS
+			//--------------------------------------
+			//  LISTENERS
+			//--------------------------------------
+			this.addEventListener(MouseEvent.MOUSE_MOVE, cursorMove);
 			//  CALLS
 			//--------------------------------------
 			setButtons();
 			setDashboard();
+			setCustomCursor();
 		}
 		//--------------------------------------
 		//  PRIVATE METHODS
@@ -63,7 +78,7 @@ package ch.artillery.ui {
 			this.addChild(navButtons);
 			navButtons.addChild(makeButton('plus', '+', dc.map.zoomIn))
 			navButtons.addChild(makeButton('minus', '-', dc.map.zoomOut))
-			navButtons.addChild(makeButton('switch', 'o', dc.colorizeMap))
+			//navButtons.addChild(makeButton('switch', 'o', dc.colorizeMap))
 			var nextX:Number = 0;
 			for(var i:Number = 0; i < navButtons.numChildren; i++) {
 				var currButton:Sprite = navButtons.getChildAt(i) as Sprite;
@@ -73,12 +88,24 @@ package ch.artillery.ui {
 			navButtons.x = dc.stage.stageWidth - navButtons.width - PADDING;;
 			navButtons.y = PADDING;
 		} // END setButtons()
+		private function setCustomCursor():void{
+			drawCustomCursor();
+			cursor.mouseEnabled = false;
+		} // END setCustomCursor()
 		private function makeButton(name:String, labelText:String, action:Function):Sprite{
 			var button:Sprite = new Sprite();
+			var shadow:Sprite = new Sprite();
+			var shadowFilter:DropShadowFilter = new DropShadowFilter(0, 0, 0, .2, 8, 8, 1, 3, false, true, false);
+			shadow.graphics.moveTo(0, 0);
+			shadow.graphics.beginFill(0, 1);
+			shadow.graphics.drawRect(0, 0, BG_SIZE, BG_SIZE);
+			shadow.graphics.endFill();
+			shadow.filters = [shadowFilter];
 			button.name = name;
 			button.graphics.moveTo(0, 0);
 			button.graphics.beginFill(BG_COLOR, .70);
-			button.graphics.drawRoundRect(0, 0, BG_SIZE, BG_SIZE, 5, 5);
+			button.graphics.drawRect(0, 0, BG_SIZE, BG_SIZE);
+			//button.graphics.drawRoundRect(0, 0, BG_SIZE, BG_SIZE, 5, 5);
 			button.graphics.endFill();
 			button.addEventListener(MouseEvent.CLICK, action);
 			button.useHandCursor = true;
@@ -93,6 +120,7 @@ package ch.artillery.ui {
 			label.height			= label.textHeight + 3;
 			label.x						= button.width/2 - label.width/2;
 			label.y						= button.height/2 - label.height/2;
+			button.addChild(shadow);
 			button.addChild(label);
 			return button;
 		} // END makeButton()
@@ -103,5 +131,43 @@ package ch.artillery.ui {
 			tFormat.size		= (_size) ? _size : T_SIZE;
 			_tf.setTextFormat(tFormat);
 		} // END formatText()
+		public function drawCustomCursor():void{
+			var g:Graphics = cursor.graphics;
+			g.clear();
+			g.lineStyle(1, 0xFFFFFF, 1, true);
+			g.beginFill(0x000000, 1);
+			g.moveTo(-2, 0);
+			g.lineTo(-2, 4);
+			g.lineTo(-5, 4);
+			g.lineTo(0, 9);
+			g.lineTo(5, 4);
+			g.lineTo(2, 4);
+			g.lineTo(2, -4);
+			g.lineTo(5, -4);
+			g.lineTo(0, -9);
+			g.lineTo(-5, -4);
+			g.lineTo(-2, -4);
+			g.lineTo(-2, 0);
+			g.endFill();
+		} // END drawCustomCursor()
+		//--------------------------------------
+		//  EVENT HANDLERS
+		//--------------------------------------
+		private function cursorMove(event:MouseEvent):void{
+			cursor.x = mouseX;
+			cursor.y = mouseY;
+			event.updateAfterEvent();
+		} // END mouseMoveHandler()
+		//--------------------------------------
+		//  PUBLIC METHODS
+		//--------------------------------------
+		public function addCustomCursor():void{
+			this.addChild(cursor);
+			Mouse.hide();
+		} // END addCustomCursor()
+		public function removeCustomCursor():void{
+			this.removeChild(cursor);
+			Mouse.show();
+		} // END removeCustomCursor()
 	} // END GUI Class
 } // END package

@@ -5,7 +5,7 @@
 //  Copyright (c) 2008 Benjamin Wiederkehr / Artillery.ch. All rights reserved.
 //
 //////////////////////////////////////////////////////////////////////////
-package ch.artillery.ui{
+package ch.artillery.ui.parameter{
 	//--------------------------------------
 	// IMPORT
 	//--------------------------------------
@@ -15,7 +15,9 @@ package ch.artillery.ui{
 	import flash.display.Graphics;
 	import flash.display.Sprite;
 	import flash.display.GradientType;
+	import ch.artillery.ui.Dashboard;
 	import ch.artillery.ui.slider.*;
+	import ch.artillery.map.Layer;
 	import flash.text.*;
 	import ch.artillery.map.Layer;
 	import flash.geom.Matrix;
@@ -38,7 +40,9 @@ package ch.artillery.ui{
 		private var data						:XML;
 		private var layer						:Layer;
 		private var _width					:Number;
-		private var _height					:Number;
+		public var _height					:Number;
+		private var preY						:Number;
+		private var preHeight				:Number;
 		private var slider					:Slider;
 		private var bg							:Sprite;
 		private var ruler						:Sprite;
@@ -50,6 +54,7 @@ package ch.artillery.ui{
 		private var label_left			:TextField;
 		private var label_right			:TextField;
 		private var dispatcher			:EventDispatcher;
+		public var index						:uint;
 		//--------------------------------------
 		// CONSTANTS
 		//--------------------------------------
@@ -66,20 +71,25 @@ package ch.artillery.ui{
 		private static const FONT							 	:String		= 'DINOT-Regular';
 		private static const LABEL_FONT					:String		= 'DINOT-Regular';
 		private static const COLOR						 	:uint			= 0xFFFFFF;
-		private static const T_SIZE						 	:uint			= 12;
+		private static const T_SIZE						 	:uint			= 11;
 		private static const B_SIZE						 	:uint			= 12;
-		private static const LETTER_SPACING		 	:Number		= .2;
+		private static const LETTER_SPACING		 	:Number		= 1;
 		private static const TEXT_ALIGN					:String		= 'center';
 		// Ruler
 		private static const RULER_COLOR				:uint			= 0xFFFFFF;
 		private static const RULER_OPACITY			:Number		= .10;
 		private static const RULER_THICKNESS		:Number		= 1;
+		public const SLIDER_SECTIONS						:Number		= 10;
 		// Grip
 		private static const GRIP_WIDTH					:Number		= 10;
 		private static const GRIP_COLOR					:uint			= 0xFFFFFFF;
 		private static const GRIP_OVER					:Number		= .4;
 		private static const GRIP_OUT						:Number		= .2;
 		private static const GRIP_PADDING				:Number		= 4;
+		// Size
+		private static const SCALE_MAX					:uint			= 450;
+		private static const SCALE_MIN					:uint			= 40;
+		
 		/**
 		*	@Constructor
 		*/
@@ -88,6 +98,7 @@ package ch.artillery.ui{
 			//--------------------------------------
 			dc						= _dc;
 			dashboard			= _dashboard;
+			layer					= _layer;
 			data					= _data;
 			layer					= _layer;			
 			bg						= new Sprite();
@@ -109,19 +120,15 @@ package ch.artillery.ui{
 			this.addChild(title);
 			//  LISTENERS
 			//--------------------------------------
-			this.addEventListener(MouseEvent.MOUSE_OVER, parameterOver);
-			this.addEventListener(MouseEvent.MOUSE_OUT, parameterOut);
-			dispatcher.addEventListener("parameterOver", parameterOver);
-			grip_top.addEventListener(MouseEvent.MOUSE_OVER, gripOver);
-			grip_top.addEventListener(MouseEvent.MOUSE_OUT, gripOut);
-			grip_bottom.addEventListener(MouseEvent.MOUSE_OVER, gripOver);
-			grip_bottom.addEventListener(MouseEvent.MOUSE_OUT, gripOut);
+			addEventListeners()
 			//  CALLS
 			//--------------------------------------
 			setTextFields();
+			setText(data.title, data.labels.label[0], data.labels.label[1]);
 			setParameter();
 			setSlider();
 			setGrip();
+			layoutAssets();
 		} // END Dashboard()
 		//--------------------------------------
 		// PRIVATE METHODS
@@ -129,7 +136,7 @@ package ch.artillery.ui{
 		private function setTextFields():void{
 			// Titel
 			title.multiline	= false;
-			title.wordWrap	= true;
+			title.wordWrap	= false;
 			title.autoSize = TextFieldAutoSize.CENTER;
 			title.antiAliasType = AntiAliasType.ADVANCED;
 			title.selectable = false;
@@ -155,7 +162,7 @@ package ch.artillery.ui{
 			// Titel
 			_title = _title.toUpperCase();
 			title.htmlText	= (_title) ? _title : "Title";
-			title.width = title.textWidth + 4;
+			title.width = title.textWidth + 3;
 			formatText(FONT, title, COLOR, T_SIZE);
 			// Label links
 			_label_left = _label_left.toUpperCase();
@@ -170,14 +177,6 @@ package ch.artillery.ui{
 			formatText(LABEL_FONT, label_right, COLOR, T_SIZE);
 			label_right.embedFonts = true;
 		} // END setText()
-		private function layoutAssets():void{
-			title.x				= _width/2 - title.textWidth/2 - TITLE_OFFSET_X;
-			title.y				= _height/2 - title.textHeight - TITLE_OFFSET_Y;
-			label_left.x	= PADDING - MARGIN - label_left.textWidth - 7;
-			label_left.y	= _height/2 - TITLE_OFFSET_Y - 5;
-			label_right.x	= _width - PADDING + MARGIN - 2;
-			label_right.y	= _height/2 - TITLE_OFFSET_Y - 5;
-		} // END layoutAssets()
 		private function formatText(_font:String, _tf:TextField, _color = null, _size = null, _italic:Boolean = false):void{
 			var tFormat:TextFormat = new TextFormat();
 			tFormat.font					= (_font) ? _font : FONT;
@@ -225,23 +224,17 @@ package ch.artillery.ui{
 			g.endFill();
 		} // END setShadow()
 		private function setSlider():void{
-			var tSlider = new Slider(_width-PADDING*2);
-			addChild(tSlider);
-			tSlider.x = PADDING;
-			tSlider.y = _height/2 - 4/2;
-			tSlider.addEventListener(SliderEvent.GRIP_UP, sChanged);
-			tSlider.setPosition(DEFAULT_POS);
-		} // END setSliders()
+			slider = new Slider(dashboard.BG_WIDTH-(PADDING*2), SLIDER_SECTIONS);
+			this.addChild(slider);
+			slider.addEventListener(SliderEvent.GRIP_UP, layer.sChanged);
+			slider.setPosition(DEFAULT_POS);
+		} // END setSlider()
 		private function setGrip():void{
 			drawGrip(grip_top);
-			grip_top.x = _width/2;
-			grip_top.y = 4;
 			grip_top.alpha = GRIP_OUT;
 			grip_top.mouseChildren	= false;
 			grip_top.name	= "grip_top";
 			drawGrip(grip_bottom);
-			grip_bottom.x = _width/2;
-			grip_bottom.y = _height - 10;
 			grip_bottom.alpha = GRIP_OUT;
 			grip_bottom.mouseChildren	= false;
 			grip_bottom.name	= "grip_bottom";
@@ -260,24 +253,80 @@ package ch.artillery.ui{
 			g.moveTo(-GRIP_WIDTH/2, 4);
 			g.lineTo(GRIP_WIDTH/2, 4);
 		} // END drawGrip()
-		private function sChanged(_e:SliderEvent):void{
-			layer.alpha = _e.amount;
-			trace(_e.target.name + ': ' + _e.amount);
-		} // END sCHanged()
+		private function layoutAssets():void{
+			title.x				= _width/2 - title.textWidth/2 - TITLE_OFFSET_X;
+			title.y				= _height/2 - title.textHeight - TITLE_OFFSET_Y;
+			slider.x			= PADDING;
+			slider.y			= _height / 2;
+			label_left.x	= PADDING - MARGIN - label_left.textWidth - 7;
+			label_left.y	= _height/2 - TITLE_OFFSET_Y - 5;
+			label_right.x	= _width - PADDING + MARGIN - 2;
+			label_right.y	= _height/2 - TITLE_OFFSET_Y - 5;
+			grip_top.x		= _width/2;
+			grip_top.y		= 4;
+			grip_bottom.x	= _width/2;
+			grip_bottom.y	= _height - 10;
+		} // END layoutAssets()
+		private function adaptParameter(_e:MouseEvent):void{
+			switch(_e.target.name){
+				case 'grip_top':
+				if(_height < SCALE_MAX - 10){
+					_height += 10;
+					setParameter();
+					layoutAssets();
+					dashboard.adjustParameters(index, -1);
+				}
+				break;
+				case 'grip_bottom':
+				if(_height > SCALE_MIN + 10){
+					_height -= 10;
+					setParameter();
+					layoutAssets();
+					dashboard.adjustParameters(index, 1);
+				}
+				break;
+			};
+		} // END parameterAdapt()
 		//--------------------------------------
 		// PUBLIC METHODS
 		//--------------------------------------
 		public function setParameter():void{
-			setText(data.title, data.labels.label[0], data.labels.label[1]);
-			layoutAssets();
 			setBackground();
 			setRuler();
 			setPointer();
 			setShadow();
 		} // END setParameter()
+		public function adjustParameter(_amount:Number):void{
+			_height += _amount;
+			setBackground();
+			setRuler();
+			layoutAssets();
+		} // END adjustParameter()
 		//--------------------------------------
 		//  EVENT HANDLERS
 		//--------------------------------------
+		public function addEventListeners():void{
+			this.addEventListener(MouseEvent.MOUSE_OVER, parameterOver);
+			this.addEventListener(MouseEvent.MOUSE_OUT, parameterOut);
+			dispatcher.addEventListener("parameterOver", parameterOver);
+			grip_top.addEventListener(MouseEvent.MOUSE_OVER, gripOver);
+			grip_top.addEventListener(MouseEvent.MOUSE_OUT, gripOut);
+			grip_top.addEventListener(MouseEvent.MOUSE_DOWN, gripDown);
+			grip_bottom.addEventListener(MouseEvent.MOUSE_OVER, gripOver);
+			grip_bottom.addEventListener(MouseEvent.MOUSE_OUT, gripOut);
+			grip_bottom.addEventListener(MouseEvent.MOUSE_DOWN, gripDown);
+		} // END addEventListeners()
+		public function removeEventListeners():void{
+			this.removeEventListener(MouseEvent.MOUSE_OVER, parameterOver);
+			this.removeEventListener(MouseEvent.MOUSE_OUT, parameterOut);
+			dispatcher.removeEventListener("parameterOver", parameterOver);
+			grip_top.removeEventListener(MouseEvent.MOUSE_OVER, gripOver);
+			grip_top.removeEventListener(MouseEvent.MOUSE_OUT, gripOut);
+			grip_top.removeEventListener(MouseEvent.MOUSE_DOWN, gripDown);
+			grip_bottom.removeEventListener(MouseEvent.MOUSE_OVER, gripOver);
+			grip_bottom.removeEventListener(MouseEvent.MOUSE_OUT, gripOut);
+			grip_bottom.removeEventListener(MouseEvent.MOUSE_DOWN, gripDown);
+		} // END removeEventListeners()
 		private function parameterOver(_e:MouseEvent):void{
 			bg.transform.colorTransform = new ColorTransform(0,0,0,1,0,0,0,255);
 			dashboard.displayDrawer(this, data.question, data.description);
@@ -291,8 +340,12 @@ package ch.artillery.ui{
 		private function parameterOut(_e:MouseEvent):void{
 			bg.transform.colorTransform = new ColorTransform(0,0,0,1,0,0,0,0);
 			dashboard.hideDrawer();
-			this.removeChild(pointer);
-			this.removeChild(shadow);
+			if(pointer != null){
+				this.removeChild(pointer);
+			};
+			if(shadow != null){
+				this.removeChild(shadow);
+			};
 			this.removeChild(label_left);
 			this.removeChild(label_right);
 			this.removeChild(grip_top);
@@ -301,24 +354,21 @@ package ch.artillery.ui{
 		private function gripOver(_e:MouseEvent):void{
 			dispatcher.dispatchEvent(new MouseEvent("parameterOver"));
 			dc.gui.addCustomCursor();
-			if(_e.target.name == "grip_top"){
-				grip_top.alpha = GRIP_OVER;
-			} else {
-				grip_bottom.alpha = GRIP_OVER;
-			}
+			dashboard.swapParameters(this);
+			_e.target.alpha = GRIP_OVER;
 		} // END gripOver()
 		private function gripOut(_e:MouseEvent):void{
 			dc.gui.removeCustomCursor();
-			if(_e.target.name == "grip_top"){
-				grip_top.alpha = GRIP_OUT;
-			} else {
-				grip_bottom.alpha = GRIP_OUT;
-			}
+			_e.target.alpha = GRIP_OUT;
 		} // END gripOut()
 		private function gripDown(_e:MouseEvent):void{
+			preY				= this.y;
+			preHeight		= this.height;
+			_e.target.addEventListener(MouseEvent.MOUSE_UP, gripUp);
 		} // END gripUp()
-		private function gripMove(_e:MouseEvent):void{
-			_e.updateAfterEvent();
-		} // END gripMove()
+		private function gripUp(_e:MouseEvent):void{
+			_e.target.removeEventListener(MouseEvent.MOUSE_UP, gripUp);
+			adaptParameter(_e);
+		} // END gripUp()
 	} // END Dashboard Class
 }

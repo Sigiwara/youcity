@@ -69,14 +69,15 @@ package ch.artillery.map{
 			};
 		} // END setCoordinates()
 		private function setLayers():void{
-			for (var i:int = 0; i < params.length; i++){
+			for (var i:int = 0; i <= params.length; i++){
 				var layer:Layer = new Layer();
 				this.addChild(layer);
 				layer.x = points[0].x;
 				layer.y = points[0].y;
 				layer.width = points[1].x - points[0].x;
 				layer.height = points[1].y - points[0].y;
-				layer.addEventListener(MouseEvent.DOUBLE_CLICK, map.onDoubleClick)
+				layer.name = 'layer' + i.toString();
+				//layer.addEventListener(MouseEvent.DOUBLE_CLICK, map.onDoubleClick)
 				layer.doubleClickEnabled = true;
 				layers.push(layer);
 			};

@@ -11,7 +11,9 @@ package ch.artillery.ui{
 	//--------------------------------------
 	import flash.display.Sprite;
 	import flash.display.Graphics;
+	import ch.artillery.ui.parameter.*;
 	import ch.artillery.ui.slider.*;
+	import ch.artillery.ui.GUI;
 	import gs.TweenLite;
 	import fl.motion.easing.*;
 	import flash.filters.DropShadowFilter;
@@ -24,10 +26,11 @@ package ch.artillery.ui{
 		// VARIABLES
 		//--------------------------------------
 		private var dc							:DocumentClass;
+		private var gui							:GUI;
 		private var bg							:Sprite;
 		private var shadow					:Sprite;
-		private var params					:Array;
 		private var drawer					:Drawer;
+		public var params						:Array;
 		public var paramCount				:uint;
 		//--------------------------------------
 		// CONSTANTS
@@ -38,10 +41,11 @@ package ch.artillery.ui{
 		/**
 		*	@Constructor
 		*/
-		public function Dashboard(_dc:DocumentClass){
+		public function Dashboard(_dc:DocumentClass, _gui:GUI){
 			//  DEFINITIONS
 			//--------------------------------------
 			dc					= _dc;
+			gui					= _gui;
 			bg					= new Sprite();
 			shadow			= new Sprite();
 			params			= new Array();
@@ -60,6 +64,10 @@ package ch.artillery.ui{
 		//--------------------------------------
 		// PRIVATE METHODS
 		//--------------------------------------
+		private function setDashboard():void{
+			setBackground();
+			setShadow();
+		} // END setDashboard()
 		private function setBackground():void{
 			var g:Graphics = bg.graphics;
 			g.clear();
@@ -77,30 +85,27 @@ package ch.artillery.ui{
 			g.endFill();
 		} // END setShadow()
 		private function setParameters():void{
-			paramCount = dc.params.length;
 			var i:uint = 0;
+			paramCount = dc.params.length;
 			for each (var param:XML in dc.params){
 				var tParameter = new Parameter(dc, this, param, dc.layers.layers[i]);
-				addChild(tParameter);
+				this.addChild(tParameter);
 				params.push(tParameter);
-				tParameter.y = i*(tParameter.height);
-				tParameter.name = 'Parameter_'+i;
+				tParameter.y			= i*(tParameter.height);
+				tParameter.name		= 'Parameter_'+i;
+				tParameter.index	= i;
 				i++;
 			};
 		} // END setParameters()
 		private function setDrawer():void{
-			drawer			= new Drawer(this);
-			dc.addChild(drawer);
+			drawer = new Drawer(this);
+			gui.addChild(drawer);
 			drawer.x = BG_WIDTH;
 			drawer.y = - drawer.height - 10;
 		} // END setDrawer()
 		//--------------------------------------
 		// PUBLIC METHODS
 		//--------------------------------------
-		public function setDashboard():void{
-			setBackground();
-			setShadow();
-		} // END setDashboard()
 		public function hideDrawer():void{
 			TweenLite.to(drawer, 1, {y: - drawer.height - 10, ease:Cubic.easeOut});
 		} // END hideDrawer()
@@ -111,5 +116,16 @@ package ch.artillery.ui{
 			if(dY >= (stage.stageHeight - drawer.height)){ dY = stage.stageHeight - drawer.height };
 			TweenLite.to(drawer, 1, {y:dY, ease:Cubic.easeOut});
 		} // END displayDrawer()
+		public function swapParameters(_p:Parameter):void{
+			this.setChildIndex(_p, this.numChildren-1);
+		} // END switchParameters()
+		public function adjustParameters(_index:uint, _amount:Number):void{
+			var tHeight:Number = 0;
+			for each (var param:Parameter in params){
+				param.adjustParameter(_amount);
+				param.y = tHeight;
+				tHeight += param._height;
+			};
+		} // END adjustParameters()
 	} // END Dashboard Class
 }

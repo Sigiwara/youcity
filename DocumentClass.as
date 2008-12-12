@@ -50,29 +50,27 @@ package {
 		//--------------------------------------
 		//  VARIABLES
 		//--------------------------------------
-		public var map							:Map;
-		private var mapEx						:MapExtent;
-		private var mapProv					:YahooAerialMapProvider;
-		//private var mapProv				:YahooRoadMapProvider;
-		private var mapWidth				:Number;
-		private var mapHeight				:Number;
-		private var urlLoader				:URLLoader;
-		private var color						:Boolean;
-		private var waiter					:TextField;
-		private var originalCenter	:Location;
-		private var originalZoom		:Number;
-		
-		public var gui							:GUI;
-		public var layers						:Layers;
-		public var params						:Array;
+		public var map					:Map;
+		private var mapEx				:MapExtent;
+		private var mapProv			:YahooRoadMapProvider;
+		//private var mapProv			:YahooAerialMapProvider;
+		private var mapWidth		:Number;
+		private var mapHeight		:Number;
+		private var originalCenter:Location;
+		private var urlLoader		:URLLoader;
+		private var color				:Boolean;
+		private var waiter			:TextField;
+		public var gui					:GUI;
+		public var layers				:Layers;
+		public var params				:Array;
 		//--------------------------------------
 		//  CONSTANTS
 		//--------------------------------------
 		private const T_FONT			:String		= 'Arial';
 		private const T_COLOR			:uint			= 0xFFFFFF;
 		private const T_SIZE			:uint			= 16;
-		private const TOPLEFT			:Location = new Location(47.40, 8.50)
-		private const BOTTOMRIGHT	:Location = new Location(47.35, 8.55)
+		private const TOPLEFT			:Location = new Location(47.44, 8.44)
+		private const BOTTOMRIGHT	:Location = new Location(47.3, 8.64)
 		/**
 		*	@Constructor
 		*/
@@ -87,7 +85,7 @@ package {
 			mapWidth							= stage.stageWidth;
 			mapHeight							= stage.stageHeight;
 			params								= new Array();
-			color									= true;
+			color									= false;
 			//  LISTENERS
 			//--------------------------------------
 			this.stage.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
@@ -113,8 +111,8 @@ package {
 			addChild(waiter);
 		} // END setWaiter()
 		private function setMap():void{
-			//mapProv	= new YahooRoadMapProvider();
-			mapProv	= new YahooAerialMapProvider();
+			mapProv	= new YahooRoadMapProvider();
+			//mapProv	= new YahooAerialMapProvider();
 			mapEx		= new MapExtent(47.40, 47.35, 8.60, 8.45);
 			map			= new TweenMap(mapWidth, mapHeight, true, mapProv);
 			map.setExtent(mapEx);
@@ -123,7 +121,6 @@ package {
 			addChild(map);
 			map.doubleClickEnabled	= true;
 			originalCenter = map.getCenter();
-			originalZoom = map.getZoom();
 		} // END setMap()
 		private function setLayers():void{
 			layers = new Layers(map, new Array(TOPLEFT, BOTTOMRIGHT), params);
@@ -190,16 +187,11 @@ package {
 		//--------------------------------------
 		public function colorizeMap(_e:Event = null):void{
 			color = !color;
-			var light = new ColorMatrixFilter();
-			light.matrix = new Array(.2, .2, .2, 0, 50, 
-															 .2, .2, .2, 0, 50, 
-															 .2, .2, .2, 0, 50, 
-															 0, 0, 0, 1, 0);
-			var dark = new ColorMatrixFilter();
-			dark.matrix = new Array(-.25, -.25, -.25, 0, 200, 
-															 -.25, -.25, -.25, 0, 200, 
-															 -.25, -.25, -.25, 0, 200, 
-																0, 0, 0, 1, 0);
+			var light = new ColorMatrixFilter ();
+			light.matrix = new Array (.25, .25, .25, 0, 75, .25, .25, .25, 0, 75, .25, .25, .25, 0, 75, 0, 0, 0, 1, 0);
+			//light.matrix = new Array (.5, .5, .5, 0, 5, .5, .5, .5, 0, 5, .5, .5, .5, 0, 5, 0, 0, 0, 1, 0);
+			var dark = new ColorMatrixFilter ();
+			dark.matrix = new Array (-.25, -.25, -.25, 0, 200, -.25, -.25, -.25, 0, 200, -.25, -.25, -.25, 0, 200, 0, 0, 0, 1, 0);
 			if(color){
 				map.grid.filters = [dark];
 			}else{

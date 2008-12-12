@@ -14,11 +14,11 @@ package ch.artillery.ui {
 	import flash.events.MouseEvent;
 	import flash.text.*;
 	import ch.artillery.ui.Dashboard;
-	import ch.artillery.ui.Parameter;
-	import ch.artillery.ui.Drawer;
 	import flash.ui.Mouse;
 	import flash.geom.Point;
 	import flash.filters.DropShadowFilter;
+	
+	[Embed(source='/fonts/DINOT-Regular.otf', fontName="DINOT-Regular", mimeType="application/x-font-truetype")];
 	
 	/**
 	 *	Controller of the graphical user interface.
@@ -41,7 +41,7 @@ package ch.artillery.ui {
 		//--------------------------------------
 		//  CONSTANTS
 		//--------------------------------------
-		private const FONT			:String	= 'Arial';
+		private const FONT			:String	= 'DINOT-Regular';
 		private const T_COLOR		:uint		= 0xFFFFFF;
 		private const T_SIZE		:uint		= 16;
 		private const PADDING		:uint		= 20;
@@ -66,12 +66,11 @@ package ch.artillery.ui {
 			setDashboard();
 			setCustomCursor();
 		}
-		
 		//--------------------------------------
 		//  PRIVATE METHODS
 		//--------------------------------------
 		private function setDashboard():void{
-			dashboard = new Dashboard(dc);
+			dashboard = new Dashboard(dc, this);
 			this.addChild(dashboard);
 		} // END setDashboard()
 		private function setButtons():void{

@@ -72,13 +72,14 @@ package ch.artillery.map{
 			for (var i:int = 0; i <= params.length; i++){
 				var layer:Layer = new Layer();
 				this.addChild(layer);
-				layer.x = points[0].x;
-				layer.y = points[0].y;
-				layer.width = points[1].x - points[0].x;
-				layer.height = points[1].y - points[0].y;
-				layer.name = 'layer' + i.toString();
+				layer.x				= points[0].x;
+				layer.y				= points[0].y;
+				layer.width		= points[1].x - points[0].x;
+				layer.height	= points[1].y - points[0].y;
+				layer.name		= 'layer' + i.toString();
+				layer.alpha		= 100/(i+1);
 				//layer.addEventListener(MouseEvent.DOUBLE_CLICK, map.onDoubleClick)
-				layer.doubleClickEnabled = true;
+				//layer.doubleClickEnabled = true;
 				layers.push(layer);
 			};
 		} // END setLayers()

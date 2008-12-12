@@ -39,7 +39,10 @@ package ch.artillery.map {
 		//  PRIVATE METHODS
 		//--------------------------------------
 		public function sChanged(_e:SliderEvent):void{
-			this.alpha = _e.amount / 10;
+			//this.alpha = _e.amount / 10;
+		} // END sChanged()
+		public function pChanged(_amount:uint):void{
+			this.alpha = _amount;
 		} // END sChanged()
 		//--------------------------------------
 		//  EVENT HANDLERS
@@ -49,7 +52,7 @@ package ch.artillery.map {
 		//--------------------------------------
 		public function draw():void{
 			graphics.clear();
-			graphics.beginFill(0x00CCFF, .1);
+			graphics.beginFill(0x00CCFF, 1);
 			graphics.drawRect(0,0,200,200);
 			graphics.endFill();
 		} // END draw()

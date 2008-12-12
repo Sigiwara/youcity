@@ -55,6 +55,7 @@ package ch.artillery.ui.parameter{
 		private var label_right			:TextField;
 		private var dispatcher			:EventDispatcher;
 		public var index						:uint;
+		public var scaled						:uint;
 		//--------------------------------------
 		// CONSTANTS
 		//--------------------------------------
@@ -113,6 +114,7 @@ package ch.artillery.ui.parameter{
 			dispatcher		= new EventDispatcher();
 			_width				= dashboard.BG_WIDTH;
 			_height				= Math.floor(dashboard.height / dashboard.paramCount);
+			scaled				= 0;
 			//	ADDINGS
 			//--------------------------------------
 			this.addChild(bg);
@@ -133,6 +135,12 @@ package ch.artillery.ui.parameter{
 		//--------------------------------------
 		// PRIVATE METHODS
 		//--------------------------------------
+		private function setParameter():void{
+			setBackground();
+			setRuler();
+			setPointer();
+			setShadow();
+		} // END setParameter()
 		private function setTextFields():void{
 			// Titel
 			title.multiline	= false;
@@ -270,7 +278,7 @@ package ch.artillery.ui.parameter{
 		private function adaptParameter(_e:MouseEvent):void{
 			switch(_e.target.name){
 				case 'grip_top':
-				if(_height < SCALE_MAX - 10){
+				if(scaled < SCALE_MAX - 90 - 10){
 					_height += 10;
 					setParameter();
 					layoutAssets();
@@ -287,20 +295,17 @@ package ch.artillery.ui.parameter{
 				break;
 			};
 		} // END parameterAdapt()
+		private function calcLayerAlpha():Number{
+			return 100 / SCALE_MAX * _height;
+		} // END calcLayerAlpha()
 		//--------------------------------------
 		// PUBLIC METHODS
 		//--------------------------------------
-		public function setParameter():void{
-			setBackground();
-			setRuler();
-			setPointer();
-			setShadow();
-		} // END setParameter()
 		public function adjustParameter(_amount:Number):void{
 			_height += _amount;
-			setBackground();
-			setRuler();
+			setParameter();
 			layoutAssets();
+			layer.pChanged(calcLayerAlpha());
 		} // END adjustParameter()
 		//--------------------------------------
 		//  EVENT HANDLERS

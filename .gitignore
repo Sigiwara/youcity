@@ -1,4 +1,6 @@
 .DS_Store
+*.fla
+*.swf
 *.tmproj
 com/modestmaps/*
 com/stamen/*

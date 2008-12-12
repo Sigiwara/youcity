@@ -11,7 +11,10 @@ package ch.artillery.map {
 	//--------------------------------------
 	import flash.display.*;
 	import flash.events.*;
+<<<<<<< HEAD:ch/artillery/map/Layer.as
 	import flash.net.URLRequest;
+=======
+>>>>>>> a72e47226194b9e58d1a9be00b313dfbbd54f4ec:ch/artillery/map/Layer.as
 	import ch.artillery.ui.slider.SliderEvent;
 	/**
 	 *	Layer that gets layed over a ModestMap.
@@ -54,6 +57,7 @@ package ch.artillery.map {
 		public function pChanged(_amount:uint):void{
 			this.alpha = _amount;
 		} // END sChanged()
+<<<<<<< HEAD:ch/artillery/map/Layer.as
 		private function loadLayers():void{
 			for (var i:int = 1; i<=5; i++){
 				var loader:Loader = new Loader();
@@ -63,6 +67,8 @@ package ch.artillery.map {
 				layer.addChild(loader);
 			};
 		} // END loadLayers()
+=======
+>>>>>>> a72e47226194b9e58d1a9be00b313dfbbd54f4ec:ch/artillery/map/Layer.as
 		//--------------------------------------
 		//  EVENT HANDLERS
 		//--------------------------------------
@@ -76,9 +82,18 @@ package ch.artillery.map {
 		//--------------------------------------
 		//  PUBLIC METHODS
 		//--------------------------------------
+<<<<<<< HEAD:ch/artillery/map/Layer.as
 		public function show():void{
 			this.addChild(layer);
 		} // END show()
+=======
+		public function draw():void{
+			graphics.clear();
+			graphics.beginFill(0x00CCFF, 1);
+			graphics.drawRect(0,0,200,200);
+			graphics.endFill();
+		} // END draw()
+>>>>>>> a72e47226194b9e58d1a9be00b313dfbbd54f4ec:ch/artillery/map/Layer.as
 		public function clear():void{
 			this.removeChild(layer);
 		} // END clear()

@@ -12,6 +12,7 @@ package ch.artillery.map {
 	import flash.display.*;
 	import flash.events.*;
 	import flash.net.URLRequest;
+	import flash.geom.ColorTransform;
 	import ch.artillery.ui.slider.SliderEvent;
 	/**
 	 *	Layer that gets layed over a ModestMap.
@@ -37,19 +38,39 @@ package ch.artillery.map {
 			//  DEFINITIONS
 			//--------------------------------------
 			klasse	= _klasse;
-			layer		= new Sprite
+			rings		= new Array();
+			layer		= new Sprite();
 			//  ADDINGS
 			//--------------------------------------
+			addChild(layer);
 			//  CALLS
 			//--------------------------------------
 			super();
+			draw();
 			loadLayers();
 		}
 		//--------------------------------------
 		//  PRIVATE METHODS
 		//--------------------------------------
+		private function draw():void{
+			layer.graphics.clear();
+			layer.graphics.beginFill(0x000000, 0);
+			layer.graphics.drawRect(0,0,200,200)
+			layer.graphics.endFill();
+		} // END draw()
+		private function erase():void{
+			layer.graphics.clear();
+		} // END erase()
 		public function sChanged(_e:SliderEvent):void{
-			//this.alpha = _e.amount / 10;
+			resetColors();
+			var section:Number = rings.length -1 - _e.amount;
+			for (var i:int = 0; i<rings.length; i++){
+				var diff:int = section - i;
+				if(diff < 0){
+					diff = diff * -1;
+				};
+				transformColor(rings[i], diff);
+			};
 		} // END sChanged()
 		public function pChanged(_amount:uint):void{
 			this.alpha = _amount;
@@ -60,18 +81,31 @@ package ch.artillery.map {
 				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onloadedLayers);
 				var url:String = 'swf/layers/' + klasse + '/layer_' + i + '.swf';
 				loader.load(new URLRequest(url));
-				layer.addChild(loader);
 			};
 		} // END loadLayers()
+		private function resetColors():void{
+			for (var i:int = 0; i<rings.length; i++){
+				rings[i].transform.colorTransform = new ColorTransform(1, 1, 1, 1, 0, 0, 0, 0);
+			};
+		} // END resetColors()
+		private function transformColor(_ring:Sprite, _diff:Number):void{
+			var amount:Number
+			if(_diff == 0){
+				amount = 255;
+			}else{
+				amount = 255 - ((255 / (rings.length -1)) * _diff);
+			};
+			var rOffset:Number = amount;
+			_ring.transform.colorTransform = new ColorTransform(1, 1, 1, 1, rOffset, 0, 0, 0);
+		} // END transformColor()
 		//--------------------------------------
 		//  EVENT HANDLERS
 		//--------------------------------------
-		var counter:Number = 0;
 		private function onloadedLayers(_e:Event):void{
-			counter++;
-			if(counter == 5){
-				show();
-			};
+			var ring:Sprite = new Sprite();
+			ring.addChild(_e.currentTarget.content);
+			rings.push(ring);
+			layer.addChild(ring);
 		} // END onloadedLayers()
 		//--------------------------------------
 		//  PUBLIC METHODS
@@ -79,8 +113,8 @@ package ch.artillery.map {
 		public function show():void{
 			this.addChild(layer);
 		} // END show()
-		public function clear():void{
+		public function hide():void{
 			this.removeChild(layer);
-		} // END clear()
+		} // END hide()
 	} // END Layer Class
 } // END package

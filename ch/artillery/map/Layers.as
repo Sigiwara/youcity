@@ -31,7 +31,11 @@ package ch.artillery.map{
 		private var params						:Array;
 		private var points						:Array;
 		private var classes						:Array;
+		private var overlays					:Array;
+		public var overlayers					:Array;
 		public var layers							:Array;
+		public var cityLayer					:Sprite;
+		public var lakeLayer					:Sprite;
 		/**
 		*	@Constructor
 		*/
@@ -43,6 +47,11 @@ package ch.artillery.map{
 			this.params					= _params;
 			this.points					= new Array();
 			this.layers					= new Array();
+			this.overlayers			= new Array();
+			this.overlays				= new Array('swf/overlays/seeflaeche.swf', 'swf/overlays/gebaeudeflaeche.swf');
+			this.overlays				= new Array('swf/overlays/seeflaeche.swf');
+			this.cityLayer			= new Sprite();
+			this.lakeLayer			= new Sprite();
 			//  ADDINGS
 			//--------------------------------------
 			this.x 									= map.getWidth() / 2;
@@ -77,31 +86,54 @@ package ch.artillery.map{
 				layer.y				= points[0].y;
 				layer.width		= points[1].x - points[0].x;
 				layer.height	= points[1].y - points[0].y;
-				layer.alpha		= 100/(i+1);
-				layer.alpha		= .1
-				//layer.addEventListener(MouseEvent.DOUBLE_CLICK, map.onDoubleClick)
-				//layer.doubleClickEnabled = true;
+				layer.alpha		= 1/(i+1);
 				layers.push(layer);
 			};
+			for (var j:int = 0; j<overlays.length; j++){
+				var oLayer:OverlayLayer = new OverlayLayer(overlays[j]);
+				this.addChild(oLayer);
+				oLayer.x				= points[0].x;
+				oLayer.y				= points[0].y;
+				oLayer.width		= points[1].x - points[0].x;
+				oLayer.height		= points[1].y - points[0].y;
+				if(j==0){
+					oLayer.alpha		= 1;
+				}else{
+					oLayer.alpha		= .25;
+				}
+				overlayers.push(oLayer);
+			}
 			displayLayers();
 		} // END setLayers()
 		private function displayLayers():void{
 			for (var i:int = 0; i < layers.length; i++) {
 				layers[i].show();
 			};
+			for (var j:int = 0; j < overlayers.length; j++) {
+				overlayers[j].show();
+			};
 		} // END displayLayers()
 		private function hideLayers():void{
 			for (var i:int = 0; i < layers.length; i++) {
-				layers[i].clear();
+				layers[i].hide();
+			};
+			for (var j:int = 0; j < overlayers.length; j++) {
+				overlayers[j].hide();
 			};
 		} // END hideLayers()
 		private function updatePoints():void{
 			setCoordinates();
-			for (var j:int = 0; j < layers.length; j++) {
-				layers[j].x				= points[0].x;
-				layers[j].y				= points[0].y;
-				layers[j].width		= points[1].x - points[0].x;
-				layers[j].height	= points[1].y - points[0].y;
+			for (var i:int = 0; i < layers.length; i++) {
+				layers[i].x				= points[0].x;
+				layers[i].y				= points[0].y;
+				layers[i].width		= points[1].x - points[0].x;
+				layers[i].height	= points[1].y - points[0].y;
+			};
+			for (var j:int = 0; j < overlayers.length; j++) {
+				overlayers[j].x				= points[0].x;
+				overlayers[j].y				= points[0].y;
+				overlayers[j].width		= points[1].x - points[0].x;
+				overlayers[j].height	= points[1].y - points[0].y;
 			};
 		} // END updatePoints()
 		private function destroy():void {
@@ -114,6 +146,11 @@ package ch.artillery.map{
 			map.removeEventListener(MapEvent.EXTENT_CHANGED, onExtentChanged);
 			map.removeEventListener(MapEvent.RESIZED, onMapResized);
 		} // END destroy()
+		public function toggleOverlays(_e:MouseEvent):void{
+			for (var j:int = 0; j < overlayers.length; j++) {
+				overlayers[j].hide();
+			};
+		} // END toggleOverlays()
 		//--------------------------------------
 		//  EVENT HANDLERS
 		//--------------------------------------

@@ -11,8 +11,14 @@ package ch.artillery.map {
 	//--------------------------------------
 	import flash.display.*;
 	import flash.events.*;
+<<<<<<< HEAD:ch/artillery/map/Layer.as
 	import flash.net.URLRequest;
+<<<<<<< HEAD:ch/artillery/map/Layer.as
 	import flash.geom.ColorTransform;
+=======
+=======
+>>>>>>> a72e47226194b9e58d1a9be00b313dfbbd54f4ec:ch/artillery/map/Layer.as
+>>>>>>> 4294adb6fd3a6a97ad3bed93ab3d30c64d361fa4:ch/artillery/map/Layer.as
 	import ch.artillery.ui.slider.SliderEvent;
 	/**
 	 *	Layer that gets layed over a ModestMap.
@@ -75,6 +81,7 @@ package ch.artillery.map {
 		public function pChanged(_amount:uint):void{
 			this.alpha = _amount;
 		} // END sChanged()
+<<<<<<< HEAD:ch/artillery/map/Layer.as
 		private function loadLayers():void{
 			for (var i:int = 1; i<=5; i++){
 				var loader:Loader = new Loader();
@@ -83,6 +90,7 @@ package ch.artillery.map {
 				loader.load(new URLRequest(url));
 			};
 		} // END loadLayers()
+<<<<<<< HEAD:ch/artillery/map/Layer.as
 		private function resetColors():void{
 			for (var i:int = 0; i<rings.length; i++){
 				rings[i].transform.colorTransform = new ColorTransform(1, 1, 1, 1, 0, 0, 0, 0);
@@ -98,6 +106,10 @@ package ch.artillery.map {
 			var rOffset:Number = amount;
 			_ring.transform.colorTransform = new ColorTransform(1, 1, 1, 1, rOffset, 0, 0, 0);
 		} // END transformColor()
+=======
+=======
+>>>>>>> a72e47226194b9e58d1a9be00b313dfbbd54f4ec:ch/artillery/map/Layer.as
+>>>>>>> 4294adb6fd3a6a97ad3bed93ab3d30c64d361fa4:ch/artillery/map/Layer.as
 		//--------------------------------------
 		//  EVENT HANDLERS
 		//--------------------------------------
@@ -110,10 +122,23 @@ package ch.artillery.map {
 		//--------------------------------------
 		//  PUBLIC METHODS
 		//--------------------------------------
+<<<<<<< HEAD:ch/artillery/map/Layer.as
 		public function show():void{
 			this.addChild(layer);
 		} // END show()
+<<<<<<< HEAD:ch/artillery/map/Layer.as
 		public function hide():void{
+=======
+=======
+		public function draw():void{
+			graphics.clear();
+			graphics.beginFill(0x00CCFF, 1);
+			graphics.drawRect(0,0,200,200);
+			graphics.endFill();
+		} // END draw()
+>>>>>>> a72e47226194b9e58d1a9be00b313dfbbd54f4ec:ch/artillery/map/Layer.as
+		public function clear():void{
+>>>>>>> 4294adb6fd3a6a97ad3bed93ab3d30c64d361fa4:ch/artillery/map/Layer.as
 			this.removeChild(layer);
 		} // END hide()
 	} // END Layer Class

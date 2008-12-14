@@ -46,7 +46,7 @@ package ch.artillery.ui {
 		private const T_SIZE		:uint		= 16;
 		private const PADDING		:uint		= 20;
 		private const BG_SIZE		:uint		= 20;
-		private const BG_COLOR	:uint		= 0x688599;
+		private const BG_COLOR	:uint		= 0x046296;
 		/**
 		 *	@Constructor
 		 */
@@ -78,8 +78,8 @@ package ch.artillery.ui {
 			this.addChild(navButtons);
 			navButtons.addChild(makeButton('plus', '+', dc.map.zoomIn))
 			navButtons.addChild(makeButton('minus', '-', dc.map.zoomOut))
-			navButtons.addChild(makeButton('toggle', '*', dc.layers.toggleOverlays))
-			//navButtons.addChild(makeButton('switch', 'o', dc.colorizeMap))
+			navButtons.addChild(makeButton('toggle', '•', dc.layers.toggleOverlays))
+			navButtons.addChild(makeButton('switch', 'o', dc.colorizeMap))
 			var nextX:Number = 0;
 			for(var i:Number = 0; i < navButtons.numChildren; i++) {
 				var currButton:Sprite = navButtons.getChildAt(i) as Sprite;

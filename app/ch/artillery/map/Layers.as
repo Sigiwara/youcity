@@ -29,9 +29,9 @@ package ch.artillery.map{
 		private var starting					:Point;
 		private var coordinates				:Array;
 		private var params						:Array;
-		private var points						:Array;
 		private var classes						:Array;
 		private var overlays					:Array;
+		public var points							:Array;
 		public var overlayers					:Array;
 		public var layers							:Array;
 		public var cityLayer					:Sprite;
@@ -80,7 +80,7 @@ package ch.artillery.map{
 		} // END setCoordinates()
 		private function setLayers():void{
 			for (var i:int = 0; i < params.length; i++){
-				var layer:Layer = new Layer(params[i].klasse);
+				var layer:Layer = new Layer(this, params[i].klasse);
 				this.addChild(layer);
 				layer.x				= points[0].x;
 				layer.y				= points[0].y;
@@ -90,7 +90,7 @@ package ch.artillery.map{
 				layers.push(layer);
 			};
 			for (var j:int = 0; j<overlays.length; j++){
-				var oLayer:OverlayLayer = new OverlayLayer(overlays[j]);
+				var oLayer:OverlayLayer = new OverlayLayer(this, overlays[j]);
 				this.addChild(oLayer);
 				oLayer.x				= points[0].x;
 				oLayer.y				= points[0].y;
@@ -103,7 +103,6 @@ package ch.artillery.map{
 				}
 				overlayers.push(oLayer);
 			}
-			displayLayers();
 		} // END setLayers()
 		private function displayLayers():void{
 			for (var i:int = 0; i < layers.length; i++) {
@@ -146,11 +145,20 @@ package ch.artillery.map{
 			map.removeEventListener(MapEvent.EXTENT_CHANGED, onExtentChanged);
 			map.removeEventListener(MapEvent.RESIZED, onMapResized);
 		} // END destroy()
+		//--------------------------------------
+		//  PUBLIC METHODS
+		//--------------------------------------
 		public function toggleOverlays(_e:MouseEvent):void{
 			for (var j:int = 0; j < overlayers.length; j++) {
-				overlayers[j].hide();
+				overlayers[j].toggle();
 			};
 		} // END toggleOverlays()
+		public function updateLayer(_layer):void{
+			_layer.x				= points[0].x;
+			_layer.y				= points[0].y;
+			_layer.width		= points[1].x - points[0].x;
+			_layer.height		= points[1].y - points[0].y;
+		} // END updateLayer()
 		//--------------------------------------
 		//  EVENT HANDLERS
 		//--------------------------------------

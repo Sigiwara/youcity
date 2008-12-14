@@ -48,7 +48,7 @@ package ch.artillery.map{
 			this.points					= new Array();
 			this.layers					= new Array();
 			this.overlayers			= new Array();
-			this.overlays				= new Array('swf/overlays/seeflaeche.swf', 'swf/overlays/gebaeudeflaeche.swf');
+			//this.overlays				= new Array('swf/overlays/seeflaeche.swf', 'swf/overlays/gebaeudeflaeche.swf');
 			this.overlays				= new Array('swf/overlays/seeflaeche.swf');
 			this.cityLayer			= new Sprite();
 			this.lakeLayer			= new Sprite();

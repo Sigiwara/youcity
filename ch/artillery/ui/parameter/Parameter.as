@@ -64,7 +64,7 @@ package ch.artillery.ui.parameter{
 		private static const BG_OPACITY_START	 	:Number		= 1;
 		private static const BG_OPACITY_END		 	:Number		= .60;
 		// Text
-		private static const DEFAULT_POS				:Number		= .50;
+		private static const DEFAULT_POS				:Number		= .5;
 		private static const PADDING					 	:uint			= 25;
 		private static const MARGIN							:uint			= 2;
 		private static const TITLE_OFFSET_X		 	:uint			= 3;
@@ -80,7 +80,7 @@ package ch.artillery.ui.parameter{
 		private static const RULER_COLOR				:uint			= 0xFFFFFF;
 		private static const RULER_OPACITY			:Number		= .10;
 		private static const RULER_THICKNESS		:Number		= 1;
-		public const SLIDER_SECTIONS						:Number		= 10;
+		public const SLIDER_SECTIONS						:Number		= 4;
 		// Grip
 		private static const GRIP_WIDTH					:Number		= 10;
 		private static const GRIP_COLOR					:uint			= 0xFFFFFFF;

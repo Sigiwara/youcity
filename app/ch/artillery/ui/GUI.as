@@ -80,6 +80,7 @@ package ch.artillery.ui {
 			navButtons.addChild(makeButton('minus', '-', dc.map.zoomOut))
 			navButtons.addChild(makeButton('toggle', '•', dc.layers.toggleOverlays))
 			navButtons.addChild(makeButton('switch', 'o', dc.colorizeMap))
+			//navButtons.addChild(makeButton('switch', 'o', dc.colorizeMap))
 			var nextX:Number = 0;
 			for(var i:Number = 0; i < navButtons.numChildren; i++) {
 				var currButton:Sprite = navButtons.getChildAt(i) as Sprite;

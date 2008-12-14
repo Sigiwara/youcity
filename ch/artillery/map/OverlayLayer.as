@@ -26,6 +26,7 @@ package ch.artillery.map {
 		//--------------------------------------
 		//  VARIABLES
 		//--------------------------------------
+		private var layers		:Layers;
 		private var layer			:Sprite;
 		private var swf				:String;
 		//--------------------------------------
@@ -34,9 +35,10 @@ package ch.artillery.map {
 		/**
 		 *	@Constructor
 		 */
-		public function OverlayLayer(_swf):void{
+		public function OverlayLayer(_layers:Layers, _swf:String):void{
 			//  DEFINITIONS
 			//--------------------------------------
+			layers	= _layers;
 			layer		= new Sprite();
 			swf			= _swf;
 			//  ADDINGS
@@ -72,6 +74,7 @@ package ch.artillery.map {
 			var ring:Sprite = new Sprite();
 			ring.addChild(_e.currentTarget.content);
 			layer.addChild(ring);
+			layers.updateLayer(this);
 		} // END onloadedLayer()
 		//--------------------------------------
 		//  PUBLIC METHODS
@@ -82,5 +85,12 @@ package ch.artillery.map {
 		public function hide():void{
 			this.removeChild(layer);
 		} // END hide()
+		public function toggle():void{
+			if(numChildren == 0){
+				this.addChild(layer);
+			}else{
+				this.removeChild(layer);
+			};
+		} // END toggle()
 	} // END OverlayLayer Class
 } // END package

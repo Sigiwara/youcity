@@ -78,7 +78,7 @@ package ch.artillery.ui {
 			this.addChild(navButtons);
 			navButtons.addChild(makeButton('plus', '+', dc.map.zoomIn))
 			navButtons.addChild(makeButton('minus', '-', dc.map.zoomOut))
-			navButtons.addChild(makeButton('toggle', '*', dc.layers.toggleOverlays))
+			navButtons.addChild(makeButton('toggle', '•', dc.layers.toggleOverlays))
 			//navButtons.addChild(makeButton('switch', 'o', dc.colorizeMap))
 			var nextX:Number = 0;
 			for(var i:Number = 0; i < navButtons.numChildren; i++) {

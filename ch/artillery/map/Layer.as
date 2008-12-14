@@ -28,15 +28,17 @@ package ch.artillery.map {
 		//--------------------------------------
 		//  VARIABLES
 		//--------------------------------------
+		private var layers		:Layers;
 		private var klasse		:String;
 		private var rings			:Array;
 		private var layer			:Sprite;
 		/**
 		 *	@Constructor
 		 */
-		public function Layer(_klasse:String):void{
+		public function Layer(_layers:Layers, _klasse:String):void{
 			//  DEFINITIONS
 			//--------------------------------------
+			layers	= _layers;
 			klasse	= _klasse;
 			rings		= new Array();
 			layer		= new Sprite();
@@ -61,20 +63,6 @@ package ch.artillery.map {
 		private function erase():void{
 			layer.graphics.clear();
 		} // END erase()
-		public function sChanged(_e:SliderEvent):void{
-			resetColors();
-			var section:Number = rings.length -1 - _e.amount;
-			for (var i:int = 0; i<rings.length; i++){
-				var diff:int = section - i;
-				if(diff < 0){
-					diff = diff * -1;
-				};
-				transformColor(rings[i], diff);
-			};
-		} // END sChanged()
-		public function pChanged(_amount:uint):void{
-			this.alpha = _amount;
-		} // END sChanged()
 		private function loadLayers():void{
 			for (var i:int = 1; i<=5; i++){
 				var loader:Loader = new Loader();
@@ -104,17 +92,42 @@ package ch.artillery.map {
 		private function onloadedLayers(_e:Event):void{
 			var ring:Sprite = new Sprite();
 			ring.addChild(_e.currentTarget.content);
+			ring.blendMode = BlendMode.HARDLIGHT;
+			//ring.blendMode = BlendMode.OVERLAY;
 			rings.push(ring);
 			layer.addChild(ring);
+			layers.updateLayer(this);
+			sChanged(new SliderEvent(SliderEvent.GRIP_UP, 3));
 		} // END onloadedLayers()
 		//--------------------------------------
 		//  PUBLIC METHODS
 		//--------------------------------------
+		public function sChanged(_e:SliderEvent):void{
+			resetColors();
+			var section:Number = rings.length -1 - _e.amount;
+			for (var i:int = 0; i<rings.length; i++){
+				var diff:int = section - i;
+				if(diff < 0){
+					diff = diff * -1;
+				};
+				transformColor(rings[i], diff);
+			};
+		} // END sChanged()
+		public function pChanged(_amount:uint):void{
+			this.alpha = _amount;
+		} // END sChanged()
 		public function show():void{
 			this.addChild(layer);
 		} // END show()
 		public function hide():void{
 			this.removeChild(layer);
 		} // END hide()
+		public function toggle():void{
+			if(numChildren == 0){
+				this.addChild(layer);
+			}else{
+				this.removeChild(layer);
+			};
+		} // END toggle()
 	} // END Layer Class
 } // END package

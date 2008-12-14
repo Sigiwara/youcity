@@ -109,8 +109,8 @@ package ch.artillery.ui{
 		public function hideDrawer():void{
 			TweenLite.to(drawer, 1, {y: - drawer.height - 10, ease:Cubic.easeOut});
 		} // END hideDrawer()
-		public function displayDrawer(_target:Parameter, _q:String, _b:String):void{
-			drawer.setDrawer(_q, _b);
+		public function displayDrawer(_target:Parameter, _t:String, _b:String):void{
+			drawer.setDrawer(_t, _b);
 			var dY:Number = _target.y - (drawer.height - _target.height) / 2;
 			if(dY <= 0){ dY = 0 };
 			if(dY >= (stage.stageHeight - drawer.height)){ dY = stage.stageHeight - drawer.height };
@@ -122,7 +122,7 @@ package ch.artillery.ui{
 		public function adjustParameters(_index:uint, _amount:Number):void{
 			var tHeight:Number = 0;
 			for each (var param:Parameter in params){
-				param.adjustParameter(_amount);
+				param.adjustParameter(_index, _amount);
 				param.y = tHeight;
 				param.scaled += 9 * (_amount * -1);
 				tHeight += param._height;

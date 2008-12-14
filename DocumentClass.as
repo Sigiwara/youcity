@@ -123,7 +123,7 @@ package {
 			originalCenter = map.getCenter();
 		} // END setMap()
 		private function setLayers():void{
-			layers = new Layers(map, new Array(TOPLEFT, BOTTOMRIGHT), params);
+			layers = new Layers(this, map, new Array(TOPLEFT, BOTTOMRIGHT), params);
 			map.addChild(layers);
 		} // END setLayers()
 		private function setGUI():void{

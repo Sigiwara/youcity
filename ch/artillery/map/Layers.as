@@ -34,7 +34,7 @@ package ch.artillery.map{
 		/**
 		*	@Constructor
 		*/
-		public function Layers(_map:Map, _coordinates:Array, _params:Array){
+		public function Layers(_dc:DocumentClass, _map:Map, _coordinates:Array, _params:Array){
 			//  DEFINITIONS
 			//--------------------------------------
 			this.map						= _map;
@@ -70,14 +70,14 @@ package ch.artillery.map{
 		} // END setCoordinates()
 		private function setLayers():void{
 			for (var i:int = 0; i <= params.length; i++){
-				var layer:Layer = new Layer();
+				var originAlpha = 1/(i+1);
+				var layer:Layer = new Layer(i);
 				this.addChild(layer);
 				layer.x				= points[0].x;
 				layer.y				= points[0].y;
 				layer.width		= points[1].x - points[0].x;
 				layer.height	= points[1].y - points[0].y;
 				layer.name		= 'layer' + i.toString();
-				layer.alpha		= 100/(i+1);
 				//layer.addEventListener(MouseEvent.DOUBLE_CLICK, map.onDoubleClick)
 				//layer.doubleClickEnabled = true;
 				layers.push(layer);

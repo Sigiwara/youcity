@@ -41,6 +41,7 @@ package ch.artillery.ui.parameter{
 		private var layer						:Layer;
 		private var _width					:Number;
 		public var _height					:Number;
+		private var original_height	:Number;
 		private var preY						:Number;
 		private var preHeight				:Number;
 		private var slider					:Slider;
@@ -88,33 +89,34 @@ package ch.artillery.ui.parameter{
 		private static const GRIP_OUT						:Number		= .2;
 		private static const GRIP_PADDING				:Number		= 4;
 		// Size
-		private static const SCALE_MAX					:uint			= 450;
+		public const SCALE_MAX									:uint			= 450;
 		private static const SCALE_MIN					:uint			= 40;
-		
+		private static const MULTYPLYER					:uint			= 3;
 		/**
 		*	@Constructor
 		*/
 		public function Parameter(_dc:DocumentClass, _dashboard:Dashboard, _data:XML, _layer:Layer){
 			//  DEFINITIONS
 			//--------------------------------------
-			dc						= _dc;
-			dashboard			= _dashboard;
-			layer					= _layer;
-			data					= _data;
-			layer					= _layer;			
-			bg						= new Sprite();
-			ruler					= new Sprite();
-			pointer				= new Sprite();
-			shadow				= new Sprite();
-			grip_top			= new Sprite();
-			grip_bottom		= new Sprite();
-			title					= new TextField();
-			label_left		= new TextField();
-			label_right		= new TextField();
-			dispatcher		= new EventDispatcher();
-			_width				= dashboard.BG_WIDTH;
-			_height				= Math.floor(dashboard.height / dashboard.paramCount);
-			scaled				= 0;
+			dc							= _dc;
+			dashboard				= _dashboard;
+			layer						= _layer;
+			data						= _data;
+			layer						= _layer;			
+			bg							= new Sprite();
+			ruler						= new Sprite();
+			pointer					= new Sprite();
+			shadow					= new Sprite();
+			grip_top				= new Sprite();
+			grip_bottom			= new Sprite();
+			title						= new TextField();
+			label_left			= new TextField();
+			label_right			= new TextField();
+			dispatcher			= new EventDispatcher();
+			_width					= dashboard.BG_WIDTH;
+			_height					= Math.floor(dashboard.height / dashboard.paramCount);
+			original_height = _height;
+			scaled					= 0;
 			//	ADDINGS
 			//--------------------------------------
 			this.addChild(bg);
@@ -279,33 +281,48 @@ package ch.artillery.ui.parameter{
 			switch(_e.target.name){
 				case 'grip_top':
 				if(scaled < SCALE_MAX - 90 - 10){
-					_height += 10;
+					_height += 10 * MULTYPLYER;
 					setParameter();
 					layoutAssets();
-					dashboard.adjustParameters(index, -1);
+					dashboard.adjustParameters(index, -1 * MULTYPLYER);
 				}
 				break;
 				case 'grip_bottom':
 				if(_height > SCALE_MIN + 10){
-					_height -= 10;
+					_height -= 10 * MULTYPLYER;
 					setParameter();
 					layoutAssets();
-					dashboard.adjustParameters(index, 1);
+					dashboard.adjustParameters(index, 1 * MULTYPLYER);
 				}
 				break;
 			};
 		} // END parameterAdapt()
-		private function calcLayerAlpha():Number{
-			return 100 / SCALE_MAX * _height;
-		} // END calcLayerAlpha()
+		public function calcAlpha():Number{
+			var delta_height = _height - original_height;
+			var origin_alpha = 1/(index+1);
+			var max_alpha = origin_alpha*(1+(SCALE_MAX/dc.stage.stageHeight));
+			var max_delta_alpha = max_alpha - origin_alpha;
+			var min_alpha = origin_alpha*(SCALE_MAX/dc.stage.stageHeight);
+			var min_delta_alpha = origin_alpha - min_alpha;
+			if(max_alpha>1){
+				max_alpha=1;
+			}
+			if(_height>original_height){
+				return (_height/SCALE_MAX*max_delta_alpha)+origin_alpha;
+			}
+			if(_height<original_height){
+				return (_height/SCALE_MIN*min_alpha);
+			}
+			return origin_alpha;
+		} // END calcAlpha()
 		//--------------------------------------
 		// PUBLIC METHODS
 		//--------------------------------------
-		public function adjustParameter(_amount:Number):void{
+		public function adjustParameter(_index:uint, _amount:Number):void{
 			_height += _amount;
 			setParameter();
 			layoutAssets();
-			layer.pChanged(calcLayerAlpha());
+			layer.pChanged(_index, index, calcAlpha());
 		} // END adjustParameter()
 		//--------------------------------------
 		//  EVENT HANDLERS
@@ -334,7 +351,7 @@ package ch.artillery.ui.parameter{
 		} // END removeEventListeners()
 		private function parameterOver(_e:MouseEvent):void{
 			bg.transform.colorTransform = new ColorTransform(0,0,0,1,0,0,0,255);
-			dashboard.displayDrawer(this, data.question, data.description);
+			dashboard.displayDrawer(this, data.title, data.description);
 			this.addChild(pointer);
 			this.addChild(shadow);
 			this.addChild(label_left);
@@ -351,10 +368,18 @@ package ch.artillery.ui.parameter{
 			if(shadow != null){
 				this.removeChild(shadow);
 			};
-			this.removeChild(label_left);
-			this.removeChild(label_right);
-			this.removeChild(grip_top);
-			this.removeChild(grip_bottom);
+			if(label_left != null){
+				this.removeChild(label_left);
+			}
+			if(label_right != null){
+				this.removeChild(label_right);
+			}
+			if(grip_top != null){
+				this.removeChild(grip_top);
+			}
+			if(grip_bottom != null){
+				this.removeChild(grip_bottom);
+			}
 		} // END parameterOut()
 		private function gripOver(_e:MouseEvent):void{
 			dispatcher.dispatchEvent(new MouseEvent("parameterOver"));

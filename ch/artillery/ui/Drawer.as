@@ -82,8 +82,8 @@ package ch.artillery.ui{
 			body.antiAliasType 	= AntiAliasType.ADVANCED;
 			body.width					= dashboard.BG_WIDTH - PADDING - PADDING_LEFT;
 		} // END setTextFields()
-		private function setText(_question:String = null, _body:String = null):void{
-			title.htmlText	= (_question) ? _question : "Question";
+		private function setText(_title:String = null, _body:String = null):void{
+			title.htmlText	= (_title) ? _title : "Title";
 			body.htmlText		= (_body) ? _body : "Body";
 			formatText(title, COLOR, Q_SIZE);
 			formatText(body, COLOR, B_SIZE, true);
@@ -122,8 +122,8 @@ package ch.artillery.ui{
 		//--------------------------------------
 		//  PUBLIC METHODS
 		//--------------------------------------
-		public function setDrawer(_q:String = null, _b:String = null):void{
-			setText(_q, _b);
+		public function setDrawer(_t:String = null, _b:String = null):void{
+			setText(_t, _b);
 			layoutAssets();
 			setBackground();
 			setShadow();

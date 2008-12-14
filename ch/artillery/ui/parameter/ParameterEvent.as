@@ -31,13 +31,13 @@ package ch.artillery.ui.parameter{
 		//--------------------------------------
 		// CONSTRUCTOR
 		//--------------------------------------
-		public function ParameterEvent(type:String, _index:uint; _amount:uint):void{
+		public function ParameterEvent(type:String, _index:uint, _amount:uint):void{
 			super(type);
 			index = _index;
 			amount = _amount;
 		} // END SliderEvent()
 		public override function clone():Event {
-			return new SliderEvent(type, index, amount);
+			return new ParameterEvent(type, index, amount);
 		} // END clone()
 	} // END ParameterEvent Class
 } // END package ch.artillery.ui.parameter

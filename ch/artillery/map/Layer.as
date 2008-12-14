@@ -29,7 +29,10 @@ package ch.artillery.map {
 		/**
 		 *	@Constructor
 		 */
-		public function Layer():void{
+		public function Layer(_index:uint):void{
+			// DEFINITIONS
+			//--------------------------------------
+			this.alpha = 1/(_index+1);;
 			//  CALLS
 			//--------------------------------------
 			super();
@@ -41,9 +44,12 @@ package ch.artillery.map {
 		public function sChanged(_e:SliderEvent):void{
 			//this.alpha = _e.amount / 10;
 		} // END sChanged()
-		public function pChanged(_amount:uint):void{
-			this.alpha = _amount;
-		} // END sChanged()
+		public function pChanged(_activeLayer:uint, _index:uint, _alpha:Number):void{
+			if(_index>=_activeLayer){
+				this.alpha = _alpha;
+				//trace(this.name+": "+this.alpha);
+			}
+		} // END pChanged()
 		//--------------------------------------
 		//  EVENT HANDLERS
 		//--------------------------------------
